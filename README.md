@@ -20,16 +20,20 @@ Générée à chaque ouverture de la liste.
 
 ## Etapes de développement
 
-- [ ] Données
-  - [ ] Structures de données
-    - [ ] Base de données
-    - [ ] Entité pour les recettes
-    - [ ] Entité pour les plats de l'agenda
-    - [ ] Entité pour les produits des courses
+- [X] Données
+  - [X] Structures de données
+    - [X] Base de données
+    - [X] Entité pour les recettes
+    - [X] Entité pour les plats de l'agenda
+    - [X] Entité pour les éléments des courses
     - [ ] Classe de la liste de courses
+    - [ ] Entité pour les produits alimentaires (et leur unité)
+    - [ ] Entité pour l'inventaire des produits
   - [ ] Manipulation des données
     - [ ] Produits des courses => liste des courses
-- [ ] Interface
-  - [ ] Agenda
-  - [ ] Recettes
-  - [ ] Courses
+- [X] Interface
+  - [X] Agenda
+  - [X] Recettes
+  - [X] Courses
+  - [ ] Inventaire
+  - [ ] Produits
