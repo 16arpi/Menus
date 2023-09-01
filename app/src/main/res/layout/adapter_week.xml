@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:id="@+id/frameWeek">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_margin="8dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:strokeWidth="0dp"
+            app:cardBackgroundColor="?attr/colorSurfaceVariant">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:padding="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        style="@style/TextAppearance.Material3.TitleMedium"
+                        android:layout_margin="8dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="@string/calendar_monday" />
+
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewMonday"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end">
+
+                    <ImageButton
+                        android:id="@+id/buttonGroceriesMonday"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_margin="4dp"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_groceries" />
+
+                    <ImageButton
+                        android:id="@+id/buttonAddMonday"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_margin="4dp"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_add" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_margin="8dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:strokeWidth="0dp"
+            app:cardBackgroundColor="?attr/colorSurfaceVariant">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:padding="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        style="@style/TextAppearance.Material3.TitleMedium"
+                        android:layout_margin="8dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="@string/calendar_tuesday" />
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewTuesday"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end">
+
+                <ImageButton
+                    android:id="@+id/buttonGroceriesTuesday"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_margin="4dp"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_groceries" />
+
+                <ImageButton
+                    android:id="@+id/buttonAddTuesday"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_margin="4dp"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_add" />
+
+            </LinearLayout>
+
+            </LinearLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_margin="8dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:strokeWidth="0dp"
+            app:cardBackgroundColor="?attr/colorSurfaceVariant">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:padding="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        style="@style/TextAppearance.Material3.TitleMedium"
+                        android:layout_margin="8dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="@string/calendar_wednesday" />
+
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewWednesday"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end">
+
+                    <ImageButton
+                        android:id="@+id/buttonGroceriesWednesday"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_margin="4dp"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_groceries" />
+
+                    <ImageButton
+                        android:id="@+id/buttonAddWednesday"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_margin="4dp"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_add" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_margin="8dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:strokeWidth="0dp"
+            app:cardBackgroundColor="?attr/colorSurfaceVariant">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:padding="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        style="@style/TextAppearance.Material3.TitleMedium"
+                        android:layout_margin="8dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="@string/calendar_thursday" />
+
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewThursday"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end">
+
+                    <ImageButton
+                        android:id="@+id/buttonGroceriesThursday"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_margin="4dp"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_groceries" />
+
+                    <ImageButton
+                        android:id="@+id/buttonAddThursday"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_margin="4dp"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_add" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_margin="8dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:strokeWidth="0dp"
+            app:cardBackgroundColor="?attr/colorSurfaceVariant">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:padding="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        style="@style/TextAppearance.Material3.TitleMedium"
+                        android:layout_margin="8dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="@string/calendar_friday" />
+
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewFriday"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end">
+
+                <ImageButton
+                    android:id="@+id/buttonGroceriesFriday"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_margin="4dp"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_groceries" />
+
+                <ImageButton
+                    android:id="@+id/buttonAddFriday"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_margin="4dp"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_add" />
+
+            </LinearLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_margin="8dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:strokeWidth="0dp"
+            app:cardBackgroundColor="?attr/colorSurfaceVariant">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:padding="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        style="@style/TextAppearance.Material3.TitleMedium"
+                        android:layout_margin="8dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="@string/calendar_saturday" />
+
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewSaturday"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end">
+
+                    <ImageButton
+                        android:id="@+id/buttonGroceriesSaturday"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_margin="4dp"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_groceries" />
+
+                    <ImageButton
+                        android:id="@+id/buttonAddSaturday"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_margin="4dp"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_add" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_margin="8dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:strokeWidth="0dp"
+            app:cardBackgroundColor="?attr/colorSurfaceVariant">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:padding="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        style="@style/TextAppearance.Material3.TitleMedium"
+                        android:layout_margin="8dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="@string/calendar_sunday" />
+
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewSunday"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end">
+
+                    <ImageButton
+                        android:id="@+id/buttonGroceriesSunday"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_margin="4dp"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_groceries" />
+
+                    <ImageButton
+                        android:id="@+id/buttonAddSunday"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_margin="4dp"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_add" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            app:strokeWidth="0dp"
+            android:layout_margin="8dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:alpha="0">
+
+            <LinearLayout
+                android:padding="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+</LinearLayout>

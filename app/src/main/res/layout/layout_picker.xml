@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+
+            app:boxCornerRadiusBottomStart="100dp"
+            app:boxCornerRadiusBottomEnd="100dp"
+            app:boxCornerRadiusTopStart="100dp"
+            app:boxCornerRadiusTopEnd="100dp"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/item_search"
+            app:startIconDrawable="@drawable/ic_search"
+            android:layout_margin="8dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/searchBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text|textCapSentences"
+                android:maxLines="1"
+                android:imeOptions="actionSearch"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

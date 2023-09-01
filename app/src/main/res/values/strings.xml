@@ -1,0 +1,69 @@
+<resources>
+    <string name="app_name">Menu</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- MAIN NAVIGATION -->
+    <string name="item_calendar">Calendrier</string>
+    <string name="item_recipes">Recettes</string>
+    <string name="item_groceries">Courses</string>
+    <string name="item_search">Rechercher</string>
+    <string name="item_last_week">Semaine dernière</string>
+    <string name="item_next_week">Prochaine semaine</string>
+    <string name="item_today">Aujourd\'hui</string>
+
+    <!-- EDIT RECIPE -->
+    <string name="label_submit">Enregistrer</string>
+    <string name="label_title">Titre</string>
+    <string name="label_meal">Type</string>
+    <string name="label_portions">Portions</string>
+    <string name="label_ingredient">Ingrédients</string>
+    <string name="label_ingredient_value">Valeur</string>
+    <string name="label_ingredient_unit">Unité</string>
+    <string name="label_ingredient_label">Ingrédient</string>
+    <string name="label_steps">Préparation</string>
+    <string name="label_step_label">Etape</string>
+
+
+    <!-- CALENDAR FRAGMENT -->
+    <string name="calendar_monday">Lundi</string>
+    <string name="calendar_tuesday">Mardi</string>
+    <string name="calendar_wednesday">Mercredi</string>
+    <string name="calendar_thursday">Jeudi</string>
+    <string name="calendar_friday">Vendredi</string>
+    <string name="calendar_saturday">Samedi</string>
+    <string name="calendar_sunday">Dimanche</string>
+
+    <string name="calendar_add_groceries">Ajouter aux courses</string>
+    <string name="calendar_delete_event">Supprimer</string>
+    <string name="calendar_product_added">Recette ajoutée aux courses</string>
+    <string name="calendar_product_added_plural">Recettes ajoutées aux courses</string>
+
+    <!-- RECIPE ACTIVITY -->
+    <string name="label_delete">Supprimer</string>
+    <string name="label_edit">Modifier</string>
+
+    <!-- GROCERIES -->
+    <string name="item_remove_check" >Nettoyer</string>
+
+    <string-array name="meals" >
+        <item>Plat</item>
+        <item>Entrée</item>
+        <item>Dessert</item>
+        <item>Divers</item>
+    </string-array>
+
+    <string-array name="units">
+        <item></item>
+        <item>g</item>
+        <item>kg</item>
+        <item>L</item>
+        <item>cl</item>
+        <item>ml</item>
+        <item>c.s.</item>
+        <item>c.c.</item>
+        <item>pincée(s)</item>
+        <item>sachet(s)</item>
+        <item>pot(s)</item>
+    </string-array>
+</resources>
