@@ -32,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        frameLayout = findViewById(R.id.frameLayout);
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        frameLayout = findViewById(R.id.frame_layout);
+        bottomNavigationView = findViewById(R.id.bottom_navigation_view);
 
         fragments = new Fragment[] {
           new CalendarFragment(),
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
     private void setFragment(int tab) {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frameLayout, fragments[tab])
+                .replace(R.id.frame_layout, fragments[tab])
                 .commit();
     }
 }

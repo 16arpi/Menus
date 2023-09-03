@@ -24,7 +24,7 @@
             android:layout_margin="8dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/searchBar"
+                android:id="@+id/search_bar_picker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text|textCapSentences"
@@ -34,7 +34,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewSearch"
+            android:id="@+id/recycler_view_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

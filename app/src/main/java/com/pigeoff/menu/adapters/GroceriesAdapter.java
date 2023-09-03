@@ -5,7 +5,6 @@ import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -14,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.pigeoff.menu.R;
-import com.pigeoff.menu.data.Ingredient;
 import com.pigeoff.menu.database.ProductEntity;
 import com.pigeoff.menu.util.Util;
 
@@ -91,10 +89,10 @@ public class GroceriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         public GroceriesViewHolder(@NonNull View itemView) {
             super(itemView);
-            checkBox = itemView.findViewById(R.id.checkBox);
-            label = itemView.findViewById(R.id.textLabel);
-            labelRecipe = itemView.findViewById(R.id.textRecipe);
-            buttonAction = itemView.findViewById(R.id.buttonAction);
+            checkBox = itemView.findViewById(R.id.checkbox);
+            label = itemView.findViewById(R.id.text_label);
+            labelRecipe = itemView.findViewById(R.id.text_sub_label);
+            buttonAction = itemView.findViewById(R.id.button_action);
         }
     }
 

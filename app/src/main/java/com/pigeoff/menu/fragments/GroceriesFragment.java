@@ -53,7 +53,7 @@ public class GroceriesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        toolbar = view.findViewById(R.id.topAppBar);
+        toolbar = view.findViewById(R.id.top_app_bar);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -66,7 +66,7 @@ public class GroceriesFragment extends Fragment {
         });
 
         adapter = new GroceriesAdapter(requireContext(), new ArrayList<>());
-        recyclerView = view.findViewById(R.id.recyclerViewGroceries);
+        recyclerView = view.findViewById(R.id.recycler_view_groceries);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(adapter);
 

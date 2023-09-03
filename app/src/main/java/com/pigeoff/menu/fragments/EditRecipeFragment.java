@@ -104,17 +104,17 @@ public class EditRecipeFragment extends BottomSheetDialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Bindings
-        editTitle = view.findViewById(R.id.editTitle);
-        editType = view.findViewById(R.id.editMeal);
-        editPortions = view.findViewById(R.id.editPortions);
-        recyclerViewIngredients = view.findViewById(R.id.recyclerViewIngredients);
-        editIngredientValue = view.findViewById(R.id.editIngredientValue);
-        editIngredientUnit = view.findViewById(R.id.editIngredientUnit);
-        editIngredientLabel = view.findViewById(R.id.editIngredientLabel);
-        editIngredientSubmit = view.findViewById(R.id.buttonIngredientSubmit);
-        recyclerViewSteps = view.findViewById(R.id.recyclerViewSteps);
-        editStep = view.findViewById(R.id.editStep);
-        editStepSubmit = view.findViewById(R.id.buttonStepSubmit);
+        editTitle = view.findViewById(R.id.edit_title);
+        editType = view.findViewById(R.id.edit_meal);
+        editPortions = view.findViewById(R.id.edit_portions);
+        recyclerViewIngredients = view.findViewById(R.id.recycler_view_ingredients);
+        editIngredientValue = view.findViewById(R.id.edit_ingredient_value);
+        editIngredientUnit = view.findViewById(R.id.edit_ingredient_unit);
+        editIngredientLabel = view.findViewById(R.id.edit_ingredient_label);
+        editIngredientSubmit = view.findViewById(R.id.button_ingredient_submit);
+        recyclerViewSteps = view.findViewById(R.id.recycler_view_steps);
+        editStep = view.findViewById(R.id.edit_step);
+        editStepSubmit = view.findViewById(R.id.button_step_submit);
 
 
         // Filling
@@ -166,7 +166,7 @@ public class EditRecipeFragment extends BottomSheetDialogFragment {
             }
         });
 
-        view.findViewById(R.id.editSubmit).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.edit_submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 RecipeEntity returnRecipe = updateRecipe();

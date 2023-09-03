@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.pigeoff.menu.R;
-import com.pigeoff.menu.adapters.EventAdapter;
 import com.pigeoff.menu.models.WeekModel;
 
 public class CalendarFragment extends Fragment {
@@ -72,32 +71,32 @@ public class CalendarFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        toolbar = view.findViewById(R.id.topAppBar);
-        toolbarLayout = view.findViewById(R.id.topAppBarLayout);
+        toolbar = view.findViewById(R.id.top_app_bar);
+        toolbarLayout = view.findViewById(R.id.top_app_bar_layout);
 
-        recyclerViewMonday = view.findViewById(R.id.recyclerViewMonday);
-        recyclerViewTuesday = view.findViewById(R.id.recyclerViewTuesday);
-        recyclerViewWednesday = view.findViewById(R.id.recyclerViewWednesday);
-        recyclerViewThursday = view.findViewById(R.id.recyclerViewThursday);
-        recyclerViewFriday = view.findViewById(R.id.recyclerViewFriday);
-        recyclerViewSaturday = view.findViewById(R.id.recyclerViewSaturday);
-        recyclerViewSunday = view.findViewById(R.id.recyclerViewSunday);
+        recyclerViewMonday = view.findViewById(R.id.recycler_view_monday);
+        recyclerViewTuesday = view.findViewById(R.id.recycler_view_tuesday);
+        recyclerViewWednesday = view.findViewById(R.id.recycler_view_wednesday);
+        recyclerViewThursday = view.findViewById(R.id.recycler_view_thursday);
+        recyclerViewFriday = view.findViewById(R.id.recycler_view_friday);
+        recyclerViewSaturday = view.findViewById(R.id.recycler_view_saturday);
+        recyclerViewSunday = view.findViewById(R.id.recycler_view_sunday);
 
-        buttonAddMonday = view.findViewById(R.id.buttonAddMonday);
-        buttonAddTuesday = view.findViewById(R.id.buttonAddTuesday);
-        buttonAddWednesday = view.findViewById(R.id.buttonAddWednesday);
-        buttonAddThursday = view.findViewById(R.id.buttonAddThursday);
-        buttonAddFriday = view.findViewById(R.id.buttonAddFriday);
-        buttonAddSaturday = view.findViewById(R.id.buttonAddSaturday);
-        buttonAddSunday = view.findViewById(R.id.buttonAddSunday);
+        buttonAddMonday = view.findViewById(R.id.button_add_monday);
+        buttonAddTuesday = view.findViewById(R.id.button_add_tuesday);
+        buttonAddWednesday = view.findViewById(R.id.button_add_wednesday);
+        buttonAddThursday = view.findViewById(R.id.button_add_thursday);
+        buttonAddFriday = view.findViewById(R.id.button_add_friday);
+        buttonAddSaturday = view.findViewById(R.id.button_add_saturday);
+        buttonAddSunday = view.findViewById(R.id.button_add_sunday);
 
-        buttonGroceriesMonday = view.findViewById(R.id.buttonGroceriesMonday);
-        buttonGroceriesTuesday = view.findViewById(R.id.buttonGroceriesTuesday);
-        buttonGroceriesWednesday = view.findViewById(R.id.buttonGroceriesWednesday);
-        buttonGroceriesThursday = view.findViewById(R.id.buttonGroceriesThursday);
-        buttonGroceriesFriday = view.findViewById(R.id.buttonGroceriesFriday);
-        buttonGroceriesSaturday = view.findViewById(R.id.buttonGroceriesSaturday);
-        buttonGroceriesSunday = view.findViewById(R.id.buttonGroceriesSunday);
+        buttonGroceriesMonday = view.findViewById(R.id.button_groceries_monday);
+        buttonGroceriesTuesday = view.findViewById(R.id.button_groceries_tuesday);
+        buttonGroceriesWednesday = view.findViewById(R.id.button_groceries_wednesday);
+        buttonGroceriesThursday = view.findViewById(R.id.button_groceries_thursday);
+        buttonGroceriesFriday = view.findViewById(R.id.button_groceries_friday);
+        buttonGroceriesSaturday = view.findViewById(R.id.button_groceries_saturday);
+        buttonGroceriesSunday = view.findViewById(R.id.button_groceries_sunday);
 
         weekModel = new WeekModel(
                 requireActivity(),

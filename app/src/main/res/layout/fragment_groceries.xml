@@ -17,14 +17,14 @@
             android:background="?colorSurface">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/topAppBarLayout"
+                android:id="@+id/top_app_bar_layout"
                 style="?attr/collapsingToolbarLayoutLargeStyle"
                 android:layout_width="match_parent"
                 android:background="?colorSurface"
                 android:layout_height="?attr/collapsingToolbarLayoutMediumSize">
 
                 <com.google.android.material.appbar.MaterialToolbar
-                    android:id="@+id/topAppBar"
+                    android:id="@+id/top_app_bar"
                     app:menu="@menu/menu_groceries"
                     app:title="@string/item_groceries"
                     android:background="?colorSurface"
@@ -39,7 +39,7 @@
             android:clipToPadding="false"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:id="@+id/recyclerViewGroceries"
+            android:id="@+id/recycler_view_groceries"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>

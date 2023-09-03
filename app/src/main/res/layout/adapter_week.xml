@@ -42,7 +42,7 @@
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewMonday"
+                    android:id="@+id/recycler_view_monday"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
@@ -52,7 +52,7 @@
                     android:gravity="end">
 
                     <ImageButton
-                        android:id="@+id/buttonGroceriesMonday"
+                        android:id="@+id/button_groceries_monday"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_margin="4dp"
@@ -60,7 +60,7 @@
                         android:src="@drawable/ic_groceries" />
 
                     <ImageButton
-                        android:id="@+id/buttonAddMonday"
+                        android:id="@+id/button_add_monday"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_margin="4dp"
@@ -103,7 +103,7 @@
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewTuesday"
+                    android:id="@+id/recycler_view_tuesday"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
@@ -113,7 +113,7 @@
                 android:gravity="end">
 
                 <ImageButton
-                    android:id="@+id/buttonGroceriesTuesday"
+                    android:id="@+id/button_groceries_tuesday"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_margin="4dp"
@@ -121,7 +121,7 @@
                     android:src="@drawable/ic_groceries" />
 
                 <ImageButton
-                    android:id="@+id/buttonAddTuesday"
+                    android:id="@+id/button_add_tuesday"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_margin="4dp"
@@ -172,7 +172,7 @@
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewWednesday"
+                    android:id="@+id/recycler_view_wednesday"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
@@ -182,7 +182,7 @@
                     android:gravity="end">
 
                     <ImageButton
-                        android:id="@+id/buttonGroceriesWednesday"
+                        android:id="@+id/button_groceries_wednesday"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_margin="4dp"
@@ -190,7 +190,7 @@
                         android:src="@drawable/ic_groceries" />
 
                     <ImageButton
-                        android:id="@+id/buttonAddWednesday"
+                        android:id="@+id/button_add_wednesday"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_margin="4dp"
@@ -235,7 +235,7 @@
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewThursday"
+                    android:id="@+id/recycler_view_thursday"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
@@ -245,7 +245,7 @@
                     android:gravity="end">
 
                     <ImageButton
-                        android:id="@+id/buttonGroceriesThursday"
+                        android:id="@+id/button_groceries_thursday"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_margin="4dp"
@@ -253,7 +253,7 @@
                         android:src="@drawable/ic_groceries" />
 
                     <ImageButton
-                        android:id="@+id/buttonAddThursday"
+                        android:id="@+id/button_add_thursday"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_margin="4dp"
@@ -303,7 +303,7 @@
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewFriday"
+                    android:id="@+id/recycler_view_friday"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
@@ -313,7 +313,7 @@
                 android:gravity="end">
 
                 <ImageButton
-                    android:id="@+id/buttonGroceriesFriday"
+                    android:id="@+id/button_groceries_friday"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_margin="4dp"
@@ -321,7 +321,7 @@
                     android:src="@drawable/ic_groceries" />
 
                 <ImageButton
-                    android:id="@+id/buttonAddFriday"
+                    android:id="@+id/button_add_friday"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_margin="4dp"
@@ -365,7 +365,7 @@
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewSaturday"
+                    android:id="@+id/recycler_view_saturday"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
@@ -375,7 +375,7 @@
                     android:gravity="end">
 
                     <ImageButton
-                        android:id="@+id/buttonGroceriesSaturday"
+                        android:id="@+id/button_groceries_saturday"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_margin="4dp"
@@ -383,7 +383,7 @@
                         android:src="@drawable/ic_groceries" />
 
                     <ImageButton
-                        android:id="@+id/buttonAddSaturday"
+                        android:id="@+id/button_add_saturday"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_margin="4dp"
@@ -433,7 +433,7 @@
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewSunday"
+                    android:id="@+id/recycler_view_sunday"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
@@ -443,7 +443,7 @@
                     android:gravity="end">
 
                     <ImageButton
-                        android:id="@+id/buttonGroceriesSunday"
+                        android:id="@+id/button_groceries_sunday"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_margin="4dp"
@@ -451,7 +451,7 @@
                         android:src="@drawable/ic_groceries" />
 
                     <ImageButton
-                        android:id="@+id/buttonAddSunday"
+                        android:id="@+id/button_add_sunday"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_margin="4dp"

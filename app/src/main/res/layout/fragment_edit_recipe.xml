@@ -15,7 +15,7 @@
         <Button
             android:layout_gravity="end"
             style="@style/Widget.Material3.Button.TextButton"
-            android:id="@+id/editSubmit"
+            android:id="@+id/edit_submit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_submit"
@@ -30,7 +30,7 @@
             android:layout_margin="8dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editTitle"
+                android:id="@+id/edit_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine|textCapSentences"
@@ -52,7 +52,7 @@
 
                 <AutoCompleteTextView
                     android:focusable="false"
-                    android:id="@+id/editMeal"
+                    android:id="@+id/edit_meal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:simpleItems="@array/meals"
@@ -70,7 +70,7 @@
                 style="@style/Widget.Material3.TextInputLayout.FilledBox">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editPortions"
+                    android:id="@+id/edit_portions"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
@@ -96,7 +96,7 @@
             android:text="@string/label_ingredient" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewIngredients"
+            android:id="@+id/recycler_view_ingredients"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -118,7 +118,7 @@
                     android:layout_margin="8dp">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editIngredientValue"
+                        android:id="@+id/edit_ingredient_value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLines="1"
@@ -137,7 +137,7 @@
 
                     <AutoCompleteTextView
                         android:focusable="false"
-                        android:id="@+id/editIngredientUnit"
+                        android:id="@+id/edit_ingredient_unit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:simpleItems="@array/units"
@@ -162,7 +162,7 @@
                     android:layout_margin="8dp">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editIngredientLabel"
+                        android:id="@+id/edit_ingredient_label"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLines="1"
@@ -174,7 +174,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     style="?attr/materialIconButtonFilledStyle"
-                    android:id="@+id/buttonIngredientSubmit"
+                    android:id="@+id/button_ingredient_submit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:icon="@drawable/ic_add"
@@ -200,7 +200,7 @@
             android:text="@string/label_steps" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewSteps"
+            android:id="@+id/recycler_view_steps"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -218,7 +218,7 @@
                 android:layout_margin="8dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editStep"
+                    android:id="@+id/edit_step"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine|textCapSentences"
@@ -229,7 +229,7 @@
 
             <com.google.android.material.button.MaterialButton
                 style="?attr/materialIconButtonFilledStyle"
-                android:id="@+id/buttonStepSubmit"
+                android:id="@+id/button_step_submit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/ic_add"

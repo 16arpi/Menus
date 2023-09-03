@@ -6,7 +6,7 @@
 
     <com.google.android.material.card.MaterialCardView
         style="?attr/materialCardViewFilledStyle"
-        android:id="@+id/cardEvent"
+        android:id="@+id/card_event"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/textEvent"
+                android:id="@+id/text_event"
                 style="@style/TextAppearance.Material3.TitleSmall"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
                 android:textColor="?attr/colorOnPrimary"/>
 
             <ImageButton
-                android:id="@+id/buttonEventOptions"
+                android:id="@+id/button_event_options"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:padding="4dp"

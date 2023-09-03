@@ -5,7 +5,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.android.material.search.SearchBar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.pigeoff.menu.MenuApplication;
 import com.pigeoff.menu.R;
@@ -46,8 +44,8 @@ public class RecipePickerFragment extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        searchBar = view.findViewById(R.id.searchBar);
-        recyclerViewSearch = view.findViewById(R.id.recyclerViewSearch);
+        searchBar = view.findViewById(R.id.search_bar_picker);
+        recyclerViewSearch = view.findViewById(R.id.recycler_view_search);
 
         MenuApplication app = (MenuApplication) getActivity().getApplication();
         ArrayList<RecipeEntity> recipes = new ArrayList<>(app.database.recipeDAO().select());

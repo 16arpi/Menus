@@ -79,9 +79,9 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         public EventViewHolder(@NonNull View itemView) {
             super(itemView);
-            cardEvent = itemView.findViewById(R.id.cardEvent);
-            textEvent = itemView.findViewById(R.id.textEvent);
-            buttonEventOptions = itemView.findViewById(R.id.buttonEventOptions);
+            cardEvent = itemView.findViewById(R.id.card_event);
+            textEvent = itemView.findViewById(R.id.text_event);
+            buttonEventOptions = itemView.findViewById(R.id.button_event_options);
         }
     }
 

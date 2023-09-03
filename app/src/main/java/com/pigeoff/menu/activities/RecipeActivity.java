@@ -1,7 +1,6 @@
 package com.pigeoff.menu.activities;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,11 +8,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.card.MaterialCardView;
@@ -60,13 +57,13 @@ public class RecipeActivity extends AppCompatActivity {
         if (id < 0) return;
 
         // Binding
-        MaterialToolbar toolbar = findViewById(R.id.topAppBar);
-        cardIngredients = findViewById(R.id.cardIngredients);
-        cardSteps = findViewById(R.id.cardSteps);
-        textTitle = findViewById(R.id.recipeTitle);
+        MaterialToolbar toolbar = findViewById(R.id.top_app_bar);
+        cardIngredients = findViewById(R.id.card_ingredients);
+        cardSteps = findViewById(R.id.card_steps);
+        textTitle = findViewById(R.id.recipe_title);
         textType = findViewById(R.id.recipeType);
-        recyclerViewIngredients = findViewById(R.id.recyclerViewIngredients);
-        recyclerViewSteps = findViewById(R.id.recyclerViewSteps);
+        recyclerViewIngredients = findViewById(R.id.recycler_view_ingredients);
+        recyclerViewSteps = findViewById(R.id.recycler_view_steps);
 
         recyclerViewIngredients.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewSteps.setLayoutManager(new LinearLayoutManager(this));

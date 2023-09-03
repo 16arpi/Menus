@@ -1,18 +1,10 @@
 package com.pigeoff.menu.models;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,14 +26,12 @@ import com.pigeoff.menu.database.RecipeEntity;
 import com.pigeoff.menu.fragments.EditRecipeFragment;
 import com.pigeoff.menu.fragments.RecipePickerFragment;
 import com.pigeoff.menu.util.Constants;
-import com.pigeoff.menu.util.Util;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 
 public class WeekModel {
 
@@ -182,7 +172,7 @@ public class WeekModel {
                 public void onClick(View view) {
                     addDayToGroceries(thisDay);
                     Snackbar.make(
-                            context.findViewById(R.id.topAppBar),
+                            context.findViewById(R.id.top_app_bar),
                             context.getString(R.string.calendar_product_added_plural),
                             Snackbar.LENGTH_SHORT).show();
                 }

@@ -12,7 +12,7 @@
         android:background="?attr/colorSurface">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/topAppBar"
+            android:id="@+id/top_app_bar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/ic_back" />
@@ -32,7 +32,7 @@
             android:padding="8dp">
 
             <TextView
-                android:id="@+id/recipeTitle"
+                android:id="@+id/recipe_title"
                 android:text="Title"
                 style="@style/TextAppearance.Material3.HeadlineLarge"
                 android:layout_margin="8dp"
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content" />
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardIngredients"
+                android:id="@+id/card_ingredients"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
@@ -68,7 +68,7 @@
                         android:layout_margin="8dp" />
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerViewIngredients"
+                        android:id="@+id/recycler_view_ingredients"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
@@ -77,7 +77,7 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardSteps"
+                android:id="@+id/card_steps"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
@@ -98,7 +98,7 @@
                         android:layout_margin="8dp" />
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerViewSteps"
+                        android:id="@+id/recycler_view_steps"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 

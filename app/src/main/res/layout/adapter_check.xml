@@ -9,7 +9,7 @@
     android:layout_marginEnd="8dp">
 
     <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/checkBox"
+        android:id="@+id/checkbox"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="top" />
@@ -23,7 +23,7 @@
 
         <TextView
             style="@style/TextAppearance.Material3.BodyLarge"
-            android:id="@+id/textLabel"
+            android:id="@+id/text_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:lineHeight="16dp"
@@ -33,7 +33,7 @@
             />
 
         <TextView
-            android:id="@+id/textRecipe"
+            android:id="@+id/text_sub_label"
             style="@style/TextAppearance.Material3.BodyMedium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
     </LinearLayout>
 
     <ImageButton
-        android:id="@+id/buttonAction"
+        android:id="@+id/button_action"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_margin="8dp"

@@ -109,10 +109,10 @@ public class RecipeFragment extends MenuFragment {
                 }
         );
 
-        recyclerView = view.findViewById(R.id.recyclerViewRecipe);
-        recyclerViewSearch = view.findViewById(R.id.recyclerViewRecipeSearch);
-        addButton = view.findViewById(R.id.addButton);
-        searchView = view.findViewById(R.id.searchView);
+        recyclerView = view.findViewById(R.id.recycler_view_recipe);
+        recyclerViewSearch = view.findViewById(R.id.recycler_view_recipe_search);
+        addButton = view.findViewById(R.id.add_button);
+        searchView = view.findViewById(R.id.search_view);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerViewSearch.setLayoutManager(new LinearLayoutManager(requireContext()));
