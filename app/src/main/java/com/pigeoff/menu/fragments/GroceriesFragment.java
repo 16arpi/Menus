@@ -61,6 +61,10 @@ public class GroceriesFragment extends Fragment {
                     database.productDAO().deleteAllChecked();
                     updateGroceries();
                 }
+                if (item.getItemId() == R.id.item_remove_all) {
+                    database.productDAO().deleteAllItems();
+                    updateGroceries();
+                }
                 return true;
             }
         });

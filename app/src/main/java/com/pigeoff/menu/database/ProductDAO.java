@@ -19,6 +19,9 @@ public interface ProductDAO {
     @Query("DELETE FROM productentity WHERE checked = 1")
     void deleteAllChecked();
 
+    @Query("DELETE FROM productentity")
+    void deleteAllItems();
+
     @Insert
     void addProduct(ProductEntity product);
 

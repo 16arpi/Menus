@@ -45,6 +45,7 @@
 
     <!-- GROCERIES -->
     <string name="item_remove_check" >Nettoyer</string>
+    <string name="item_remove_all" >Tout effacer</string>
 
     <string-array name="meals" >
         <item>Plat</item>
