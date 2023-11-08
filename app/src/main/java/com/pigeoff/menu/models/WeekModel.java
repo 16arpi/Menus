@@ -153,7 +153,7 @@ public class WeekModel {
                 @Override
                 public boolean onLongClick(View view) {
                     EditRecipeFragment editFragment = EditRecipeFragment.newInstance();
-                    editFragment.show(context.getSupportFragmentManager(), Constants.EDIT_FRAGMENT_TAG);
+                    editFragment.showFullScreen(context.getSupportFragmentManager());
                     editFragment.setActionListener(new EditRecipeFragment.OnActionListener() {
                         @Override
                         public void onSubmit(RecipeEntity recipe) {

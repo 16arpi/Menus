@@ -135,7 +135,7 @@ public class RecipeActivity extends AppCompatActivity {
 
     private void openEditDialog() {
         EditRecipeFragment editFragment = EditRecipeFragment.newInstance(recipe.id);
-        editFragment.show(getSupportFragmentManager(), Constants.EDIT_FRAGMENT_TAG);
+        editFragment.showFullScreen(getSupportFragmentManager());
         editFragment.setActionListener(new EditRecipeFragment.OnActionListener() {
             @Override
             public void onSubmit(RecipeEntity newRecipe) {

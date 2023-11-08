@@ -125,7 +125,7 @@ public class RecipeFragment extends MenuFragment {
             @Override
             public void onClick(View view) {
                 EditRecipeFragment editFragment = EditRecipeFragment.newInstance();
-                editFragment.show(requireActivity().getSupportFragmentManager(), Constants.EDIT_FRAGMENT_TAG);
+                editFragment.showFullScreen(requireActivity().getSupportFragmentManager());
                 editFragment.setActionListener(new EditRecipeFragment.OnActionListener() {
                     @Override
                     public void onSubmit(RecipeEntity recipe) {

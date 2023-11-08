@@ -1,13 +1,18 @@
 package com.pigeoff.menu.fragments;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AutoCompleteTextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,7 +34,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class EditRecipeFragment extends BottomSheetDialogFragment {
+public class EditRecipeFragment extends DialogFragment {
 
     public static String RECIPE_ID = "recipeid";
 
@@ -90,6 +95,14 @@ public class EditRecipeFragment extends BottomSheetDialogFragment {
             recipe = new RecipeEntity();
             newRecipe = true;
         }
+    }
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        return dialog;
     }
 
     @Nullable
@@ -171,9 +184,29 @@ public class EditRecipeFragment extends BottomSheetDialogFragment {
             public void onClick(View view) {
                 RecipeEntity returnRecipe = updateRecipe();
                 if (actionListener != null) actionListener.onSubmit(returnRecipe);
-                dismiss();
+                dismissFullScreen(getParentFragmentManager());
             }
         });
+
+        view.findViewById(R.id.button_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismissFullScreen(getParentFragmentManager());
+            }
+        });
+    }
+
+    public void showFullScreen(FragmentManager fragmentManager) {
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.add(android.R.id.content, this)
+                .addToBackStack(null).commit();
+    }
+
+    public void dismissFullScreen(FragmentManager fragmentManager) {
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+        transaction.remove(this).commit();
     }
 
     public void setActionListener(OnActionListener actionListener) {
