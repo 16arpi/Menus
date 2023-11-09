@@ -7,10 +7,13 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.data.Ingredient;
+import com.pigeoff.menu.database.ProductEntity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 public class Util {
@@ -40,6 +43,10 @@ public class Util {
         return context.getResources().getStringArray(R.array.units);
     }
 
+    public static String[] getSectionsLabel(Context context) {
+        return context.getResources().getStringArray(R.array.section);
+    }
+
     public static void selectRecipeTypeAutoCompleteItem(AutoCompleteTextView view, int position) {
         String[] types = getRecipesTypes(view.getContext());
 
@@ -60,7 +67,7 @@ public class Util {
                 String.format(Locale.getDefault(), "%.0f", ingredient.value);
 
         String unit = units[ingredient.unit].label;
-        String label = ingredient.label;
+        String label = ingredient.product.label;
 
         return String.format(Locale.getDefault(), "%s %s %s", value, unit, label);
     }
@@ -78,6 +85,18 @@ public class Util {
         return String.format(Locale.getDefault(), "%s %s %s", v, u, l);
     }
 
+    public static String formatIngredient(float value, int unit) {
+        Unit[] units = Unit.getUnits();
+
+        String v = (value % 1.0 != 0) ?
+                String.format(Locale.getDefault(), "%s", value) :
+                String.format(Locale.getDefault(), "%.0f", value);
+
+        String u = units[unit].label;
+
+        return String.format(Locale.getDefault(), "%s %s", v, u);
+    }
+
     public static ArrayList<String> listFromJson(String json) {
         return new Gson().fromJson(json, new TypeToken<ArrayList<String>>(){}.getType());
     }
@@ -92,5 +111,11 @@ public class Util {
 
         SimpleDateFormat format = new SimpleDateFormat("E dd/MM", Locale.FRANCE);
         return format.format(calendar.getTime());
+    }
+
+    public static HashMap<Long, ProductEntity> productsToDict(List<ProductEntity> items) {
+        HashMap<Long, ProductEntity> dict = new HashMap<>();
+        for (ProductEntity p : items) dict.put(p.id, p);
+        return dict;
     }
 }

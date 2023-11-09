@@ -12,9 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.data.Ingredient;
+import com.pigeoff.menu.database.ProductEntity;
 import com.pigeoff.menu.util.Util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class IngredientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -46,9 +48,6 @@ public class IngredientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         else {
             itemHolder.buttonClose.setVisibility(View.GONE);
         }
-
-
-
         itemHolder.buttonClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

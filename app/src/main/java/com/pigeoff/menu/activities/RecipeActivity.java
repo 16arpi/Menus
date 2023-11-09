@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,24 +15,28 @@ import android.widget.TextView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.pigeoff.menu.MenuApplication;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.adapters.IngredientAdapter;
 import com.pigeoff.menu.adapters.StepAdapter;
 import com.pigeoff.menu.data.Ingredient;
 import com.pigeoff.menu.database.MenuDatabase;
+import com.pigeoff.menu.database.ProductEntity;
 import com.pigeoff.menu.database.RecipeEntity;
-import com.pigeoff.menu.fragments.EditRecipeFragment;
+import com.pigeoff.menu.fragments.RecipeEditFragment;
 import com.pigeoff.menu.util.Constants;
 import com.pigeoff.menu.util.Util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class RecipeActivity extends AppCompatActivity {
 
     MenuDatabase database;
 
     RecipeEntity recipe;
+    HashMap<Long, ProductEntity> products;
 
     MaterialCardView cardIngredients;
     MaterialCardView cardSteps;
@@ -50,6 +55,8 @@ public class RecipeActivity extends AppCompatActivity {
 
         MenuApplication app = (MenuApplication) getApplication();
         database = app.database;
+
+        products = Util.productsToDict(database.productDAO().getAll());
 
         Intent intent = getIntent();
         long id = intent.getLongExtra(Constants.RECIPE_ID, -1);
@@ -80,7 +87,7 @@ public class RecipeActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!readonly) getMenuInflater().inflate(R.menu.recipe_menu, menu);
+        if (!readonly) getMenuInflater().inflate(R.menu.recipe_item_menu, menu);
         return true;
     }
 
@@ -94,11 +101,24 @@ public class RecipeActivity extends AppCompatActivity {
             case R.id.item_delete:{
                 database.recipeDAO().delete(recipe);
 
-                Intent intent = new Intent();
-                intent.putExtra(Constants.RECIPE_ID, recipe.id);
-                setResult(Constants.RESULT_DELETE, intent);
+                new MaterialAlertDialogBuilder(this)
+                        .setTitle(R.string.recipe_delete_title)
+                        .setMessage(R.string.recipe_delete_message)
+                        .setNegativeButton(R.string.recipe_delete_cancel, null)
+                        .setPositiveButton(R.string.recipe_delete_delete, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent intent = new Intent();
+                                intent.putExtra(Constants.RECIPE_ID, recipe.id);
+                                setResult(Constants.RESULT_DELETE, intent);
 
-                finish();
+                                deleteRecipe(recipe);
+
+                                finish();
+                            }
+                        })
+                        .show();
+
                 return true;
             }
             case R.id.item_edit:{
@@ -116,7 +136,7 @@ public class RecipeActivity extends AppCompatActivity {
         textTitle.setText(recipe.title);
         textType.setText(recipesTypes[recipe.category]);
 
-        ArrayList<Ingredient> ingredients = Ingredient.fromJson(recipe.ingredients);
+        ArrayList<Ingredient> ingredients = Ingredient.fromJson(products, recipe.ingredients);
         recyclerViewIngredients.setAdapter(new IngredientAdapter(this, ingredients, false));
         if (ingredients.size() == 0) {
             cardIngredients.setVisibility(View.GONE);
@@ -134,9 +154,9 @@ public class RecipeActivity extends AppCompatActivity {
     }
 
     private void openEditDialog() {
-        EditRecipeFragment editFragment = EditRecipeFragment.newInstance(recipe.id);
+        RecipeEditFragment editFragment = RecipeEditFragment.newInstance(recipe.id);
         editFragment.showFullScreen(getSupportFragmentManager());
-        editFragment.setActionListener(new EditRecipeFragment.OnActionListener() {
+        editFragment.setActionListener(new RecipeEditFragment.OnActionListener() {
             @Override
             public void onSubmit(RecipeEntity newRecipe) {
                 database.recipeDAO().update(newRecipe);
@@ -151,6 +171,12 @@ public class RecipeActivity extends AppCompatActivity {
                 setupUI();
             }
         });
+    }
+
+    private void deleteRecipe(RecipeEntity recipe) {
+        database.groceryDAO().deleteGroceriesForRecipe(recipe.id);
+        database.calendarDAO().deleteForRecipe(recipe.id);
+        database.recipeDAO().delete(recipe);
     }
 
 }

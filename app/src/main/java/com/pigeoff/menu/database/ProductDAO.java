@@ -11,22 +11,19 @@ import java.util.List;
 @Dao
 public interface ProductDAO {
     @Query("SELECT * FROM ProductEntity ORDER BY label")
-    List<ProductEntity> getProducts();
+    List<ProductEntity> getAll();
 
-    @Query("UPDATE ProductEntity SET checked = :check WHERE id = :id")
-    void checkProduct(long id, boolean check);
+    @Query("SELECT * FROM ProductEntity WHERE secion = :section ORDER BY label")
+    List<ProductEntity> getAllFromSection(int section);
 
-    @Query("DELETE FROM productentity WHERE checked = 1")
-    void deleteAllChecked();
-
-    @Query("DELETE FROM productentity")
-    void deleteAllItems();
-
-    @Insert
-    void addProduct(ProductEntity product);
+    @Query("SELECT * FROM ProductEntity WHERE id = :id")
+    ProductEntity getProduct(long id);
 
     @Update
     void updateProduct(ProductEntity product);
+
+    @Insert
+    long insertProduct(ProductEntity product);
 
     @Delete
     void deleteProduct(ProductEntity product);

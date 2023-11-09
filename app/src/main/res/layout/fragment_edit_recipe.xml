@@ -122,7 +122,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
-            <LinearLayout
+            <!--<LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
@@ -163,14 +163,14 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-            </LinearLayout>
+            </LinearLayout>-->
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical|end">
 
-                <com.google.android.material.textfield.TextInputLayout
+                <!--<com.google.android.material.textfield.TextInputLayout
                     style="?attr/textInputFilledStyle"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -186,7 +186,7 @@
                         android:inputType="text"
                         />
 
-                </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>-->
 
 
                 <com.google.android.material.button.MaterialButton

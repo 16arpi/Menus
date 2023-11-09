@@ -21,16 +21,34 @@
         android:layout_weight="1"
         android:padding="8dp">
 
-        <TextView
-            style="@style/TextAppearance.Material3.BodyLarge"
-            android:id="@+id/text_label"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:lineHeight="16dp"
-            android:text="Ingredient"
-            android:background="@android:color/transparent"
-            android:gravity="start|top"
-            />
+            android:layout_height="wrap_content" >
+
+            <TextView
+                style="@style/TextAppearance.Material3.BodyLarge"
+                android:id="@+id/text_label"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:lineHeight="16dp"
+                android:text="Ingredient"
+                android:background="@android:color/transparent"
+                android:gravity="start|top"
+                />
+
+            <TextView
+                style="@style/TextAppearance.Material3.BodyLarge"
+                android:id="@+id/text_label_value_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lineHeight="16dp"
+                android:text="Ingredient"
+                android:background="@android:color/transparent"
+                android:gravity="start|top"
+                />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/text_sub_label"

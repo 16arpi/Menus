@@ -18,10 +18,14 @@ import com.pigeoff.menu.MenuApplication;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.adapters.GroceriesAdapter;
 import com.pigeoff.menu.adapters.OnAdapterAction;
+import com.pigeoff.menu.database.GroceryEntity;
 import com.pigeoff.menu.database.MenuDatabase;
 import com.pigeoff.menu.database.ProductEntity;
+import com.pigeoff.menu.util.Util;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 public class GroceriesFragment extends Fragment {
@@ -30,6 +34,7 @@ public class GroceriesFragment extends Fragment {
     RecyclerView recyclerView;
     MenuDatabase database;
     GroceriesAdapter adapter;
+    HashMap<Long, ProductEntity> products;
 
     public GroceriesFragment() {
         // Required empty public constructor
@@ -40,6 +45,8 @@ public class GroceriesFragment extends Fragment {
         super.onCreate(savedInstanceState);
         MenuApplication app = (MenuApplication) requireActivity().getApplication();
         database = app.database;
+
+        products = Util.productsToDict(database.productDAO().getAll());
     }
 
     @Override
@@ -58,37 +65,37 @@ public class GroceriesFragment extends Fragment {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.item_remove_check) {
-                    database.productDAO().deleteAllChecked();
+                    database.groceryDAO().deleteAllChecked();
                     updateGroceries();
                 }
                 if (item.getItemId() == R.id.item_remove_all) {
-                    database.productDAO().deleteAllItems();
+                    database.groceryDAO().deleteAllItems();
                     updateGroceries();
                 }
                 return true;
             }
         });
 
-        adapter = new GroceriesAdapter(requireContext(), new ArrayList<>());
+        adapter = new GroceriesAdapter(requireContext(), products, new ArrayList<>());
         recyclerView = view.findViewById(R.id.recycler_view_groceries);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(adapter);
 
-        adapter.setOnAdapterActionListener(new OnAdapterAction<ProductEntity>() {
+        adapter.setOnAdapterActionListener(new OnAdapterAction<GroceryEntity>() {
             @Override
-            public void onItemClick(ProductEntity item) {
+            public void onItemClick(GroceryEntity item) {
 
             }
 
             @Override
-            public void onItemClick(ProductEntity item, int action) {
+            public void onItemClick(GroceryEntity item, int action) {
                 if (action == OnAdapterAction.ACTION_CHECK) {
-                    database.productDAO().checkProduct(item.id, item.checked);
+                    database.groceryDAO().checkGrocery(item.id, item.checked);
                 }
             }
 
             @Override
-            public void onItemLongClick(ProductEntity item, int position) {
+            public void onItemLongClick(GroceryEntity item, int position) {
 
             }
         });
@@ -97,7 +104,25 @@ public class GroceriesFragment extends Fragment {
     }
 
     private void updateGroceries() {
-        List<ProductEntity> products = database.productDAO().getProducts();
-        adapter.updateProducts(new ArrayList<>(products));
+        List<GroceryEntity> items = database.groceryDAO().getGroceries();
+
+        items.sort(new Comparator<GroceryEntity>() {
+            @Override
+            public int compare(GroceryEntity t1, GroceryEntity t2) {
+                ProductEntity p1 = products.get(t1.ingredientId);
+                ProductEntity p2 = products.get(t2.ingredientId);
+                return p1.label.compareTo(p2.label);
+            }
+        });
+        items.sort(new Comparator<GroceryEntity>() {
+            @Override
+            public int compare(GroceryEntity t1, GroceryEntity t2) {
+                ProductEntity p1 = products.get(t1.ingredientId);
+                ProductEntity p2 = products.get(t2.ingredientId);
+                return p1.secion - p2.secion;
+            }
+        });
+        for (GroceryEntity g : items) System.out.println(products.get(g.ingredientId).secion);
+        adapter.updateProducts(new ArrayList<>(items));
     }
 }

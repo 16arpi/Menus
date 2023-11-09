@@ -7,16 +7,10 @@ import androidx.room.PrimaryKey;
 public class ProductEntity {
     @PrimaryKey(autoGenerate = true)
     public long id;
-    public boolean checked = false;
-
-    // Ingredient
-    public float value = 0.0f;
-    public int unit = 0;
+    // Ingredient label
     public String label = "";
-
-    // Bounds
-    public long eventId = 0;
-    public long recipeId = 0;
-    public String recipeLabel = "";
-    public long datetime = 0;
+    // Default unit of the ingredient
+    public int defaultUnit = 0;
+    // Which section of the supermarket
+    public int secion = 0; // TODO secion -> section
 }

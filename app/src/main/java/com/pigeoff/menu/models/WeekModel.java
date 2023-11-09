@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentActivity;
@@ -21,15 +22,18 @@ import com.pigeoff.menu.adapters.OnAdapterAction;
 import com.pigeoff.menu.data.Ingredient;
 import com.pigeoff.menu.database.CalendarEntity;
 import com.pigeoff.menu.database.MenuDatabase;
+import com.pigeoff.menu.database.GroceryEntity;
 import com.pigeoff.menu.database.ProductEntity;
 import com.pigeoff.menu.database.RecipeEntity;
-import com.pigeoff.menu.fragments.EditRecipeFragment;
+import com.pigeoff.menu.fragments.RecipeEditFragment;
 import com.pigeoff.menu.fragments.RecipePickerFragment;
 import com.pigeoff.menu.util.Constants;
+import com.pigeoff.menu.util.Util;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -56,6 +60,7 @@ public class WeekModel {
     private List<CalendarEntity>[] items;
 
     private Calendar calendar;
+    private HashMap<Long, ProductEntity> products;
 
     public WeekModel(
             FragmentActivity context,
@@ -74,6 +79,8 @@ public class WeekModel {
 
         MenuApplication app = (MenuApplication) context.getApplication();
         database = app.database;
+
+        products = Util.productsToDict(database.productDAO().getAll());
 
         items = new List[] {
                 null,
@@ -126,6 +133,7 @@ public class WeekModel {
                 @Override
                 public void onItemLongClick(CalendarEntity item, int position) {
                     database.calendarDAO().delete(item);
+                    database.groceryDAO().deleteGroceriesForCalendar(item.id);
                     RecipeEntity recipe = database.recipeDAO().select(item.recipe);
                     if (!recipe.cookbook) database.recipeDAO().delete(recipe);
                     adapters[finalDay].deleteItem(position);
@@ -152,9 +160,9 @@ public class WeekModel {
             imageButtons[day].setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    EditRecipeFragment editFragment = EditRecipeFragment.newInstance();
+                    RecipeEditFragment editFragment = RecipeEditFragment.newInstance();
                     editFragment.showFullScreen(context.getSupportFragmentManager());
-                    editFragment.setActionListener(new EditRecipeFragment.OnActionListener() {
+                    editFragment.setActionListener(new RecipeEditFragment.OnActionListener() {
                         @Override
                         public void onSubmit(RecipeEntity recipe) {
                             editFragment.dismiss();
@@ -171,10 +179,17 @@ public class WeekModel {
                 @Override
                 public void onClick(View view) {
                     addDayToGroceries(thisDay);
+                    /*
                     Snackbar.make(
                             context.findViewById(R.id.top_app_bar),
                             context.getString(R.string.calendar_product_added_plural),
                             Snackbar.LENGTH_SHORT).show();
+                    */
+                    Toast.makeText(
+                            context,
+                            context.getString(R.string.calendar_product_added_plural),
+                            Toast.LENGTH_SHORT
+                    ).show();
                 }
             });
 
@@ -318,12 +333,12 @@ public class WeekModel {
 
     private void addIngredientsToGroceries(CalendarEntity item) {
         RecipeEntity recipe = database.recipeDAO().select(item.recipe);
-        ArrayList<Ingredient> ingredients = Ingredient.fromJson(recipe.ingredients);
+        ArrayList<Ingredient> ingredients = Ingredient.fromJson(products, recipe.ingredients);
 
         for (Ingredient i : ingredients) {
-            ProductEntity product = new ProductEntity();
+            GroceryEntity product = new GroceryEntity();
             product.checked = false;
-            product.label = i.label;
+            product.ingredientId = i.product.id;
             product.unit = i.unit;
             product.value = i.value;
             product.eventId = item.id;
@@ -331,7 +346,7 @@ public class WeekModel {
             product.datetime = item.datetime;
             product.recipeLabel = recipe.title;
 
-            database.productDAO().addProduct(product);
+            database.groceryDAO().addGrocery(product);
         }
     }
 

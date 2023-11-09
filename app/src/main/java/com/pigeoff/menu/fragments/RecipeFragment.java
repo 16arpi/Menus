@@ -9,16 +9,19 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.search.SearchBar;
 import com.google.android.material.search.SearchView;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.activities.RecipeActivity;
@@ -35,6 +38,7 @@ public class RecipeFragment extends MenuFragment {
     private List<RecipeEntity> recipes;
 
     SearchView searchView;
+    SearchBar searchBar;
     FloatingActionButton addButton;
     RecyclerView recyclerView;
     RecyclerView recyclerViewSearch;
@@ -113,6 +117,7 @@ public class RecipeFragment extends MenuFragment {
         recyclerViewSearch = view.findViewById(R.id.recycler_view_recipe_search);
         addButton = view.findViewById(R.id.add_button);
         searchView = view.findViewById(R.id.search_view);
+        searchBar = view.findViewById(R.id.search_bar);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerViewSearch.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -121,12 +126,23 @@ public class RecipeFragment extends MenuFragment {
         recyclerView.setAdapter(recipeAdapter);
         recyclerViewSearch.setAdapter(recipeAdapterSearch);
 
+        searchBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.item_products) {
+                    ProductFragment productFragment = new ProductFragment(false);
+                    productFragment.showFullScreen(requireActivity().getSupportFragmentManager());
+                }
+                return true;
+            }
+        });
+
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditRecipeFragment editFragment = EditRecipeFragment.newInstance();
+                RecipeEditFragment editFragment = RecipeEditFragment.newInstance();
                 editFragment.showFullScreen(requireActivity().getSupportFragmentManager());
-                editFragment.setActionListener(new EditRecipeFragment.OnActionListener() {
+                editFragment.setActionListener(new RecipeEditFragment.OnActionListener() {
                     @Override
                     public void onSubmit(RecipeEntity recipe) {
                         recipe.id = database.recipeDAO().insert(recipe);

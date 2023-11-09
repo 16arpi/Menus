@@ -25,6 +25,9 @@ public interface CalendarDAO {
     @Insert
     void insert(CalendarEntity recipe);
 
+    @Query("DELETE FROM CalendarEntity WHERE recipe = :recipeId")
+    void deleteForRecipe(long recipeId);
+
     @Delete
     void delete(CalendarEntity recipe);
 }

@@ -13,34 +13,35 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.pigeoff.menu.MenuApplication;
 import com.pigeoff.menu.R;
-import com.pigeoff.menu.adapters.IngredientAdapter;
+import com.pigeoff.menu.adapters.IngredientsEditAdapter;
 import com.pigeoff.menu.adapters.StepAdapter;
 import com.pigeoff.menu.data.Ingredient;
 import com.pigeoff.menu.database.MenuDatabase;
+import com.pigeoff.menu.database.ProductEntity;
 import com.pigeoff.menu.database.RecipeEntity;
-import com.pigeoff.menu.util.Unit;
 import com.pigeoff.menu.util.Util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
-public class EditRecipeFragment extends DialogFragment {
+public class RecipeEditFragment extends DialogFragment {
 
     public static String RECIPE_ID = "recipeid";
 
     private boolean newRecipe = true;
     private MenuDatabase database;
     private RecipeEntity recipe;
+    private HashMap<Long, ProductEntity> products;
     private OnActionListener actionListener;
 
     // BINDINGS
@@ -49,9 +50,6 @@ public class EditRecipeFragment extends DialogFragment {
     private TextInputEditText editPortions;
 
     private RecyclerView recyclerViewIngredients;
-    private TextInputEditText editIngredientValue;
-    private MaterialAutoCompleteTextView editIngredientUnit;
-    private TextInputEditText editIngredientLabel;
     private MaterialButton editIngredientSubmit;
 
     private RecyclerView recyclerViewSteps;
@@ -59,24 +57,24 @@ public class EditRecipeFragment extends DialogFragment {
     private MaterialButton editStepSubmit;
 
     // ADAPTERS
-    private IngredientAdapter ingredientAdapter;
+    private IngredientsEditAdapter ingredientAdapter;
     private StepAdapter stepAdapter;
 
     public interface OnActionListener {
         void onSubmit(RecipeEntity recipe);
     }
 
-    public static EditRecipeFragment newInstance(long recipeId) {
+    public static RecipeEditFragment newInstance(long recipeId) {
         Bundle args = new Bundle();
         args.putLong(RECIPE_ID, recipeId);
-        EditRecipeFragment fragment = new EditRecipeFragment();
+        RecipeEditFragment fragment = new RecipeEditFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
-    public static EditRecipeFragment newInstance() {
+    public static RecipeEditFragment newInstance() {
         Bundle args = new Bundle();
-        EditRecipeFragment fragment = new EditRecipeFragment();
+        RecipeEditFragment fragment = new RecipeEditFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -86,6 +84,8 @@ public class EditRecipeFragment extends DialogFragment {
         super.onCreate(savedInstanceState);
         MenuApplication app = (MenuApplication) requireActivity().getApplication();
         database = app.database;
+
+        products = Util.productsToDict(database.productDAO().getAll());
 
         long id = getArguments().getLong(RECIPE_ID, -1);
         if (id >= 0) {
@@ -121,9 +121,6 @@ public class EditRecipeFragment extends DialogFragment {
         editType = view.findViewById(R.id.edit_meal);
         editPortions = view.findViewById(R.id.edit_portions);
         recyclerViewIngredients = view.findViewById(R.id.recycler_view_ingredients);
-        editIngredientValue = view.findViewById(R.id.edit_ingredient_value);
-        editIngredientUnit = view.findViewById(R.id.edit_ingredient_unit);
-        editIngredientLabel = view.findViewById(R.id.edit_ingredient_label);
         editIngredientSubmit = view.findViewById(R.id.button_ingredient_submit);
         recyclerViewSteps = view.findViewById(R.id.recycler_view_steps);
         editStep = view.findViewById(R.id.edit_step);
@@ -134,33 +131,45 @@ public class EditRecipeFragment extends DialogFragment {
         editTitle.setText(recipe.title);
         editPortions.setText(String.valueOf(recipe.portions));
         Util.selectRecipeTypeAutoCompleteItem(editType, recipe.category);
-        Util.selectUnitAutoCompleteItem(editIngredientUnit, 0);
 
         // Ingredients
-        ArrayList<Ingredient> ingredients = Ingredient.fromJson(recipe.ingredients);
-        ingredientAdapter = new IngredientAdapter(requireContext(), ingredients, true);
+        ArrayList<Ingredient> ingredients = Ingredient.fromJson(products, recipe.ingredients);
+        ingredientAdapter = new IngredientsEditAdapter(requireContext(), ingredients);
         recyclerViewIngredients.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerViewIngredients.setAdapter(ingredientAdapter);
+
         editIngredientSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if (editIngredientValue.getText().toString().equals("")) return;
-                if (editIngredientLabel.getText().toString().equals("")) return;
-
-                Ingredient ingredient = new Ingredient(
-                        Float.parseFloat(editIngredientValue.getText().toString()),
-                        Unit.getUnitId(editIngredientUnit.getText().toString()),
-                        editIngredientLabel.getText().toString()
-                );
-                ingredientAdapter.addItem(ingredient);
-
-                editIngredientValue.setText("0");
-                Util.selectUnitAutoCompleteItem(editIngredientUnit, 0);
-                editIngredientLabel.setText("");
-
+                ProductFragment productFragment = new ProductFragment(true);
+                productFragment.addProductActionListener(new ProductFragment.OnProductAction() {
+                    @Override
+                    public void onItemSelected(ProductEntity item) {
+                        Ingredient ingredient = new Ingredient(
+                                item,
+                                0.0f,
+                                item.defaultUnit
+                        );
+                        ingredientAdapter.addItem(ingredient);
+                    }
+                });
+                productFragment.showFullScreen(getParentFragmentManager());
             }
         });
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                ingredientAdapter.deleteItem(viewHolder.getAdapterPosition());
+            }
+        }).attachToRecyclerView(recyclerViewIngredients);
+
+
 
         // Preparation
         ArrayList<String> steps = Util.listFromJson(recipe.steps);
@@ -184,14 +193,22 @@ public class EditRecipeFragment extends DialogFragment {
             public void onClick(View view) {
                 RecipeEntity returnRecipe = updateRecipe();
                 if (actionListener != null) actionListener.onSubmit(returnRecipe);
-                dismissFullScreen(getParentFragmentManager());
+                try {
+                    dismissFullScreen(getParentFragmentManager());
+                } catch (Exception e) {
+                    dismiss();
+                }
             }
         });
 
         view.findViewById(R.id.button_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dismissFullScreen(getParentFragmentManager());
+                try {
+                    dismissFullScreen(getParentFragmentManager());
+                } catch (Exception e) {
+                    dismiss();
+                }
             }
         });
     }

@@ -24,6 +24,14 @@
     <string name="label_steps">Préparation</string>
     <string name="label_step_label">Etape</string>
 
+    <!--- TAB LABELS -->
+    <string name="tab_ingredient_groceries" >Epicerie</string>
+    <string name="tab_ingredient_fruits" >Fruits légumes</string>
+    <string name="tab_ingredient_meat" >Viandes poissons</string>
+    <string name="tab_ingredient_fresh" >Produits frais</string>
+    <string name="tab_ingredient_drinks" >Boissons</string>
+    <string name="tab_ingredient_divers" >Divers</string>
+
 
     <!-- CALENDAR FRAGMENT -->
     <string name="calendar_monday">Lundi</string>
@@ -42,10 +50,26 @@
     <!-- RECIPE ACTIVITY -->
     <string name="label_delete">Supprimer</string>
     <string name="label_edit">Modifier</string>
+    <string name="recipe_delete_title">Supprimer la recette</string>
+    <string name="recipe_delete_message">Attention, tous vos menus et vos courses liés à cette recette seront aussi supprimés.</string>
+    <string name="recipe_delete_delete">Supprimer</string>
+    <string name="recipe_delete_cancel">Annuler</string>
 
     <!-- GROCERIES -->
     <string name="item_remove_check" >Nettoyer</string>
     <string name="item_remove_all" >Tout effacer</string>
+
+    <!--- PRODUCT -->
+    <string name="product">Produits</string>
+    <string name="product_name">Nom</string>
+    <string name="product_unit">Unité par défaut</string>
+    <string name="product_section">Catégorie</string>
+
+
+    <string name="product_delete_dialog_message" >Impossible de supprimer le produit car il est utilisé dans une de vos recettes.</string>
+    <string name="product_delete_dialog_ok" >Ok</string>
+
+
 
     <string-array name="meals" >
         <item>Plat</item>
@@ -53,6 +77,8 @@
         <item>Dessert</item>
         <item>Divers</item>
     </string-array>
+
+    <string name="default_unit">g</string>
 
     <string-array name="units">
         <item></item>
@@ -66,5 +92,14 @@
         <item>pincée(s)</item>
         <item>sachet(s)</item>
         <item>pot(s)</item>
+    </string-array>
+
+    <string-array name="section" >
+        <item >Epicerie</item>
+        <item >Fruits légumes</item>
+        <item >Viandes poissons</item>
+        <item >Produits frais</item>
+        <item >Boissons</item>
+        <item >Divers</item>
     </string-array>
 </resources>
