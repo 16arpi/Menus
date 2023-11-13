@@ -1,6 +1,7 @@
 package com.pigeoff.menu.fragments;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
@@ -10,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,14 +25,21 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.search.SearchBar;
 import com.google.android.material.search.SearchView;
+import com.google.gson.Gson;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.activities.RecipeActivity;
 import com.pigeoff.menu.adapters.OnAdapterAction;
 import com.pigeoff.menu.adapters.RecipeAdapter;
+import com.pigeoff.menu.database.ProductEntity;
 import com.pigeoff.menu.database.RecipeEntity;
 import com.pigeoff.menu.util.Constants;
+import com.pigeoff.menu.util.Export;
 import com.pigeoff.menu.util.Util;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -132,6 +141,8 @@ public class RecipeFragment extends MenuFragment {
                 if (item.getItemId() == R.id.item_products) {
                     ProductFragment productFragment = new ProductFragment(false);
                     productFragment.showFullScreen(requireActivity().getSupportFragmentManager());
+                } else if (item.getItemId() == R.id.item_export_recipes) {
+                    exportRecipes();
                 }
                 return true;
             }
@@ -225,4 +236,35 @@ public class RecipeFragment extends MenuFragment {
             }
         });
     }
+
+    private void exportRecipes() {
+        List<ProductEntity> products = database.productDAO().getAll();
+        List<RecipeEntity> recipes = database.recipeDAO().select();
+        Export export = new Export(products, recipes);
+        Gson gson = new Gson();
+        String string = gson.toJson(export);
+
+        try {
+            File outputDir = requireContext().getFilesDir();
+            File outputFile = File.createTempFile("export", ".json", outputDir);
+            Uri uri = FileProvider.getUriForFile(requireContext(), "com.pigeoff.menu.fileprovider", outputFile);
+
+            FileOutputStream inputStream = new FileOutputStream(outputFile);
+            inputStream.write(string.getBytes(Charset.defaultCharset()));
+            inputStream.close();
+
+            if (uri != null) {
+                Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+                shareIntent.setDataAndType(uri, requireContext().getContentResolver().getType(uri));
+                startActivity(Intent.createChooser(shareIntent, null));
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+
 }

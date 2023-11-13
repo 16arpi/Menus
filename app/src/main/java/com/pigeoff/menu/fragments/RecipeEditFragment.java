@@ -7,9 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AutoCompleteTextView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -18,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
 import com.pigeoff.menu.MenuApplication;
 import com.pigeoff.menu.R;
@@ -48,6 +51,9 @@ public class RecipeEditFragment extends DialogFragment {
     private TextInputEditText editTitle;
     private AutoCompleteTextView editType;
     private TextInputEditText editPortions;
+    private TabLayout tabLayoutPanels;
+    private NestedScrollView layoutIngredients;
+    private NestedScrollView layoutSteps;
 
     private RecyclerView recyclerViewIngredients;
     private MaterialButton editIngredientSubmit;
@@ -120,6 +126,9 @@ public class RecipeEditFragment extends DialogFragment {
         editTitle = view.findViewById(R.id.edit_title);
         editType = view.findViewById(R.id.edit_meal);
         editPortions = view.findViewById(R.id.edit_portions);
+        tabLayoutPanels = view.findViewById(R.id.tab_panels);
+        layoutIngredients = view.findViewById(R.id.layout_ingredients);
+        layoutSteps = view.findViewById(R.id.layout_steps);
         recyclerViewIngredients = view.findViewById(R.id.recycler_view_ingredients);
         editIngredientSubmit = view.findViewById(R.id.button_ingredient_submit);
         recyclerViewSteps = view.findViewById(R.id.recycler_view_steps);
@@ -137,6 +146,29 @@ public class RecipeEditFragment extends DialogFragment {
         ingredientAdapter = new IngredientsEditAdapter(requireContext(), ingredients);
         recyclerViewIngredients.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerViewIngredients.setAdapter(ingredientAdapter);
+
+        tabLayoutPanels.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if (tab.getPosition() == 0) {
+                    layoutIngredients.setVisibility(View.VISIBLE);
+                    layoutSteps.setVisibility(View.GONE);
+                } else {
+                    layoutIngredients.setVisibility(View.GONE);
+                    layoutSteps.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         editIngredientSubmit.setOnClickListener(new View.OnClickListener() {
             @Override

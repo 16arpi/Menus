@@ -36,4 +36,10 @@ public interface GroceryDAO {
 
     @Delete
     void deleteGrocery(GroceryEntity product);
+
+    @Query("SELECT COUNT(1) FROM GroceryEntity WHERE eventId = :eventId")
+    boolean eventAlreadyAdded(long eventId);
+
+    @Query("SELECT DISTINCT eventId FROM GroceryEntity ORDER BY datetime ")
+    List<Long> getEventIds();
 }

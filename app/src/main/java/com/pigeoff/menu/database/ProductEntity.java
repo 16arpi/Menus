@@ -13,4 +13,8 @@ public class ProductEntity {
     public int defaultUnit = 0;
     // Which section of the supermarket
     public int secion = 0; // TODO secion -> section
+
+    public String toString() {
+        return this.label;
+    }
 }

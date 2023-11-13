@@ -44,7 +44,7 @@ public class IngredientsEditAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         Ingredient ingredient = ingredients.get(position);
 
         itemHolder.label.setText(ingredient.product.label);
-        itemHolder.editValue.setText(String.valueOf(ingredient.value));
+        itemHolder.editValue.setText(ingredient.value > 0.0f ? String.valueOf(ingredient.value) : "");
         Util.selectUnitAutoCompleteItem(itemHolder.editUnit, ingredient.unit);
 
 

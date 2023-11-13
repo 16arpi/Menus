@@ -27,53 +27,46 @@
             android:id="@+id/edit_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine|textCapSentences"
+            android:inputType="textMultiLine"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:hint="@string/product_section"
+        android:layout_margin="8dp">
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
-            android:layout_width="0dp"
+        <AutoCompleteTextView
+            android:id="@+id/edit_section"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="@string/product_section"
-            android:layout_margin="8dp">
+            android:focusable="false"
+            android:maxLines="1"
+            app:simpleItems="@array/section" />
 
-            <AutoCompleteTextView
-                android:id="@+id/edit_section"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:maxLines="1"
-                app:simpleItems="@array/section" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:hint="@string/product_unit">
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
-            android:layout_width="0dp"
+        <AutoCompleteTextView
+            android:id="@+id/edit_product_unit"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="8dp"
-            android:hint="@string/product_unit">
+            android:focusable="false"
+            android:maxLines="1"
+            android:text="@string/default_unit"
+            app:simpleItems="@array/units" />
 
-            <AutoCompleteTextView
-                android:id="@+id/edit_product_unit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:maxLines="1"
-                android:text="@string/default_unit"
-                app:simpleItems="@array/units" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        </com.google.android.material.textfield.TextInputLayout>
-
-    </LinearLayout>
 
 
 </LinearLayout>

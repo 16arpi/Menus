@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:strokeWidth="0dp"
+        app:cardBackgroundColor="?attr/colorSurfaceVariant"
+        android:focusable="true"
+        android:clickable="true"
+        android:layout_margin="8dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="4dp">
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_margin="8dp">
+
+                <TextView
+                    style="@style/TextAppearance.Material3.TitleMedium"
+                    android:id="@+id/text_view_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Title"
+                    />
+
+                <TextView
+                    style="@style/TextAppearance.Material3.TitleSmall"
+                    android:id="@+id/text_view_subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Title"
+                    />
+
+            </LinearLayout>
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:max="10"
+                android:progress="7"
+                app:indicatorSize="24dp"
+                android:layout_margin="4dp"
+                app:trackThickness="12dp"
+                app:trackColor="?colorSurfaceDim"/>
+
+            <ImageButton
+                android:id="@+id/button_options"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_more"
+                android:layout_margin="8dp"
+                android:background="?selectableItemBackgroundBorderless"/>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

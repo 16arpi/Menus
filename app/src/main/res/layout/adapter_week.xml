@@ -12,6 +12,7 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_monday"
             android:layout_margin="8dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -74,6 +75,7 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_tuesday"
             android:layout_margin="8dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -142,6 +144,7 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_wednesday"
             android:layout_margin="8dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -205,6 +208,7 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_thursday"
             android:layout_margin="8dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -273,6 +277,7 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_friday"
             android:layout_margin="8dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -335,6 +340,7 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_saturday"
             android:layout_margin="8dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -403,6 +409,7 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_sunday"
             android:layout_margin="8dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

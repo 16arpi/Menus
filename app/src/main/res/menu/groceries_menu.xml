@@ -7,6 +7,11 @@
         android:icon="@drawable/ic_check_all"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/item_events_manager"
+        android:title="@string/item_remove_check"
+        android:icon="@drawable/ic_calendar"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/item_remove_all"
         android:title="@string/item_remove_all"
         app:showAsAction="never" />

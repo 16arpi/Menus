@@ -28,7 +28,8 @@
                 app:startIconDrawable="@drawable/ic_search"
                 android:layout_margin="8dp">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <AutoCompleteTextView
+                    style="@style/Widget.Material3.AutoCompleteTextView.OutlinedBox"
                     android:id="@+id/search_bar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -46,7 +47,7 @@
             app:tabMode="scrollable"
             app:tabContentStart="56dp">
 
-            <com.google.android.material.tabs.TabItem
+            <!--<com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tab_ingredient_groceries"/>
@@ -74,19 +75,18 @@
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tab_ingredient_divers"/>
+                android:text="@string/tab_ingredient_divers"/>-->
 
         </com.google.android.material.tabs.TabLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:padding="8dp"
-        android:clipToPadding="false"
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"/>
+        android:layout_height="match_parent"/>
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

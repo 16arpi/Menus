@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorSurface"
-    android:padding="8dp">
+    android:background="?attr/colorSurface">
 
     <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:padding="8dp" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,7 +26,7 @@
 
             <View
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_weight="1" />
 
             <Button
@@ -98,79 +98,97 @@
 
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"/>
+    </LinearLayout>
 
-        <TextView
-            style="@style/TextAppearance.Material3.TitleMedium"
-            android:layout_margin="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/label_ingredient" />
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_panels"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_ingredients"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tab_ingredients"
+            android:text="@string/label_ingredient"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tab_steps"
+            android:text="@string/label_steps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:visibility="visible"
+        android:id="@+id/layout_ingredients"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
         <LinearLayout
+
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
-            <!--<LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_ingredients"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="?attr/textInputFilledStyle"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/label_ingredient_value"
-                    android:layout_margin="8dp">
+                    android:gravity="center_vertical|end">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edit_ingredient_value"
-                        android:layout_width="match_parent"
+                    <com.google.android.material.button.MaterialButton
+                        style="?attr/materialIconButtonFilledStyle"
+                        android:id="@+id/button_ingredient_submit"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:maxLines="1"
-                        android:inputType="numberDecimal"
+                        app:icon="@drawable/ic_add"
+                        android:layout_marginTop="4dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="8dp"
                         />
+                </LinearLayout>
 
-                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/label_ingredient_unit"
-                    android:layout_margin="8dp">
+        </LinearLayout>
 
-                    <AutoCompleteTextView
-                        android:focusable="false"
-                        android:id="@+id/edit_ingredient_unit"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:simpleItems="@array/units"
-                        android:maxLines="1"
-                        />
 
-                </com.google.android.material.textfield.TextInputLayout>
+    </androidx.core.widget.NestedScrollView>
 
-            </LinearLayout>-->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/layout_steps"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:padding="8dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_steps"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical|end">
+                android:gravity="center_vertical">
 
-                <!--<com.google.android.material.textfield.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     style="?attr/textInputFilledStyle"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -179,19 +197,18 @@
                     android:layout_margin="8dp">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edit_ingredient_label"
+                        android:id="@+id/edit_step"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:maxLines="1"
-                        android:inputType="text"
+                        android:inputType="textMultiLine|textCapSentences"
                         />
 
-                </com.google.android.material.textfield.TextInputLayout>-->
+                </com.google.android.material.textfield.TextInputLayout>
 
 
                 <com.google.android.material.button.MaterialButton
                     style="?attr/materialIconButtonFilledStyle"
-                    android:id="@+id/button_ingredient_submit"
+                    android:id="@+id/button_step_submit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:icon="@drawable/ic_add"
@@ -202,61 +219,10 @@
 
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"/>
 
-        <TextView
-            style="@style/TextAppearance.Material3.TitleMedium"
-            android:layout_margin="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/label_steps" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_steps"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical">
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="?attr/textInputFilledStyle"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:hint="@string/label_ingredient_label"
-                android:layout_margin="8dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_step"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textMultiLine|textCapSentences"
-                    />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-            <com.google.android.material.button.MaterialButton
-                style="?attr/materialIconButtonFilledStyle"
-                android:id="@+id/button_step_submit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:icon="@drawable/ic_add"
-                android:layout_marginTop="4dp"
-                android:layout_gravity="center_vertical"
-                />
-        </LinearLayout>
-
-    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
 
 
-</androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

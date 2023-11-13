@@ -45,6 +45,7 @@
     <string name="calendar_add_groceries">Ajouter aux courses</string>
     <string name="calendar_delete_event">Supprimer</string>
     <string name="calendar_product_added">Recette ajoutée aux courses</string>
+    <string name="calendar_product_added_error">Erreur, le plat a déjà été ajouté aux courses</string>
     <string name="calendar_product_added_plural">Recettes ajoutées aux courses</string>
 
     <!-- RECIPE ACTIVITY -->
@@ -54,9 +55,11 @@
     <string name="recipe_delete_message">Attention, tous vos menus et vos courses liés à cette recette seront aussi supprimés.</string>
     <string name="recipe_delete_delete">Supprimer</string>
     <string name="recipe_delete_cancel">Annuler</string>
+    <string name="recipe_export">Exporter les recettes</string>
 
     <!-- GROCERIES -->
     <string name="item_remove_check" >Nettoyer</string>
+    <string name="item_events_manager" >Gérer les plats</string>
     <string name="item_remove_all" >Tout effacer</string>
 
     <!--- PRODUCT -->

@@ -59,8 +59,7 @@ public class ProductEditFragment extends BottomSheetDialogFragment {
 
         editLabel.requestFocus();
 
-        editSection.setText(sectionsTypes.get(section));
-        editSection.setEnabled(false);
+        editSection.setText(sectionsTypes.get(section), false);
 
         buttonSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +76,11 @@ public class ProductEditFragment extends BottomSheetDialogFragment {
             }
         });
 
+
+
     }
+
+
 
     public void setOnEditListener(OnEditListener listener) {
         this.listener = listener;

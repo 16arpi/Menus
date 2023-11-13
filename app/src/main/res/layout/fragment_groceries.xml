@@ -25,7 +25,7 @@
 
                 <com.google.android.material.appbar.MaterialToolbar
                     android:id="@+id/top_app_bar"
-                    app:menu="@menu/menu_groceries"
+                    app:menu="@menu/groceries_menu"
                     app:title="@string/item_groceries"
                     android:background="?colorSurface"
                     android:layout_width="match_parent"

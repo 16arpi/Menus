@@ -18,6 +18,7 @@ import com.pigeoff.menu.MenuApplication;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.adapters.GroceriesAdapter;
 import com.pigeoff.menu.adapters.OnAdapterAction;
+import com.pigeoff.menu.data.EventRecipe;
 import com.pigeoff.menu.database.GroceryEntity;
 import com.pigeoff.menu.database.MenuDatabase;
 import com.pigeoff.menu.database.ProductEntity;
@@ -71,6 +72,15 @@ public class GroceriesFragment extends Fragment {
                 if (item.getItemId() == R.id.item_remove_all) {
                     database.groceryDAO().deleteAllItems();
                     updateGroceries();
+                }
+                if (item.getItemId() == R.id.item_events_manager) {
+                    EventRecipeFragment dialog = new EventRecipeFragment(new EventRecipeFragment.OnEventRecipeAction() {
+                        @Override
+                        public void onEventRecipeDeleted(EventRecipe eventRecipe) {
+                            updateGroceries();
+                        }
+                    });
+                    dialog.show(getParentFragmentManager(), "event_recipe_edit");
                 }
                 return true;
             }

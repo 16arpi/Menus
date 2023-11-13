@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
 import com.pigeoff.menu.MenuApplication;
 import com.pigeoff.menu.R;
@@ -122,11 +123,17 @@ public class WeekModel {
                 @Override
                 public void onItemClick(CalendarEntity item, int action) {
                     if (action == OnAdapterAction.ACTION_GROCERY) {
-                        addIngredientsToGroceries(item);
-                        Snackbar.make(
-                                context.findViewById(android.R.id.content),
-                                context.getString(R.string.calendar_product_added),
-                                Snackbar.LENGTH_SHORT).show();
+                        if (addIngredientsToGroceries(item)) {
+                            Toast.makeText(
+                                    context,
+                                    context.getString(R.string.calendar_product_added),
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(
+                                    context,
+                                    context.getString(R.string.calendar_product_added_error),
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
 
@@ -179,12 +186,6 @@ public class WeekModel {
                 @Override
                 public void onClick(View view) {
                     addDayToGroceries(thisDay);
-                    /*
-                    Snackbar.make(
-                            context.findViewById(R.id.top_app_bar),
-                            context.getString(R.string.calendar_product_added_plural),
-                            Snackbar.LENGTH_SHORT).show();
-                    */
                     Toast.makeText(
                             context,
                             context.getString(R.string.calendar_product_added_plural),
@@ -331,7 +332,9 @@ public class WeekModel {
         }
     }
 
-    private void addIngredientsToGroceries(CalendarEntity item) {
+    private boolean addIngredientsToGroceries(CalendarEntity item) {
+        if (database.groceryDAO().eventAlreadyAdded(item.id)) return false;
+
         RecipeEntity recipe = database.recipeDAO().select(item.recipe);
         ArrayList<Ingredient> ingredients = Ingredient.fromJson(products, recipe.ingredients);
 
@@ -348,6 +351,8 @@ public class WeekModel {
 
             database.groceryDAO().addGrocery(product);
         }
+
+        return true;
     }
 
     private String formatWeekDate() {
