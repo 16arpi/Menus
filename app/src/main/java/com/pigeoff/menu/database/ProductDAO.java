@@ -1,5 +1,6 @@
 package com.pigeoff.menu.database;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -11,13 +12,7 @@ import java.util.List;
 @Dao
 public interface ProductDAO {
     @Query("SELECT * FROM ProductEntity ORDER BY label")
-    List<ProductEntity> getAll();
-
-    @Query("SELECT * FROM ProductEntity WHERE secion = :section ORDER BY label")
-    List<ProductEntity> getAllFromSection(int section);
-
-    @Query("SELECT * FROM ProductEntity WHERE id = :id")
-    ProductEntity getProduct(long id);
+    LiveData<List<ProductEntity>> getAll();
 
     @Update
     void updateProduct(ProductEntity product);

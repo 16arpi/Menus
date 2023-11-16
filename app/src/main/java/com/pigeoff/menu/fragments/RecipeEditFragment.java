@@ -7,14 +7,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +36,7 @@ import com.pigeoff.menu.data.Ingredient;
 import com.pigeoff.menu.database.MenuDatabase;
 import com.pigeoff.menu.database.ProductEntity;
 import com.pigeoff.menu.database.RecipeEntity;
+import com.pigeoff.menu.models.RecipeViewModel;
 import com.pigeoff.menu.util.Util;
 
 import java.util.ArrayList;
@@ -40,18 +47,16 @@ import java.util.List;
 public class RecipeEditFragment extends DialogFragment {
 
     public static String RECIPE_ID = "recipeid";
-
-    private boolean newRecipe = true;
-    private MenuDatabase database;
+    private RecipeViewModel model;
     private RecipeEntity recipe;
     private HashMap<Long, ProductEntity> products;
     private OnActionListener actionListener;
 
     // BINDINGS
+    private Button editSubmit;
     private TextInputEditText editTitle;
     private AutoCompleteTextView editType;
     private TextInputEditText editPortions;
-    private TabLayout tabLayoutPanels;
     private NestedScrollView layoutIngredients;
     private NestedScrollView layoutSteps;
 
@@ -88,19 +93,10 @@ public class RecipeEditFragment extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MenuApplication app = (MenuApplication) requireActivity().getApplication();
-        database = app.database;
-
-        products = Util.productsToDict(database.productDAO().getAll());
 
         long id = getArguments().getLong(RECIPE_ID, -1);
-        if (id >= 0) {
-            recipe = database.recipeDAO().select(id);
-            newRecipe = false;
-        } else {
-            recipe = new RecipeEntity();
-            newRecipe = true;
-        }
+        model = new RecipeViewModel(id, requireActivity().getApplication());
+
     }
 
     @NonNull
@@ -123,10 +119,11 @@ public class RecipeEditFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Bindings
+        editSubmit = view.findViewById(R.id.edit_submit);
         editTitle = view.findViewById(R.id.edit_title);
         editType = view.findViewById(R.id.edit_meal);
         editPortions = view.findViewById(R.id.edit_portions);
-        tabLayoutPanels = view.findViewById(R.id.tab_panels);
+        TabLayout tabLayoutPanels = view.findViewById(R.id.tab_panels);
         layoutIngredients = view.findViewById(R.id.layout_ingredients);
         layoutSteps = view.findViewById(R.id.layout_steps);
         recyclerViewIngredients = view.findViewById(R.id.recycler_view_ingredients);
@@ -134,18 +131,6 @@ public class RecipeEditFragment extends DialogFragment {
         recyclerViewSteps = view.findViewById(R.id.recycler_view_steps);
         editStep = view.findViewById(R.id.edit_step);
         editStepSubmit = view.findViewById(R.id.button_step_submit);
-
-
-        // Filling
-        editTitle.setText(recipe.title);
-        editPortions.setText(String.valueOf(recipe.portions));
-        Util.selectRecipeTypeAutoCompleteItem(editType, recipe.category);
-
-        // Ingredients
-        ArrayList<Ingredient> ingredients = Ingredient.fromJson(products, recipe.ingredients);
-        ingredientAdapter = new IngredientsEditAdapter(requireContext(), ingredients);
-        recyclerViewIngredients.setLayoutManager(new LinearLayoutManager(requireContext()));
-        recyclerViewIngredients.setAdapter(ingredientAdapter);
 
         tabLayoutPanels.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -202,12 +187,8 @@ public class RecipeEditFragment extends DialogFragment {
         }).attachToRecyclerView(recyclerViewIngredients);
 
 
-
-        // Preparation
-        ArrayList<String> steps = Util.listFromJson(recipe.steps);
-        stepAdapter = new StepAdapter(requireContext(), steps, true);
         recyclerViewSteps.setLayoutManager(new LinearLayoutManager(requireContext()));
-        recyclerViewSteps.setAdapter(stepAdapter);
+
         editStepSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -220,10 +201,10 @@ public class RecipeEditFragment extends DialogFragment {
             }
         });
 
-        view.findViewById(R.id.edit_submit).setOnClickListener(new View.OnClickListener() {
+        editSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RecipeEntity returnRecipe = updateRecipe();
+                RecipeEntity returnRecipe = updateRecipe(recipe);
                 if (actionListener != null) actionListener.onSubmit(returnRecipe);
                 try {
                     dismissFullScreen(getParentFragmentManager());
@@ -243,6 +224,39 @@ public class RecipeEditFragment extends DialogFragment {
                 }
             }
         });
+
+        model.getItem().observe(getViewLifecycleOwner(), object -> {
+            if (object.a == null || object.b == null) return;
+
+            products = Util.productsToDict(object.b);
+
+            if (recipe != null) return;
+
+            recipe = object.a;
+
+            // Enabling buttons
+            editSubmit.setEnabled(true);
+            editIngredientSubmit.setEnabled(true);
+            editStepSubmit.setEnabled(true);
+
+            // Filling
+            editTitle.setText(recipe.title);
+            editPortions.setText(String.valueOf(recipe.portions));
+            Util.selectRecipeTypeAutoCompleteItem(editType, recipe.category);
+
+            // Ingredients
+            ArrayList<Ingredient> ingredients = Ingredient.fromJson(products, recipe.ingredients);
+            ingredientAdapter = new IngredientsEditAdapter(requireContext(), ingredients);
+            recyclerViewIngredients.setLayoutManager(new LinearLayoutManager(requireContext()));
+            recyclerViewIngredients.setAdapter(ingredientAdapter);
+
+            // Preparation
+            ArrayList<String> steps = Util.listFromJson(recipe.steps);
+            stepAdapter = new StepAdapter(requireContext(), steps, true);
+            recyclerViewSteps.setAdapter(stepAdapter);
+
+        });
+
     }
 
     public void showFullScreen(FragmentManager fragmentManager) {
@@ -262,27 +276,26 @@ public class RecipeEditFragment extends DialogFragment {
         this.actionListener = actionListener;
     }
 
-    private RecipeEntity updateRecipe() {
+    private RecipeEntity updateRecipe(RecipeEntity source) {
 
         List<String> recipesTypes = Arrays.asList(Util.getRecipesTypes(requireContext()));
 
-        recipe.title = editTitle.getText().toString();
-        recipe.category = recipesTypes.indexOf(editType.getText().toString());
+        source.title = editTitle.getText().toString();
+        source.category = recipesTypes.indexOf(editType.getText().toString());
         try {
-            recipe.portions = Integer.parseInt(editPortions.getText().toString());
+            source.portions = Integer.parseInt(editPortions.getText().toString());
         } catch (Exception e) {
-            recipe.portions = 1;
-            System.out.println("Erreur portions");
+            source.portions = 1;
         }
         // Ingredients
 
         ArrayList<Ingredient> newIngredients = ingredientAdapter.getIngredients();
-        recipe.ingredients = Ingredient.toJson(newIngredients);
+        source.ingredients = Ingredient.toJson(newIngredients);
 
         ArrayList<String> newSteps = stepAdapter.getSteps();
-        recipe.steps = Util.listToJson(newSteps);
+        source.steps = Util.listToJson(newSteps);
 
-        return recipe;
+        return source;
     }
 
 

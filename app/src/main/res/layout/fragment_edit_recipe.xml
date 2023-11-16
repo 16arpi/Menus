@@ -31,6 +31,7 @@
 
             <Button
                 android:id="@+id/edit_submit"
+                android:enabled="true"
                 style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -149,6 +150,7 @@
 
                     <com.google.android.material.button.MaterialButton
                         style="?attr/materialIconButtonFilledStyle"
+                        android:enabled="false"
                         android:id="@+id/button_ingredient_submit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -208,6 +210,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     style="?attr/materialIconButtonFilledStyle"
+                    android:enabled="true"
                     android:id="@+id/button_step_submit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

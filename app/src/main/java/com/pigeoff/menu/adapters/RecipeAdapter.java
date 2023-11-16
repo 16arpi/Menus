@@ -8,11 +8,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.pigeoff.menu.R;
+import com.pigeoff.menu.database.CalendarWithRecipe;
 import com.pigeoff.menu.database.RecipeEntity;
+import com.pigeoff.menu.util.DiffUtilCallback;
 import com.pigeoff.menu.util.Util;
 
 import java.util.ArrayList;
@@ -76,9 +79,12 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         notifyItemRemoved(position);
     }
 
-    public void updateRecipes(ArrayList<RecipeEntity> newRecipes) {
-        recipes = newRecipes;
-        notifyDataSetChanged();
+    public void updateRecipes(ArrayList<RecipeEntity> newItems) {
+        DiffUtilCallback<RecipeEntity> utilCallback = new DiffUtilCallback<>(recipes, newItems);
+        DiffUtil.DiffResult result = DiffUtil.calculateDiff(utilCallback);
+        recipes.clear();
+        recipes.addAll(newItems);
+        result.dispatchUpdatesTo(this);
     }
 
     public void setOnAdapterAction(OnAdapterAction listener) {

@@ -8,11 +8,14 @@
     android:layout_marginTop="4dp"
     android:layout_marginEnd="8dp">
 
-    <com.google.android.material.checkbox.MaterialCheckBox
+    <ImageButton
         android:id="@+id/checkbox"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_gravity="top" />
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_margin="8dp"
+        android:background="?selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_check"
+        app:tint="?colorPrimary" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -45,7 +48,7 @@
                 android:lineHeight="16dp"
                 android:text="Ingredient"
                 android:background="@android:color/transparent"
-                android:gravity="start|top"
+                android:gravity="end|top"
                 />
 
         </LinearLayout>

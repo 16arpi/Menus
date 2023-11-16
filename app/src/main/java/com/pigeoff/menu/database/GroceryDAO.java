@@ -1,17 +1,24 @@
 package com.pigeoff.menu.database;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import androidx.room.Update;
 
 import java.util.List;
 
 @Dao
 public interface GroceryDAO {
+    @Transaction
     @Query("SELECT * FROM GroceryEntity ORDER BY id")
-    List<GroceryEntity> getGroceries();
+    LiveData<List<GroceryWithProduct>> getGroceries();
+
+    @Transaction
+    @Query("SELECT * FROM GroceryEntity WHERE eventId >= 0 ORDER BY id")
+    LiveData<List<GroceryWithProduct>> getEventsGroceries();
 
     @Query("UPDATE GroceryEntity SET checked = :check WHERE id = :id")
     void checkGrocery(long id, boolean check);
@@ -40,6 +47,4 @@ public interface GroceryDAO {
     @Query("SELECT COUNT(1) FROM GroceryEntity WHERE eventId = :eventId")
     boolean eventAlreadyAdded(long eventId);
 
-    @Query("SELECT DISTINCT eventId FROM GroceryEntity ORDER BY datetime ")
-    List<Long> getEventIds();
 }

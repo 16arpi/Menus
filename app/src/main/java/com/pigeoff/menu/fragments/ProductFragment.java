@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -29,6 +30,7 @@ import com.pigeoff.menu.data.Ingredient;
 import com.pigeoff.menu.database.MenuDatabase;
 import com.pigeoff.menu.database.ProductEntity;
 import com.pigeoff.menu.database.RecipeEntity;
+import com.pigeoff.menu.models.ProductViewModel;
 import com.pigeoff.menu.util.Constants;
 import com.pigeoff.menu.util.Util;
 
@@ -39,9 +41,9 @@ public class ProductFragment extends DialogFragment {
 
     private boolean picker = false;
 
-    MenuDatabase database;
-
+    ProductViewModel model;
     List<ProductEntity> products;
+
     ProductSectionAdapter adapter;
     int tab = Constants.TAB_GROCERIES;
 
@@ -55,6 +57,17 @@ public class ProductFragment extends DialogFragment {
         this.picker = picker;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        /*Dialog dialog = getDialog();
+        if (dialog != null) {
+            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+            int height = ViewGroup.LayoutParams.MATCH_PARENT;
+            dialog.getWindow().setLayout(width, height);
+        }*/
+    }
+
     public ProductFragment addProductActionListener(OnProductAction listener) {
         this.listener = listener;
         return this;
@@ -63,8 +76,11 @@ public class ProductFragment extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MenuApplication app = (MenuApplication) requireActivity().getApplication();
-        database = app.database;
+
+        /*setStyle(DialogFragment.STYLE_NO_FRAME, getTheme());*/
+
+        model = new ProductViewModel(requireActivity().getApplication());
+        products = new ArrayList<>();
     }
 
 
@@ -79,30 +95,34 @@ public class ProductFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
         editSearch = view.findViewById(R.id.search_bar);
         tabLayout = view.findViewById(R.id.tab_layout);
-        //recyclerView = view.findViewById(R.id.recycler_view);
         viewPager = view.findViewById(R.id.view_pager);
         floatingActionButton = view.findViewById(R.id.floating_action_button);
 
-        //recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
 
-        setupUI();
-        updateData();
-
-        if (picker) editSearch.requestFocus();
-
-        editSearch.setAdapter(new ArrayAdapter<ProductEntity>(requireContext(), android.R.layout.simple_list_item_1, products));
-        editSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        model.getItems().observe(getViewLifecycleOwner(), new Observer<List<ProductEntity>>() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                TextView text = (TextView) view;
-                String label = text.getText().toString();
-                for (ProductEntity p : products) if (p.label == label) {
-                    chooseProduct(p);
-                    editSearch.setText("");
-                }
+            public void onChanged(List<ProductEntity> productEntities) {
+                products = productEntities;
+                editSearch.setAdapter(
+                        new ArrayAdapter<>(requireContext(),
+                                android.R.layout.simple_list_item_1, products)
+                );
+                updateData();
             }
         });
 
+        setupUI();
+
+        if (picker) editSearch.requestFocus();
+    }
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        return super.onCreateDialog(savedInstanceState);
+    }
+
+    private void setupUI() {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab t) {
@@ -129,30 +149,19 @@ public class ProductFragment extends DialogFragment {
                 editFragment.setOnEditListener(new ProductEditFragment.OnEditListener() {
                     @Override
                     public void onSubmit(ProductEntity product) {
-                        product.id = database.productDAO().insertProduct(product);
-
-                        if (picker && listener != null) {
-                            listener.onItemSelected(product);
-                            dismissFullScreen(getParentFragmentManager());
-                        }
-                        else {
-                            products = database.productDAO().getAll();
-                            adapter.updateData(products);
-                        }
+                        model.addProduct(item, requireActivity(), id -> {
+                            if (picker && listener != null) {
+                                product.id = id;
+                                listener.onItemSelected(product);
+                                dismissFullScreen(getParentFragmentManager());
+                            }
+                        });
                     }
                 });
                 editFragment.show(requireActivity().getSupportFragmentManager(), "edit");
             }
         });
-    }
 
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        return super.onCreateDialog(savedInstanceState);
-    }
-
-    private void setupUI() {
         adapter = new ProductSectionAdapter(requireContext(), new ArrayList<>(), new ProductAdapter.OnItemAction() {
             @Override
             public void onItemSelected(ProductEntity product) {
@@ -161,14 +170,20 @@ public class ProductFragment extends DialogFragment {
 
             @Override
             public void onItemDeleted(ProductEntity product) {
-                if (deleteProduct(product)) {
-                    setupUI();
-                } else {
-                    new MaterialAlertDialogBuilder(requireContext())
-                            .setMessage(R.string.product_delete_dialog_message)
-                            .setPositiveButton(R.string.product_delete_dialog_ok, null)
-                            .show();
-                }
+                model.deleteProduct(product, products, requireActivity(), new ProductViewModel.ProductDeleteCallback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        new MaterialAlertDialogBuilder(requireContext())
+                                .setMessage(R.string.product_delete_dialog_message)
+                                .setPositiveButton(R.string.product_delete_dialog_ok, null)
+                                .show();
+                    }
+                });
             }
         });
 
@@ -187,7 +202,6 @@ public class ProductFragment extends DialogFragment {
     }
 
     public void updateData() {
-        products = database.productDAO().getAll();
         adapter.updateData(products);
     }
 
@@ -202,33 +216,19 @@ public class ProductFragment extends DialogFragment {
             editFragment.setOnEditListener(new ProductEditFragment.OnEditListener() {
                 @Override
                 public void onSubmit(ProductEntity product) {
-                    database.productDAO().updateProduct(product);
+                    model.updateProduct(product);
                     editFragment.dismiss();
-                    updateData();
                 }
             });
         }
-    }
-
-    private boolean deleteProduct(ProductEntity product) {
-        List<RecipeEntity> recipes = database.recipeDAO().select();
-
-        for (RecipeEntity r : recipes) {
-            List<Ingredient> ingredients = Ingredient.fromJson(Util.productsToDict(products), r.ingredients);
-            for (Ingredient i : ingredients) {
-                if (i.product.id == product.id) return false;
-            }
-        }
-
-        database.productDAO().deleteProduct(product);
-        return true;
     }
 
     public void showFullScreen(FragmentManager fragmentManager) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.add(android.R.id.content, this)
-                .addToBackStack(null).commit();
+                .addToBackStack(null)
+                .commit();
     }
 
     public void dismissFullScreen(FragmentManager fragmentManager) {

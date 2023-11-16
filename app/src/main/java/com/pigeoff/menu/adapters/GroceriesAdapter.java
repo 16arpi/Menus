@@ -1,6 +1,7 @@
 package com.pigeoff.menu.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,54 +10,78 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
+import com.google.android.material.color.MaterialColors;
 import com.pigeoff.menu.R;
+import com.pigeoff.menu.data.GrocerieGroup;
 import com.pigeoff.menu.database.GroceryEntity;
+import com.pigeoff.menu.database.GroceryWithProduct;
 import com.pigeoff.menu.database.ProductEntity;
+import com.pigeoff.menu.util.DiffUtilCallback;
 import com.pigeoff.menu.util.Util;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Set;
+import java.util.List;
 import java.util.TreeSet;
 
 
 public class GroceriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    boolean bind = false;
     Context context;
-    ArrayList<GroceryEntity> items;
-    HashMap<Long, ProductEntity> products;
-    OnAdapterAction<GroceryEntity> listener;
+    ArrayList<GrocerieGroup> items;
+    OnAdapterAction<GrocerieGroup> listener;
+    int[] viewTypes;
+
 
 
     private static final int VIEW_GROCERY = 6;
-    private static final int VIEW_SECTION_GROCERIES = 0;
-    private static final int VIEW_SECTION_FRUITS = 1;
-    private static final int VIEW_SECTION_MEAT = 2;
-    private static final int VIEW_SECTION_FRESH = 3;
-    private static final int VIEW_SECTION_DRINKS = 4;
-    private static final int VIEW_SECTION_DIVERS = 5;
 
-    public GroceriesAdapter(Context context, HashMap<Long, ProductEntity> products, ArrayList<GroceryEntity> items) {
+    public GroceriesAdapter(Context context, ArrayList<GrocerieGroup> items) {
         this.context = context;
-        this.products = products;
-        this.items = items;
+        this.items = prepareItems(items);
+        this.viewTypes = prepareViewTypes(items);
     }
 
-    @Override
-    public int getItemViewType(int position) {
+    private ArrayList<GrocerieGroup> prepareItems(List<GrocerieGroup> all) {
+        ArrayList<GrocerieGroup> result = new ArrayList<>();
+
+        int lastHeader = -1;
+        int x = 0;
+        int i = 0;
+        while (x < all.size()) {
+            GrocerieGroup gp = all.get(x);
+            ProductEntity p = gp.product;
+
+            if (p.secion != lastHeader) {
+                result.add(i, new GrocerieGroup(new ProductEntity(), new ArrayList<>()));
+                result.add(i + 1, gp);
+                lastHeader = p.secion;
+                i += 2;
+            } else {
+                result.add(i, gp);
+                i++;
+            }
+
+            x++;
+        }
+
+        return result;
+    }
+
+    private int[] prepareViewTypes(List<GrocerieGroup> all) {
         int[] viewTypes = new int[getItemCount()];
 
         int lastHeader = -1;
         int x = 0;
         int i = 0;
-        while (x < items.size()) {
-            GroceryEntity g = items.get(x);
-            ProductEntity p = products.get(g.ingredientId);
+        while (x < all.size()) {
+            GrocerieGroup gp = all.get(x);
+            ProductEntity p = gp.product;
 
             if (p.secion != lastHeader) {
                 viewTypes[i] = p.secion;
@@ -71,10 +96,15 @@ public class GroceriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             x++;
         }
 
+        return viewTypes;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
         return viewTypes[position];
     }
 
-    public GroceryEntity getProductAt(int position) {
+    /*public GroceryEntity getProductAt(int position) {
         GroceryEntity[] gList = new GroceryEntity[getItemCount()];
 
         int lastHeader = -1;
@@ -98,7 +128,7 @@ public class GroceriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
 
         return gList[position];
-    }
+    }*/
 
     @NonNull
     @Override
@@ -113,40 +143,47 @@ public class GroceriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof GroceriesViewHolder) {
-            GroceryEntity item = getProductAt(position);
-            System.out.println("Last position");
-            System.out.println(position);
-            ProductEntity product = products.get(item.ingredientId);
+            GrocerieGroup gp = items.get(position);
+            ProductEntity product = gp.product;
+
             GroceriesViewHolder groceriesHolder = (GroceriesViewHolder) holder;
 
-            bind = true;
-            groceriesHolder.checkBox.setChecked(item.checked);
-            paintCheckText(groceriesHolder.label, item.checked);
-            paintCheckText(groceriesHolder.labelRecipe, item.checked);
-
             groceriesHolder.label.setText(product.label);
-            groceriesHolder.labelValueUnit.setText(Util.formatIngredient(item.value, item.unit));
-            if (item.recipeLabel != null && !item.recipeLabel.isEmpty()) {
+            groceriesHolder.labelValueUnit.setText(gp.quantity);
+
+            int colorAttr;
+            if (gp.checked) {
+                colorAttr = MaterialColors.getColor(context, com.google.android.material.R.attr.colorPrimary, Color.BLACK);
+                groceriesHolder.checkBox.setImageDrawable(
+                        AppCompatResources.getDrawable(context, R.drawable.ic_check)
+                );
+            } else {
+                colorAttr = MaterialColors.getColor(context, com.google.android.material.R.attr.colorSurfaceInverse, Color.BLACK);
+                groceriesHolder.checkBox.setImageDrawable(
+                        AppCompatResources.getDrawable(context, R.drawable.ic_uncheck)
+                );
+            }
+
+            paintCheckText(groceriesHolder.label, gp.checked);
+            paintCheckText(groceriesHolder.labelRecipe, gp.checked);
+
+            /*if (grocery.recipeLabel != null && !grocery.recipeLabel.isEmpty()) {
                 groceriesHolder.labelRecipe.setVisibility(View.VISIBLE);
 
-                String date = Util.formatDate(item.datetime);
-                String data = String.format("%s · %s", item.recipeLabel, date);
+                String date = Util.formatDate(grocery.datetime);
+                String data = String.format("%s · %s", grocery.recipeLabel, date);
 
                 groceriesHolder.labelRecipe.setText(data);
             } else {
                 groceriesHolder.labelRecipe.setVisibility(View.GONE);
-            }
-            bind = false;
+            }*/
+            groceriesHolder.labelRecipe.setVisibility(View.GONE);
 
-            groceriesHolder.checkBox.addOnCheckedStateChangedListener(new MaterialCheckBox.OnCheckedStateChangedListener() {
+            groceriesHolder.checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onCheckedStateChangedListener(@NonNull MaterialCheckBox checkBox, int state) {
-                    if (bind) return;
-                    item.checked = !item.checked;
-                    listener.onItemClick(item, OnAdapterAction.ACTION_CHECK);
-
-                    paintCheckText(groceriesHolder.label, item.checked);
-                    paintCheckText(groceriesHolder.labelRecipe, item.checked);
+                public void onClick(View view) {
+                    gp.setChecked(!gp.checked);
+                    listener.onItemClick(gp, OnAdapterAction.ACTION_CHECK);
                 }
             });
 
@@ -159,17 +196,12 @@ public class GroceriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemCount() {
-        TreeSet<Integer> count = new TreeSet<>();
-        for (GroceryEntity g : items) {
-            ProductEntity p = products.get(g.ingredientId);
-            count.add(p.secion);
-        }
-        return items.size() + count.size();
+        return items.size();
     }
 
     private class GroceriesViewHolder extends RecyclerView.ViewHolder {
 
-        MaterialCheckBox checkBox;
+        ImageButton checkBox;
         TextView label;
         TextView labelValueUnit;
         TextView labelRecipe;
@@ -205,12 +237,17 @@ public class GroceriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    public void setOnAdapterActionListener(OnAdapterAction<GroceryEntity> listener) {
+    public void setOnAdapterActionListener(OnAdapterAction<GrocerieGroup> listener) {
         this.listener = listener;
     }
 
-    public void updateProducts(ArrayList<GroceryEntity> newProducts) {
-        items = newProducts;
-        notifyDataSetChanged();
+    public void updateGroceries(ArrayList<GrocerieGroup> newItems) {
+        DiffUtilCallback<GrocerieGroup> diffCallback = new DiffUtilCallback<>(items, prepareItems(newItems));
+        DiffUtil.DiffResult result = DiffUtil.calculateDiff(diffCallback);
+        items = prepareItems(newItems);
+        viewTypes = prepareViewTypes(newItems);
+
+        result.dispatchUpdatesTo(this);
     }
+
 }

@@ -15,8 +15,8 @@ public class GroceryEntity {
     public int unit = 0;
 
     // Bounds
-    public long eventId = 0;
-    public long recipeId = 0;
+    public long eventId = -1;
+    public long recipeId = -1;
     public String recipeLabel = "";
     public long datetime = 0;
 }

@@ -21,8 +21,8 @@ public class Unit {
                 new Unit("L", 1.0f, 3),
                 new Unit("cl", 0.01f, 3),
                 new Unit("ml", 0.001f, 3),
-                new Unit("c.s.", 0.014f, 3),
-                new Unit("c.c.", 0.0045f, 3),
+                new Unit("c.s.", 1.0f, 6),
+                new Unit("c.c.", 1.0f, 7),
                 new Unit("pincée(s)", 1.0f, 8),
                 new Unit("sachet(s)", 1.0f, 9),
                 new Unit("pot(s)", 1.0f, 10)

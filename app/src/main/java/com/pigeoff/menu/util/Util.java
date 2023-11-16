@@ -97,6 +97,14 @@ public class Util {
         return String.format(Locale.getDefault(), "%s %s", v, u);
     }
 
+    public static String formatFloat(float value) {
+        if (value % 1 == 0) {
+            return String.valueOf((int) value);
+        } else {
+            return String.valueOf(value);
+        }
+    }
+
     public static ArrayList<String> listFromJson(String json) {
         return new Gson().fromJson(json, new TypeToken<ArrayList<String>>(){}.getType());
     }
@@ -109,7 +117,7 @@ public class Util {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(datetime);
 
-        SimpleDateFormat format = new SimpleDateFormat("E dd/MM", Locale.FRANCE);
+        SimpleDateFormat format = new SimpleDateFormat("E dd/MM", Locale.getDefault());
         return format.format(calendar.getTime());
     }
 

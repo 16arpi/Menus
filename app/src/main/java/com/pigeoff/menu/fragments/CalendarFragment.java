@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.pigeoff.menu.R;
-import com.pigeoff.menu.models.WeekModel;
+import com.pigeoff.menu.adapters.WeekInterface;
 
 public class CalendarFragment extends Fragment {
 
@@ -50,7 +50,7 @@ public class CalendarFragment extends Fragment {
     ImageButton buttonGroceriesSaturday;
     ImageButton buttonGroceriesSunday;
 
-    WeekModel weekModel;
+    WeekInterface weekInterface;
 
     public CalendarFragment() {
         // Required empty public constructor
@@ -98,7 +98,7 @@ public class CalendarFragment extends Fragment {
         buttonGroceriesSaturday = view.findViewById(R.id.button_groceries_saturday);
         buttonGroceriesSunday = view.findViewById(R.id.button_groceries_sunday);
 
-        weekModel = new WeekModel(
+        weekInterface = new WeekInterface(
                 requireActivity(),
                 new RecyclerView[] {
                     recyclerViewMonday,

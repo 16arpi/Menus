@@ -10,21 +10,25 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.database.CalendarEntity;
+import com.pigeoff.menu.database.CalendarWithRecipe;
+import com.pigeoff.menu.database.GroceryEntity;
+import com.pigeoff.menu.util.DiffUtilCallback;
 
 import java.util.ArrayList;
 
 public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     Context context;
-    ArrayList<CalendarEntity> items;
-    OnAdapterAction<CalendarEntity> listener;
+    ArrayList<CalendarWithRecipe> items;
+    OnAdapterAction<CalendarWithRecipe> listener;
 
-    public EventAdapter(Context context, ArrayList<CalendarEntity> items) {
+    public EventAdapter(Context context, ArrayList<CalendarWithRecipe> items) {
         this.context = context;
         this.items = items;
     }
@@ -38,8 +42,8 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         EventViewHolder eventHolder = (EventViewHolder) holder;
-        CalendarEntity event = items.get(position);
-        eventHolder.textEvent.setText(event.label);
+        CalendarWithRecipe event = items.get(position);
+        eventHolder.textEvent.setText(event.calendar.label);
 
         eventHolder.cardEvent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,16 +51,6 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 listener.onItemClick(event);
             }
         });
-
-        /*
-        eventHolder.cardEvent.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                listener.onItemLongClick(event, eventHolder.getAdapterPosition());
-                return true;
-            }
-        });
-        */
 
         eventHolder.buttonEventOptions.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,7 +79,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    private void showMenu(View view, int resource, CalendarEntity event, int position) {
+    private void showMenu(View view, int resource, CalendarWithRecipe event, int position) {
         PopupMenu menu = new PopupMenu(context, view);
         menu.getMenuInflater().inflate(resource, menu.getMenu());
         menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -107,7 +101,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         menu.show();
     }
 
-    public void setOnAdapterAction(OnAdapterAction<CalendarEntity> listener) {
+    public void setOnAdapterAction(OnAdapterAction<CalendarWithRecipe> listener) {
         this.listener = listener;
     }
 
@@ -117,8 +111,11 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         notifyItemRemoved(position);
     }
 
-    public void updateItems(ArrayList<CalendarEntity> items) {
-        this.items = items;
-        notifyDataSetChanged();
+    public void updateItems(ArrayList<CalendarWithRecipe> newItems) {
+        DiffUtilCallback<CalendarWithRecipe> utilCallback = new DiffUtilCallback<>(items, newItems);
+        DiffUtil.DiffResult result = DiffUtil.calculateDiff(utilCallback);
+        items.clear();
+        items.addAll(newItems);
+        result.dispatchUpdatesTo(this);
     }
 }

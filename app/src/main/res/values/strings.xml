@@ -64,6 +64,7 @@
 
     <!--- PRODUCT -->
     <string name="product">Produits</string>
+    <string name="product_singular">Produit</string>
     <string name="product_name">Nom</string>
     <string name="product_unit">Unité par défaut</string>
     <string name="product_section">Catégorie</string>

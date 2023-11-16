@@ -1,6 +1,7 @@
 package com.pigeoff.menu.data;
 
 import com.pigeoff.menu.database.GroceryEntity;
+import com.pigeoff.menu.database.GroceryWithProduct;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,10 +24,11 @@ public class EventRecipe {
         this.groceries = groceries;
     }
 
-    public static List<EventRecipe> fromGroceries(List<GroceryEntity> groceries) {
+    public static List<EventRecipe> fromGroceries(List<GroceryWithProduct> groceries) {
         HashMap<Long, EventRecipe> eventRecipes = new HashMap<>();
 
-        for (GroceryEntity g : groceries) {
+        for (GroceryWithProduct gp : groceries) {
+            GroceryEntity g = gp.grocery;
             if (!eventRecipes.containsKey(g.eventId)) {
                 List<GroceryEntity> gro = new ArrayList<>();
                 gro.add(g);

@@ -1,342 +1,173 @@
 package com.pigeoff.menu.models;
 
-import android.content.Intent;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.Toast;
+import android.app.Application;
+import android.os.AsyncTask;
 
-import androidx.appcompat.widget.Toolbar;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.Transformations;
 
-import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.snackbar.Snackbar;
 import com.pigeoff.menu.MenuApplication;
-import com.pigeoff.menu.R;
-import com.pigeoff.menu.activities.RecipeActivity;
-import com.pigeoff.menu.adapters.EventAdapter;
-import com.pigeoff.menu.adapters.OnAdapterAction;
 import com.pigeoff.menu.data.Ingredient;
+import com.pigeoff.menu.database.CalendarDAO;
 import com.pigeoff.menu.database.CalendarEntity;
-import com.pigeoff.menu.database.MenuDatabase;
+import com.pigeoff.menu.database.CalendarWithRecipe;
+import com.pigeoff.menu.database.GroceryDAO;
 import com.pigeoff.menu.database.GroceryEntity;
+import com.pigeoff.menu.database.MenuDatabase;
+import com.pigeoff.menu.database.ProductDAO;
 import com.pigeoff.menu.database.ProductEntity;
+import com.pigeoff.menu.database.RecipeDAO;
 import com.pigeoff.menu.database.RecipeEntity;
-import com.pigeoff.menu.fragments.RecipeEditFragment;
-import com.pigeoff.menu.fragments.RecipePickerFragment;
-import com.pigeoff.menu.util.Constants;
 import com.pigeoff.menu.util.Util;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
-public class WeekModel {
+public class WeekModel extends AndroidViewModel {
 
-    public static class Days {
-        public static int MONDAY = 0;
-        public static int TUESDAY = 1;
-        public static int WEDNESDAY = 2;
-        public static int THURSDAY = 3;
-        public static int FRIDAY = 4;
-        public static int SATURDAY = 5;
-        public static int SUNDAY = 6;
+    public static class StartEnd {
+        public long start;
+        public long end;
+
+        public StartEnd(long start, long end) {
+            this.start = start;
+            this.end = end;
+        }
     }
 
-    private FragmentActivity context;
-    private MenuDatabase database;
-    private RecyclerView[] recyclerViews;
-    private ImageButton[] imageButtons;
-    private ImageButton[] groceriesButtons;
-    private MaterialToolbar toolbar;
-    private CollapsingToolbarLayout toolbarLayout;
-    private EventAdapter[] adapters;
-    private List<CalendarEntity>[] items;
+    CalendarDAO calendarDAO;
+    GroceryDAO groceryDAO;
+    ProductDAO productDAO;
+    RecipeDAO recipeDAO;
 
-    private Calendar calendar;
-    private HashMap<Long, ProductEntity> products;
+    LiveData<List<CalendarWithRecipe>> items;
+    LiveData<List<ProductEntity>> products;
+    MutableLiveData<StartEnd> startEnd;
 
-    public WeekModel(
-            FragmentActivity context,
-            RecyclerView[] recyclerViews,
-            ImageButton[] imageButtons,
-            ImageButton[] groceriesButtons,
-            MaterialToolbar toolbar,
-            CollapsingToolbarLayout toolbarLayout
-    ) {
-        this.context = context;
-        this.recyclerViews = recyclerViews;
-        this.imageButtons = imageButtons;
-        this.groceriesButtons = groceriesButtons;
-        this.toolbar = toolbar;
-        this.toolbarLayout = toolbarLayout;
+    public WeekModel(StartEnd begin, @NonNull Application application) {
+        super(application);
 
-        MenuApplication app = (MenuApplication) context.getApplication();
-        database = app.database;
+        MenuApplication app = (MenuApplication) application;
+        MenuDatabase database = app.database;
 
-        products = Util.productsToDict(database.productDAO().getAll());
+        calendarDAO = database.calendarDAO();
+        groceryDAO = database.groceryDAO();
+        productDAO = database.productDAO();
+        recipeDAO = database.recipeDAO();
+        startEnd = new MutableLiveData<>(begin);
 
-        items = new List[] {
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-        };
 
-        adapters = new EventAdapter[] {
-                new EventAdapter(context, new ArrayList<>()),
-                new EventAdapter(context, new ArrayList<>()),
-                new EventAdapter(context, new ArrayList<>()),
-                new EventAdapter(context, new ArrayList<>()),
-                new EventAdapter(context, new ArrayList<>()),
-                new EventAdapter(context, new ArrayList<>()),
-                new EventAdapter(context, new ArrayList<>()),
-        };
+        items = Transformations.switchMap(startEnd, object -> calendarDAO.select(object.start, object.end));
+        products = productDAO.getAll();
+    }
 
-        // Setting up recipe edit
+    public LiveData<List<CalendarWithRecipe>> getEvents() {
+        return items;
+    }
 
-        // Setting up recyclerView and imageButton
-        for (int day = 0; day < 7; ++day) {
-            RecyclerView recyclerView = recyclerViews[day];
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+    public LiveData<List<ProductEntity>> getProducts() {
+        return products;
+    }
 
-            int finalDay = day;
-            adapters[day].setOnAdapterAction(new OnAdapterAction<CalendarEntity>() {
-                @Override
-                public void onItemClick(CalendarEntity item) {
-                    Intent intent = new Intent(context, RecipeActivity.class);
-                    intent.putExtra(Constants.RECIPE_ID, item.recipe);
-                    intent.putExtra(Constants.RECIPE_READONLY, true);
-                    context.startActivity(intent);
-                }
+    public void setStartEnd(StartEnd config) {
+        startEnd.setValue(config);
+    }
 
-                @Override
-                public void onItemClick(CalendarEntity item, int action) {
-                    if (action == OnAdapterAction.ACTION_GROCERY) {
-                        if (addIngredientsToGroceries(item)) {
-                            Toast.makeText(
-                                    context,
-                                    context.getString(R.string.calendar_product_added),
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(
-                                    context,
-                                    context.getString(R.string.calendar_product_added_error),
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-
-                @Override
-                public void onItemLongClick(CalendarEntity item, int position) {
-                    database.calendarDAO().delete(item);
-                    database.groceryDAO().deleteGroceriesForCalendar(item.id);
-                    RecipeEntity recipe = database.recipeDAO().select(item.recipe);
-                    if (!recipe.cookbook) database.recipeDAO().delete(recipe);
-                    adapters[finalDay].deleteItem(position);
-                }
-            });
-            recyclerView.setAdapter(adapters[day]);
-
-            int thisDay = day;
-            imageButtons[day].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    RecipePickerFragment picker = new RecipePickerFragment();
-                    picker.show(context.getSupportFragmentManager(), Constants.EDIT_FRAGMENT_TAG);
-                    picker.setOnRecipePicked(new RecipePickerFragment.OnRecipePicked() {
-                        @Override
-                        public void onRecipePicked(RecipeEntity recipe) {
-                            picker.dismiss();
-                            addRecipeAtDate(recipe, thisDay);
-                        }
-                    });
-                }
-            });
-
-            imageButtons[day].setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    RecipeEditFragment editFragment = RecipeEditFragment.newInstance();
-                    editFragment.showFullScreen(context.getSupportFragmentManager());
-                    editFragment.setActionListener(new RecipeEditFragment.OnActionListener() {
-                        @Override
-                        public void onSubmit(RecipeEntity recipe) {
-                            editFragment.dismiss();
-                            recipe.cookbook = false;
-                            recipe.id = database.recipeDAO().insert(recipe);
-                            addRecipeAtDate(recipe, thisDay);
-                        }
-                    });
-                    return true;
-                }
-            });
-
-            groceriesButtons[day].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    addDayToGroceries(thisDay);
-                    Toast.makeText(
-                            context,
-                            context.getString(R.string.calendar_product_added_plural),
-                            Toast.LENGTH_SHORT
-                    ).show();
-                }
-            });
-
-        }
-
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+    public void addEvent(long datetime, RecipeEntity recipe, boolean newRecipe) {
+        AsyncTask.execute(new Runnable() {
             @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case (R.id.item_back):{
-                        setLastWeek();
-                        break;
-                    }
-                    case (R.id.item_forward):{
-                        setNextWeek();
-                        break;
-                    }
-                    case (R.id.item_today):{
-                        setThisWeek();
-                        break;
-                    }
+            public void run() {
+
+                if (newRecipe) {
+                    recipe.id = recipeDAO.insert(recipe);
                 }
-                return true;
+
+                CalendarEntity event = new CalendarEntity();
+                event.label = recipe.title;
+                event.recipe = recipe.id;
+                event.datetime = datetime; // getTimestampAtDay(Calendar, day)
+                event.groceriesState = 0;
+                calendarDAO.insert(event);
             }
         });
-
-        setThisWeek();
-    }
-
-    // PUBLIC METHODS
-
-    public void setThisWeek() {
-        System.out.println("This week");
-
-        // Setting week timestamp
-        calendar = Calendar.getInstance();
-        calendar.setFirstDayOfWeek(Calendar.MONDAY);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.clear(Calendar.MINUTE);
-        calendar.clear(Calendar.SECOND);
-        calendar.clear(Calendar.MILLISECOND);
-        calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
-
-        updateItems();
-        setupInterface();
-    }
-
-    public void setLastWeek() {
-        System.out.println("Last week");
-        calendar.add(Calendar.WEEK_OF_YEAR, -1);
-        updateItems();
-        setupInterface();
-    }
-
-    public void setNextWeek() {
-        System.out.println("Next week");
-        calendar.add(Calendar.WEEK_OF_YEAR, 1);
-        updateItems();
-        setupInterface();
     }
 
 
-
-    // PRIVATE METHODS
-
-    private void updateItems() {
-        Calendar cal = (Calendar) calendar.clone();
-        for (int i = 0; i < 7; ++i) {
-            Calendar today = (Calendar) cal.clone();
-            long start = today.getTimeInMillis();
-            today.add(Calendar.DAY_OF_YEAR, 1);
-            long end = today.getTimeInMillis();
-            items[i] = database.calendarDAO().select(start, end);
-
-            cal.add(Calendar.DAY_OF_YEAR, 1);
-        }
-    }
-
-    private void setupInterface() {
-        for (int i = 0; i < 7; ++i) {
-            adapters[i].updateItems(new ArrayList<>(items[i]));
-        }
-
-        toolbarLayout.setTitle(formatWeekDate());
-
-        for (int day = 0; day < 7; ++day) {
-            long thisDay = getTimestampOfDayMidnight(calendar, day);
-            long nowDay = getTodayTimestamp();
-            if (thisDay < nowDay) {
-                System.out.println("Hour past");
-                imageButtons[day].setVisibility(View.GONE);
-                groceriesButtons[day].setVisibility(View.GONE);
-            } else {
-                System.out.println("Hour future");
-                imageButtons[day].setVisibility(View.VISIBLE);
-                groceriesButtons[day].setVisibility(View.VISIBLE);
+    public void deleteEvent(CalendarWithRecipe item) {
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                calendarDAO.delete(item.calendar);
+                groceryDAO.deleteGroceriesForCalendar(item.calendar.id);
+                if (!item.recipe.cookbook) recipeDAO.delete(item.recipe);
             }
-            System.out.println(thisDay);
-            System.out.println(nowDay);
-        }
+        });
+    }
+    public void addEventToGroceries(
+            HashMap<Long, ProductEntity> products,
+            List<CalendarWithRecipe> items,
+            FragmentActivity context,
+            EventToGroceriesCallback callback) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                boolean success = true;
+
+                for (CalendarWithRecipe i : items) {
+                    if (!addToGrocerie(products, i)) {
+                        success = false;
+                    }
+                }
+
+                boolean finalSuccess = success;
+                context.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (finalSuccess) callback.onSuccess();
+                        else callback.onFailure();
+                    }
+                });
+            }
+        }).start();
     }
 
-    private long getTodayTimestamp() {
-        Calendar cal = Calendar.getInstance();
-        cal.setFirstDayOfWeek(Calendar.MONDAY);
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.add(Calendar.DAY_OF_WEEK, -1);
-        return cal.getTimeInMillis();
+    public void addEventToGroceries(
+            HashMap<Long, ProductEntity> products,
+            CalendarWithRecipe item,
+            FragmentActivity context,
+            EventToGroceriesCallback callback) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                boolean success = true;
+
+                if (!addToGrocerie(products, item)) {
+                    success = false;
+                }
+
+                boolean finalSuccess = success;
+                context.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (finalSuccess) callback.onSuccess();
+                        else callback.onFailure();
+                    }
+                });
+            }
+        }).start();
     }
 
-    private long getTimestampOfDay(Calendar calendar, int day) {
-        Calendar cal = (Calendar) calendar.clone();
-        cal.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek() + day);
-        return cal.getTimeInMillis();
-    }
+    private boolean addToGrocerie(HashMap<Long, ProductEntity> products, CalendarWithRecipe item) {
+        if (groceryDAO.eventAlreadyAdded(item.calendar.id)) return false;
 
-    private long getTimestampOfDayMidnight(Calendar calendar, int day) {
-        Calendar cal = (Calendar) calendar.clone();
-        cal.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek() + day);
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        return cal.getTimeInMillis();
-    }
-
-    private void addRecipeAtDate(RecipeEntity recipe, int day) {
-        CalendarEntity event = new CalendarEntity();
-        event.label = recipe.title;
-        event.recipe = recipe.id;
-        event.datetime = getTimestampOfDay(calendar, day);
-        event.groceriesState = 0;
-        database.calendarDAO().insert(event);
-
-        updateItems();
-        setupInterface();
-    }
-
-    private void addDayToGroceries(int day) {
-        for (CalendarEntity i : items[day]) {
-            addIngredientsToGroceries(i);
-        }
-    }
-
-    private boolean addIngredientsToGroceries(CalendarEntity item) {
-        if (database.groceryDAO().eventAlreadyAdded(item.id)) return false;
-
-        RecipeEntity recipe = database.recipeDAO().select(item.recipe);
-        ArrayList<Ingredient> ingredients = Ingredient.fromJson(products, recipe.ingredients);
+        ArrayList<Ingredient> ingredients = Ingredient.fromJson(products, item.recipe.ingredients);
 
         for (Ingredient i : ingredients) {
             GroceryEntity product = new GroceryEntity();
@@ -344,23 +175,19 @@ public class WeekModel {
             product.ingredientId = i.product.id;
             product.unit = i.unit;
             product.value = i.value;
-            product.eventId = item.id;
-            product.recipeId = item.recipe;
-            product.datetime = item.datetime;
-            product.recipeLabel = recipe.title;
+            product.eventId = item.calendar.id;
+            product.recipeId = item.recipe.id;
+            product.datetime = item.calendar.datetime;
+            product.recipeLabel = item.recipe.title;
 
-            database.groceryDAO().addGrocery(product);
+            groceryDAO.addGrocery(product);
         }
 
         return true;
     }
 
-    private String formatWeekDate() {
-        SimpleDateFormat format = new SimpleDateFormat("E dd", Locale.FRANCE);
-        Calendar cal = (Calendar) calendar.clone();
-        String start = format.format(cal.getTime());
-        cal.add(Calendar.DAY_OF_YEAR, 6);
-        String end = format.format(cal.getTime());
-        return start + " - " + end;
+    public interface EventToGroceriesCallback {
+        void onSuccess();
+        void onFailure();
     }
 }
