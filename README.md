@@ -8,17 +8,17 @@ Application android pour organiser les menus et les courses.
 
 ### Agenda des menus
 
-Pour chaque jour des prochaines semaines, indiquer les plats et désserts prévus. Ils peuvent provenir du livre des recettes, mais peuvent aussi être édités à la volée. Une fois les plats ajoutés, une option permet d'ajouter les ingrédients à la liste de courses.
+Pour chaque jour des prochaines semaines, indiquer les plats et désserts prévus. Ils peuvent provenir du livre des recettes, mais peuvent aussi être créés à la volée. Une fois les plats ajoutés, une option permet d'ajouter les ingrédients à la liste de courses.
 
 ### Livre de recettes
 
 Section d'exploration des recettes ajoutées à l'application. L'exploration peut-être libre, filtrée par type de recette (entrée, plat, dessert etc.) et/ou à partir d'une recherche par mots clés.
 
-Les ingrédients des recettes utilisent des unités génériques préalablement établies dans l'application. Cela permet le regroupement d'ingrédients similaires lors de la génération de la liste de courses.
+Les ingrédients des recettes utilisent une banque de produits enrichie par l'utilisateur. Les produits utilisent des unités génériques préalablement établies dans l'application. Cela permet le regroupement d'ingrédients similaires lors de la génération de la liste de courses.
 
 ### Liste de courses
 
-Générée à chaque ouverture de la liste.
+L'utilisateur peut ajouter ses menus à la liste des courses. Les produits similaires entre recettes sont regroupés pour éviter les doublons.
 
 ## Etapes de développement
 
@@ -28,33 +28,27 @@ Générée à chaque ouverture de la liste.
     - [X] Entité pour les recettes
     - [X] Entité pour les plats de l'agenda
     - [X] Entité pour les éléments des courses
-    - [ ] Classe de la liste de courses
-    - [ ] Entité pour les produits alimentaires (et leur unité)
+    - [X] Classe de la liste de courses
+    - [x] Entité pour les produits alimentaires (et leur unité)
     - [ ] Entité pour l'inventaire des produits
-  - [ ] Manipulation des données
-    - [ ] Produits des courses => liste des courses
+  - [X] Manipulation des données
+    - [x] Produits des courses => liste des courses
+  - [X] Utilisation de LiveData pour les objets de la base de données
 - [X] Interface
   - [X] Agenda
   - [X] Recettes
   - [X] Courses
+  - [X] Produits
   - [ ] Inventaire
-  - [ ] Produits
+- [X] Fonctionnalités supplémentaires
+  - [X] Exporter les recettes
+  - [ ] Importer les recettes
 
 ### Produits
 
-Pour l'instant, un ingrédient dans une recette ou un produit dans la liste des courses sont représentés par 3 éléments :
+Pour ajouter un ingrédient dans une recette, l'utilisateur doit choisir ou créer le produit associé à l'aide de l'interface ad hoc. Cela enrichie une banque de produits commune à toutes les recettes. L'avantage de cette banque est de faciliter le regroupement d'ingrédients quand ils passent dans la liste des courses (ex: 100g de farine dans la recette A et 50g de farine dans la recette B donne 150g de farine dans la liste des courses). 
 
-* Une valeur
-* Une unité
-* Un intitulé
-
-Alors que la liste des unités et leur conversion possibles entre elles sont mentionnées dans un array constant, l'intitulé est une chaîne de caractère librement décidée par l'utilisateur.
-
-Il s'agirait maintenant d'avoir une table SQL pour les produits/ingrédients. L'application offrirait un ensemble conséquent de produits pré-établis (une table SQL déjà fournie). Lors de l'écriture de la recette, l'utilisateur aurait à choisir dans ces produits ou ajouter un nouveau produit.
-
-La création d'une table de base de données pour cet objet offrirait l'avantage de faciliter le regroupement de produits similaires dans la liste de courses, mais aussi d'ajouter un inventaire (lui aussi représenté par une table SQL) lorsqu'un produit est checké dans la liste des courses.
-
-### Inventaire
+### Inventaire EN PROJET
 
 L'inventaire repertorirait les ingrédients/produits achetés. Deux moyens sont envisagés pour founir cet inventaire :
 
