@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.database.ProductEntity;
 
+import java.security.Policy;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class ProductSectionAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder h, int position) {
         ArrayList<ProductEntity> sectionProducts = new ArrayList<>();
+
         for (ProductEntity p : items) if (p.secion == position) sectionProducts.add(p);
 
         ProductSectionViewHolder holder = (ProductSectionViewHolder) h;
@@ -53,6 +55,8 @@ public class ProductSectionAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     listener.onItemDeleted(product);
                 }
             }));
+        } else {
+            holder.recyclerView.setAdapter(null);
         }
     }
 

@@ -100,8 +100,7 @@ public class WeekInterface {
                 @Override
                 public void onItemClick(CalendarWithRecipe item) {
                     Intent intent = new Intent(context, RecipeActivity.class);
-                    intent.putExtra(Constants.RECIPE_ID, item.recipe.id);
-                    intent.putExtra(Constants.RECIPE_READONLY, true);
+                    intent.putExtra(Constants.CALENDAR_ID, item.calendar.id);
                     context.startActivity(intent);
                 }
 

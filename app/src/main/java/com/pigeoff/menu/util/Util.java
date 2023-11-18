@@ -63,7 +63,7 @@ public class Util {
         Unit[] units = Unit.getUnits();
 
         String value = (ingredient.value % 1.0 != 0) ?
-                String.format(Locale.getDefault(), "%s", ingredient.value) :
+                String.format(Locale.getDefault(), "%.2f", ingredient.value) :
                 String.format(Locale.getDefault(), "%.0f", ingredient.value);
 
         String unit = units[ingredient.unit].label;
@@ -72,24 +72,12 @@ public class Util {
         return String.format(Locale.getDefault(), "%s %s %s", value, unit, label);
     }
 
-    public static String formatIngredient(float value, int unit, String label) {
-        Unit[] units = Unit.getUnits();
-
-        String v = (value % 1.0 != 0) ?
-                String.format(Locale.getDefault(), "%s", value) :
-                String.format(Locale.getDefault(), "%.0f", value);
-
-        String u = units[unit].label;
-        String l = label;
-
-        return String.format(Locale.getDefault(), "%s %s %s", v, u, l);
-    }
 
     public static String formatIngredient(float value, int unit) {
         Unit[] units = Unit.getUnits();
 
         String v = (value % 1.0 != 0) ?
-                String.format(Locale.getDefault(), "%s", value) :
+                String.format(Locale.getDefault(), "%.2f", value) :
                 String.format(Locale.getDefault(), "%.0f", value);
 
         String u = units[unit].label;

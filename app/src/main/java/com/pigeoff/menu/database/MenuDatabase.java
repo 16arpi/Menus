@@ -10,11 +10,9 @@ import androidx.room.RoomDatabase;
                 GroceryEntity.class,
                 ProductEntity.class
         },
-        version = 5,
+        version = 1,
         autoMigrations = {
-                @AutoMigration(from = 1, to = 2),
-                @AutoMigration(from = 2, to = 3),
-                @AutoMigration(from = 3, to = 4)
+
         }
 )
 public abstract class MenuDatabase extends RoomDatabase {

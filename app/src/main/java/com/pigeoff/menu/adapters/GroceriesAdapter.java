@@ -242,7 +242,17 @@ public class GroceriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     public void updateGroceries(ArrayList<GrocerieGroup> newItems) {
-        DiffUtilCallback<GrocerieGroup> diffCallback = new DiffUtilCallback<>(items, prepareItems(newItems));
+        DiffUtilCallback<GrocerieGroup> diffCallback = new DiffUtilCallback<>(items, prepareItems(newItems), new DiffUtilCallback.DifferenceCallback<GrocerieGroup>() {
+            @Override
+            public boolean sameItem(GrocerieGroup oldElement, GrocerieGroup newElement) {
+                return oldElement.product.id == oldElement.product.id;
+            }
+
+            @Override
+            public boolean sameContent(GrocerieGroup oldElement, GrocerieGroup newElement) {
+                return oldElement.equals(newElement);
+            }
+        });
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(diffCallback);
         items = prepareItems(newItems);
         viewTypes = prepareViewTypes(newItems);

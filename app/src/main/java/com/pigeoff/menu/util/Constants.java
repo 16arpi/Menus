@@ -2,6 +2,7 @@ package com.pigeoff.menu.util;
 
 public class Constants {
     public static String RECIPE_ID = "recipeid";
+    public static String CALENDAR_ID = "calendarid";
     public static String RECIPE_MODIFIED = "recipemodified";
     public static String RECIPE_READONLY = "recipereadonly";
 

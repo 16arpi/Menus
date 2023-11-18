@@ -39,6 +39,26 @@ public class Ingredient {
         return result;
     }
 
+    public static ArrayList<Ingredient> fromJson(
+            HashMap<Long, ProductEntity> products,
+            String json,
+            int defaultPortion,
+            int customPortion) {
+        ArrayList<Ingredient.Serialized> serialized = new Gson().fromJson(
+                json,
+                new TypeToken<ArrayList<Ingredient.Serialized>>(){}.getType()
+        );
+        ArrayList<Ingredient> result = new ArrayList<>();
+        for (Ingredient.Serialized s : serialized) {
+            result.add(new Ingredient(
+                    products.get(s.ingredientId),
+                    s.value * ((float) customPortion / defaultPortion),
+                    s.unit
+            ));
+        }
+        return result;
+    }
+
     public static String toJson(ArrayList<Ingredient> ingredients) {
         ArrayList<Ingredient.Serialized> serialized = new ArrayList<>();
         for (Ingredient s : ingredients) serialized.add(new Serialized(s.product.id, s.value, s.unit));

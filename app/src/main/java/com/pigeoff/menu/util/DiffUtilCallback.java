@@ -8,12 +8,14 @@ public class DiffUtilCallback<T> extends DiffUtil.Callback {
 
     List<T> oldList;
     List<T> newList;
+    DifferenceCallback<T> callback;
 
-    public DiffUtilCallback(List<T> oldList, List<T> newList) {
+    public DiffUtilCallback(List<T> oldList, List<T> newList, DifferenceCallback<T> callback) {
         super();
 
         this.oldList = oldList;
         this.newList = newList;
+        this.callback = callback;
     }
     @Override
     public int getOldListSize() {
@@ -27,11 +29,16 @@ public class DiffUtilCallback<T> extends DiffUtil.Callback {
 
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-        return oldList.get(oldItemPosition).getClass() == newList.get(newItemPosition).getClass();
+        return callback.sameItem(this.oldList.get(oldItemPosition), this.newList.get(newItemPosition));
     }
 
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-        return oldList.get(oldItemPosition).equals(newList.get(newItemPosition));
+        return callback.sameContent(this.oldList.get(oldItemPosition), this.newList.get(newItemPosition));
+    }
+
+    public interface DifferenceCallback<T> {
+        boolean sameItem(T oldElement, T newElement);
+        boolean sameContent(T oldElement, T newElement);
     }
 }

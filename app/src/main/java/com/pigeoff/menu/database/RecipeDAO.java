@@ -11,10 +11,10 @@ import java.util.List;
 
 @Dao
 public interface RecipeDAO {
-    @Query("SELECT * FROM RecipeEntity WHERE cookbook != 0 ORDER BY id DESC")
+    @Query("SELECT * FROM RecipeEntity WHERE cookbook != 0 ORDER BY LOWER(title)")
     LiveData<List<RecipeEntity>> select();
 
-    @Query("SELECT * FROM RecipeEntity WHERE cookbook != 0 ORDER BY id DESC")
+    @Query("SELECT * FROM RecipeEntity WHERE cookbook != 0 ORDER BY LOWER(title)")
     List<RecipeEntity> selectStatic();
 
 

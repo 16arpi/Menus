@@ -10,5 +10,6 @@ public class CalendarEntity {
     public long recipe;
     public long datetime;
     public String label;
+    public int portions;
     public int groceriesState = 0;
 }

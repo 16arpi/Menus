@@ -15,7 +15,6 @@ public class MenuApplication extends Application {
     public void onCreate() {
         super.onCreate();
         database = Room.databaseBuilder(this, MenuDatabase.class, "database")
-                .allowMainThreadQueries()
                 .build();
     }
 }

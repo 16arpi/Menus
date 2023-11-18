@@ -66,6 +66,7 @@ public class WeekModel extends AndroidViewModel {
 
         items = Transformations.switchMap(startEnd, object -> calendarDAO.select(object.start, object.end));
         products = productDAO.getAll();
+
     }
 
     public LiveData<List<CalendarWithRecipe>> getEvents() {
@@ -91,6 +92,7 @@ public class WeekModel extends AndroidViewModel {
 
                 CalendarEntity event = new CalendarEntity();
                 event.label = recipe.title;
+                event.portions = recipe.portions;
                 event.recipe = recipe.id;
                 event.datetime = datetime; // getTimestampAtDay(Calendar, day)
                 event.groceriesState = 0;
@@ -174,7 +176,7 @@ public class WeekModel extends AndroidViewModel {
             product.checked = false;
             product.ingredientId = i.product.id;
             product.unit = i.unit;
-            product.value = i.value;
+            product.value = i.value * ((float) item.calendar.portions / item.recipe.portions);
             product.eventId = item.calendar.id;
             product.recipeId = item.recipe.id;
             product.datetime = item.calendar.datetime;

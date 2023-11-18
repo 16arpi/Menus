@@ -19,6 +19,7 @@ import com.pigeoff.menu.util.DiffUtilCallback;
 import com.pigeoff.menu.util.Util;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -80,7 +81,18 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     public void updateRecipes(ArrayList<RecipeEntity> newItems) {
-        DiffUtilCallback<RecipeEntity> utilCallback = new DiffUtilCallback<>(recipes, newItems);
+        DiffUtilCallback<RecipeEntity> utilCallback = new DiffUtilCallback<>(recipes, newItems, (new DiffUtilCallback.DifferenceCallback<RecipeEntity>() {
+            @Override
+            public boolean sameItem(RecipeEntity oldElement, RecipeEntity newElement) {
+                return oldElement.id == newElement.id;
+            }
+
+            @Override
+            public boolean sameContent(RecipeEntity oldElement, RecipeEntity newElement) {
+                return oldElement.equals(newElement);
+            }
+        }));
+
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(utilCallback);
         recipes.clear();
         recipes.addAll(newItems);

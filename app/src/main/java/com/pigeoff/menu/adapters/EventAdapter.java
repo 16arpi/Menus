@@ -112,7 +112,17 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     public void updateItems(ArrayList<CalendarWithRecipe> newItems) {
-        DiffUtilCallback<CalendarWithRecipe> utilCallback = new DiffUtilCallback<>(items, newItems);
+        DiffUtilCallback<CalendarWithRecipe> utilCallback = new DiffUtilCallback<>(items, newItems, new DiffUtilCallback.DifferenceCallback<CalendarWithRecipe>() {
+            @Override
+            public boolean sameItem(CalendarWithRecipe oldElement, CalendarWithRecipe newElement) {
+                return oldElement.calendar.id == newElement.calendar.id;
+            }
+
+            @Override
+            public boolean sameContent(CalendarWithRecipe oldElement, CalendarWithRecipe newElement) {
+                return oldElement.equals(newElement);
+            }
+        });
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(utilCallback);
         items.clear();
         items.addAll(newItems);

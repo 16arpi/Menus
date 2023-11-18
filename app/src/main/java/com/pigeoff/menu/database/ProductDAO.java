@@ -11,7 +11,7 @@ import java.util.List;
 
 @Dao
 public interface ProductDAO {
-    @Query("SELECT * FROM ProductEntity ORDER BY label")
+    @Query("SELECT * FROM ProductEntity ORDER BY LOWER(label)")
     LiveData<List<ProductEntity>> getAll();
 
     @Update

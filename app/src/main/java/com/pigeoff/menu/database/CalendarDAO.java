@@ -22,17 +22,17 @@ public interface CalendarDAO {
 
     @Transaction
     @Query("SELECT * FROM CalendarEntity WHERE id = :id")
-    LiveData<CalendarWithRecipe> select(int id);
+    LiveData<CalendarWithRecipe> select(long id);
 
     @Update
-    void update(CalendarEntity recipe);
+    void update(CalendarEntity item);
 
     @Insert
-    void insert(CalendarEntity recipe);
+    void insert(CalendarEntity item);
 
     @Query("DELETE FROM CalendarEntity WHERE recipe = :recipeId")
     void deleteForRecipe(long recipeId);
 
     @Delete
-    void delete(CalendarEntity recipe);
+    void delete(CalendarEntity item);
 }
