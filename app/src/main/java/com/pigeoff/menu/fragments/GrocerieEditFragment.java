@@ -62,7 +62,7 @@ public class GrocerieEditFragment extends BottomSheetDialogFragment {
 
             float itemValue;
             try {
-                itemValue = Float.parseFloat(value.getText().toString());
+                itemValue = Float.parseFloat(String.valueOf(value.getText()));
             } catch (Exception e) {
                 itemValue = 0.0f;
             }

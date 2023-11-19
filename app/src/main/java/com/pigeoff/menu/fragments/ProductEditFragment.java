@@ -61,26 +61,17 @@ public class ProductEditFragment extends BottomSheetDialogFragment {
 
         editSection.setText(sectionsTypes.get(section), false);
 
-        buttonSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        buttonSubmit.setOnClickListener(v -> {
+            if (String.valueOf(editLabel.getText()).isEmpty()) return;
 
-                if (editLabel.getText().toString().isEmpty()) return;
+            product.defaultUnit = unitTypes.indexOf(editDefaultUnit.getText().toString());
+            product.secion = sectionsTypes.indexOf(editSection.getText().toString());
+            product.label = String.valueOf(editLabel.getText());
 
-                product.defaultUnit = unitTypes.indexOf(editDefaultUnit.getText().toString());
-                product.secion = sectionsTypes.indexOf(editSection.getText().toString());
-                product.label = editLabel.getText().toString();
-
-                if (listener != null) listener.onSubmit(product);
-                dismiss();
-            }
+            if (listener != null) listener.onSubmit(product);
+            dismiss();
         });
-
-
-
     }
-
-
 
     public void setOnEditListener(OnEditListener listener) {
         this.listener = listener;

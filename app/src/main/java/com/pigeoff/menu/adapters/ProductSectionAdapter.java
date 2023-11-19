@@ -7,21 +7,19 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.database.ProductEntity;
 
-import java.security.Policy;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProductSectionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private Context context;
+    private final Context context;
     private List<ProductEntity> items;
-    private ProductAdapter.OnItemAction listener;
+    private final ProductAdapter.OnItemAction listener;
 
     public ProductSectionAdapter(Context context, List<ProductEntity> items, ProductAdapter.OnItemAction listener) {
         this.context = context;

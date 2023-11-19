@@ -6,13 +6,9 @@ import com.pigeoff.menu.database.ProductEntity;
 import com.pigeoff.menu.util.Unit;
 import com.pigeoff.menu.util.Util;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-
-import kotlin.text.Regex;
 
 public class GrocerieGroup {
 
@@ -113,8 +109,7 @@ public class GrocerieGroup {
                     int right = String.format(String.valueOf(toValue), "%.2f").split("\\.")[1].length();
                     int equilibrum = left + right;
 
-                    /*float toValue = value / u.ratio;
-                    int equilibrum = toValue > 0 ? (int) Math.log10((int) toValue) + 1 : 1;*/
+                    // TODO Find a better way to choose unit
 
                     System.out.println("BALANCE");
                     System.out.println(u.label);

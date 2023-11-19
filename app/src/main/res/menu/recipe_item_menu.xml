@@ -8,4 +8,7 @@
         android:id="@+id/item_delete"
         android:title="@string/label_delete"
         android:icon="@drawable/ic_delete" />
+    <item
+        android:id="@+id/item_export"
+        android:title="@string/label_export" />
 </menu>

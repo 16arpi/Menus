@@ -10,4 +10,9 @@
         android:id="@+id/item_export_recipes"
         android:title="@string/recipe_export"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/item_import_recipes"
+        android:title="@string/recipe_import"
+        app:showAsAction="never" />
 </menu>

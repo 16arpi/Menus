@@ -51,11 +51,17 @@
     <!-- RECIPE ACTIVITY -->
     <string name="label_delete">Supprimer</string>
     <string name="label_edit">Modifier</string>
+    <string name="label_export">Exporter</string>
     <string name="recipe_delete_title">Supprimer la recette</string>
     <string name="recipe_delete_message">Attention, tous vos menus et vos courses liés à cette recette seront aussi supprimés.</string>
     <string name="recipe_delete_delete">Supprimer</string>
     <string name="recipe_delete_cancel">Annuler</string>
     <string name="recipe_export">Exporter les recettes</string>
+    <string name="recipe_import">Importer des recettes</string>
+
+
+    <!-- IMPORT EXPORT -->
+    <string name="import_failed">L\'importation a échoué</string>
 
     <!-- GROCERIES -->
     <string name="item_remove_check" >Nettoyer</string>

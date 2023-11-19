@@ -17,7 +17,6 @@ import com.pigeoff.menu.database.RecipeDAO;
 import com.pigeoff.menu.database.RecipeEntity;
 import com.pigeoff.menu.util.Util;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class ProductViewModel extends AndroidViewModel {

@@ -4,15 +4,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.pigeoff.menu.R;
-import com.pigeoff.menu.data.Ingredient;
-import com.pigeoff.menu.util.Util;
 
 import java.util.ArrayList;
 
@@ -48,12 +44,9 @@ public class StepAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
 
 
-        itemHolder.buttonClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int pos = itemHolder.getAdapterPosition();
-                deleteItem(pos);
-            }
+        itemHolder.buttonClose.setOnClickListener(view -> {
+            int pos = itemHolder.getAdapterPosition();
+            deleteItem(pos);
         });
     }
 
@@ -62,6 +55,7 @@ public class StepAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return steps.size();
     }
 
+    // TODO switch items
     public void switchItems(int start, int end) {
         String iStart = steps.get(start);
         String iEnd = steps.get(end);

@@ -1,12 +1,12 @@
 package com.pigeoff.menu.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -17,15 +17,15 @@ import com.pigeoff.menu.fragments.RecipeFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static int TAB_CALENDAR = 0;
-    private static int TAB_RECIPES = 1;
-    private static int TAB_GROCERIES = 2;
+    private static final int TAB_CALENDAR = 0;
+    private static final int TAB_RECIPES = 1;
+    private static final int TAB_GROCERIES = 2;
 
 
 
     FrameLayout frameLayout;
     BottomNavigationView bottomNavigationView;
-    Fragment fragments[];
+    Fragment[] fragments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,24 +44,15 @@ public class MainActivity extends AppCompatActivity {
         setFragment(TAB_CALENDAR);
         bottomNavigationView.setSelectedItemId(R.id.item_calendar);
 
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.item_calendar:
-                        setFragment(TAB_CALENDAR);
-                        break;
-                    case R.id.item_recipes:
-                        setFragment(TAB_RECIPES);
-                        break;
-                    case R.id.item_groceries:
-                        setFragment(TAB_GROCERIES);
-                        break;
-                    default:
-                        break;
-                }
-                return true;
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.item_calendar) {
+                setFragment(TAB_CALENDAR);
+            } else if (item.getItemId() == R.id.item_recipes) {
+                setFragment(TAB_RECIPES);
+            } else if (item.getItemId() == R.id.item_groceries) {
+                setFragment(TAB_GROCERIES);
             }
+            return true;
         });
     }
 

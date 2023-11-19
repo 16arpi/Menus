@@ -1,7 +1,10 @@
 package com.pigeoff.menu.util;
 
 import android.content.Context;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
+
+import androidx.fragment.app.FragmentActivity;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -91,6 +94,19 @@ public class Util {
         } else {
             return String.valueOf(value);
         }
+    }
+
+    public static void showKeyboard(FragmentActivity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+    }
+
+    public static void hideKeyboard(FragmentActivity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (activity.getCurrentFocus() != null) {
+            imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+        }
+
     }
 
     public static ArrayList<String> listFromJson(String json) {

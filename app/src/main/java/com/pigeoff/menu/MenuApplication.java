@@ -4,7 +4,6 @@ import android.app.Application;
 
 import androidx.room.Room;
 
-import com.google.android.material.color.DynamicColors;
 import com.pigeoff.menu.database.MenuDatabase;
 
 public class MenuApplication extends Application {

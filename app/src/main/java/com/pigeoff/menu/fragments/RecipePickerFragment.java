@@ -31,14 +31,13 @@ public class RecipePickerFragment extends BottomSheetDialogFragment {
 
     private LiveData<List<RecipeEntity>> recipes;
     private OnRecipePicked listener;
-    private RecyclerView recyclerViewSearch;
     private TextInputEditText searchBar;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         RecipesViewModel model = new RecipesViewModel(requireActivity().getApplication());
-        recipes = model.getItems();
+        recipes = model.getRecipes();
     }
 
     @Nullable
@@ -51,47 +50,39 @@ public class RecipePickerFragment extends BottomSheetDialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         searchBar = view.findViewById(R.id.search_bar_picker);
-        recyclerViewSearch = view.findViewById(R.id.recycler_view_search);
+        RecyclerView recyclerViewSearch = view.findViewById(R.id.recycler_view_search);
 
-        MenuApplication app = (MenuApplication) getActivity().getApplication();
         RecipeAdapter adapter = new RecipeAdapter(requireContext(), new ArrayList<>());
         recyclerViewSearch.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerViewSearch.setAdapter(adapter);
 
-        recipes.observe(getViewLifecycleOwner(), new Observer<List<RecipeEntity>>() {
-            @Override
-            public void onChanged(List<RecipeEntity> recipeEntities) {
-                adapter.updateRecipes(new ArrayList<>(recipeEntities));
-                searchBar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                    @Override
-                    public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                        ArrayList<RecipeEntity> newRecipes = new ArrayList<>();
-                        for (RecipeEntity e : recipeEntities) {
-                            if (Util.stringMatchSearch(e.title, textView.getText().toString())) {
-                                newRecipes.add(e);
-                            }
-                        }
-                        adapter.updateRecipes(newRecipes);
-                        return true;
+        recipes.observe(getViewLifecycleOwner(), recipeEntities -> {
+            adapter.updateRecipes(new ArrayList<>(recipeEntities));
+            searchBar.setOnEditorActionListener(((textView, i, keyEvent) -> {
+                ArrayList<RecipeEntity> newRecipes = new ArrayList<>();
+                for (RecipeEntity e : recipeEntities) {
+                    if (Util.stringMatchSearch(e.title, textView.getText().toString())) {
+                        newRecipes.add(e);
                     }
-                });
-            }
+                }
+                adapter.updateRecipes(newRecipes);
+                return true;
+            }));
         });
 
-        adapter.setOnAdapterAction(new OnAdapterAction() {
+        adapter.setOnAdapterAction(new OnAdapterAction<RecipeEntity>() {
             @Override
-            public void onItemClick(Object item) {
-                RecipeEntity recipe = (RecipeEntity) item;
-                listener.onRecipePicked(recipe);
+            public void onItemClick(RecipeEntity item) {
+                listener.onRecipePicked(item);
             }
 
             @Override
-            public void onItemClick(Object item, int action) {
+            public void onItemClick(RecipeEntity item, int action) {
 
             }
 
             @Override
-            public void onItemLongClick(Object item, int position) {
+            public void onItemLongClick(RecipeEntity item, int position) {
 
             }
         });

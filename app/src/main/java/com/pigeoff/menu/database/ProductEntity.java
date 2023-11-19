@@ -1,5 +1,6 @@
 package com.pigeoff.menu.database;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -14,6 +15,7 @@ public class ProductEntity {
     // Which section of the supermarket
     public int secion = 0; // TODO secion -> section
 
+    @NonNull
     public String toString() {
         return this.label;
     }

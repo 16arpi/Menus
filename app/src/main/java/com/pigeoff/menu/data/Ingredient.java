@@ -5,9 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import com.pigeoff.menu.database.MenuDatabase;
 import com.pigeoff.menu.database.ProductEntity;
 import com.pigeoff.menu.util.Unit;
-import com.pigeoff.menu.util.Util;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
@@ -65,16 +63,6 @@ public class Ingredient {
         return new Gson().toJson(serialized);
     }
 
-    public String format(MenuDatabase database) {
-
-        Unit[] units = Unit.getUnits();
-        return String.format(Locale.getDefault(), "%f %s %s", this.value, units[this.unit].label, "");
-    }
-
-    public static String format(float value, int unit, String label) {
-        Unit[] units = Unit.getUnits();
-        return String.format(Locale.getDefault(), "%f %s %s", value, units[unit].label, label);
-    }
 
     public static class Serialized {
         public long ingredientId;

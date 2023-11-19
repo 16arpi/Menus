@@ -5,11 +5,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 
-import com.pigeoff.menu.database.ProductEntity;
-import com.pigeoff.menu.database.RecipeEntity;
-
-import java.util.List;
-
 public class CombinedLiveData<T, K, S> extends MediatorLiveData<S> {
 
     private T data1;

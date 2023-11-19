@@ -10,28 +10,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.pigeoff.menu.MenuApplication;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.adapters.GroceriesAdapter;
 import com.pigeoff.menu.adapters.OnAdapterAction;
 import com.pigeoff.menu.data.GrocerieGroup;
-import com.pigeoff.menu.database.GroceryEntity;
 import com.pigeoff.menu.database.GroceryWithProduct;
-import com.pigeoff.menu.database.MenuDatabase;
-import com.pigeoff.menu.database.ProductEntity;
 import com.pigeoff.menu.models.GroceriesViewModel;
 import com.pigeoff.menu.util.Util;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 
 public class GroceriesFragment extends Fragment {
@@ -54,10 +48,16 @@ public class GroceriesFragment extends Fragment {
         model = new GroceriesViewModel(requireActivity().getApplication());
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Util.hideKeyboard(requireActivity());
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_groceries, container, false);
     }
 
@@ -74,31 +74,25 @@ public class GroceriesFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
 
-        model.getItems().observe(getViewLifecycleOwner(), new Observer<List<GroceryWithProduct>>() {
-            @Override
-            public void onChanged(List<GroceryWithProduct> groceryEntities) {
-                List<GrocerieGroup> group = GrocerieGroup.fromList(groceryEntities);
-                updateGroceries(group);
-            }
+        model.getItems().observe(getViewLifecycleOwner(), groceryWithProducts -> {
+            List<GrocerieGroup> group = GrocerieGroup.fromList(groceryWithProducts);
+            updateGroceries(group);
         });
 
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.item_remove_check) {
-                    //database.groceryDAO().deleteAllChecked();
-                    model.deleteAllChecked();
-                }
-                if (item.getItemId() == R.id.item_remove_all) {
-                    //database.groceryDAO().deleteAllItems();
-                    model.deleteAllItems();
-                }
-                if (item.getItemId() == R.id.item_events_manager) {
-                    EventRecipeFragment dialog = new EventRecipeFragment();
-                    dialog.show(getParentFragmentManager(), "event_recipe_edit");
-                }
-                return true;
+        toolbar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.item_remove_check) {
+                //database.groceryDAO().deleteAllChecked();
+                model.deleteAllChecked();
             }
+            if (item.getItemId() == R.id.item_remove_all) {
+                //database.groceryDAO().deleteAllItems();
+                model.deleteAllItems();
+            }
+            if (item.getItemId() == R.id.item_events_manager) {
+                EventRecipeFragment dialog = new EventRecipeFragment();
+                dialog.show(getParentFragmentManager(), "event_recipe_edit");
+            }
+            return true;
         });
 
         adapter.setOnAdapterActionListener(new OnAdapterAction<GrocerieGroup>() {
@@ -135,21 +129,8 @@ public class GroceriesFragment extends Fragment {
     }
 
     private void updateGroceries(List<GrocerieGroup> items) {
-
-        items.sort(new Comparator<GrocerieGroup>() {
-            @Override
-            public int compare(GrocerieGroup t1, GrocerieGroup t2) {
-                return t1.product.label.compareTo(t2.product.label);
-            }
-        });
-        items.sort(new Comparator<GrocerieGroup>() {
-            @Override
-            public int compare(GrocerieGroup t1, GrocerieGroup t2) {
-                return t1.product.secion - t2.product.secion;
-            }
-        });
-
-
+        items.sort(Comparator.comparing(t -> t.product.label));
+        items.sort(Comparator.comparingInt(t -> t.product.secion));
         adapter.updateGroceries(new ArrayList<>(items));
     }
 }

@@ -1,27 +1,19 @@
 package com.pigeoff.menu.adapters;
 
 import android.content.Intent;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.pigeoff.menu.MenuApplication;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.activities.RecipeActivity;
-import com.pigeoff.menu.adapters.EventAdapter;
-import com.pigeoff.menu.adapters.OnAdapterAction;
-import com.pigeoff.menu.database.CalendarEntity;
 import com.pigeoff.menu.database.CalendarWithRecipe;
-import com.pigeoff.menu.database.MenuDatabase;
 import com.pigeoff.menu.database.ProductEntity;
 import com.pigeoff.menu.database.RecipeEntity;
 import com.pigeoff.menu.fragments.RecipeEditFragment;
@@ -39,15 +31,12 @@ import java.util.Locale;
 
 public class WeekInterface {
 
-    private FragmentActivity context;
-    private WeekModel model;
-    private RecyclerView[] recyclerViews;
-    private ImageButton[] imageButtons;
-    private ImageButton[] groceriesButtons;
-    private MaterialToolbar toolbar;
-    private CollapsingToolbarLayout toolbarLayout;
-    private EventAdapter[] adapters;
-    private List<CalendarWithRecipe>[] items;
+    private final WeekModel model;
+    private final ImageButton[] imageButtons;
+    private final ImageButton[] groceriesButtons;
+    private final CollapsingToolbarLayout toolbarLayout;
+    private final EventAdapter[] adapters;
+    private final List<CalendarWithRecipe>[] items;
 
     private Calendar calendar;
     private HashMap<Long, ProductEntity> products;
@@ -60,11 +49,8 @@ public class WeekInterface {
             MaterialToolbar toolbar,
             CollapsingToolbarLayout toolbarLayout
     ) {
-        this.context = context;
-        this.recyclerViews = recyclerViews;
         this.imageButtons = imageButtons;
         this.groceriesButtons = groceriesButtons;
-        this.toolbar = toolbar;
         this.toolbarLayout = toolbarLayout;
 
         model = new WeekModel(getStartEnd(Calendar.getInstance()), context.getApplication());
@@ -135,110 +121,85 @@ public class WeekInterface {
             recyclerView.setAdapter(adapters[day]);
 
             int thisDay = day;
-            imageButtons[day].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    RecipePickerFragment picker = new RecipePickerFragment();
-                    picker.show(context.getSupportFragmentManager(), Constants.EDIT_FRAGMENT_TAG);
-                    picker.setOnRecipePicked(new RecipePickerFragment.OnRecipePicked() {
-                        @Override
-                        public void onRecipePicked(RecipeEntity recipe) {
-                            picker.dismiss();
-                            long moment = getTimestampOfDay(calendar, thisDay);
-                            model.addEvent(moment, recipe, false);
-                        }
-                    });
-                }
+            imageButtons[day].setOnClickListener(view -> {
+                RecipePickerFragment picker = new RecipePickerFragment();
+                picker.show(context.getSupportFragmentManager(), Constants.EDIT_FRAGMENT_TAG);
+                picker.setOnRecipePicked(new RecipePickerFragment.OnRecipePicked() {
+                    @Override
+                    public void onRecipePicked(RecipeEntity recipe) {
+                        picker.dismiss();
+                        long moment = getTimestampOfDay(calendar, thisDay);
+                        model.addEvent(moment, recipe, false);
+                    }
+                });
             });
 
-            imageButtons[day].setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    RecipeEditFragment editFragment = RecipeEditFragment.newInstance();
-                    editFragment.showFullScreen(context.getSupportFragmentManager());
-                    editFragment.setActionListener(new RecipeEditFragment.OnActionListener() {
-                        @Override
-                        public void onSubmit(RecipeEntity recipe) {
-                            editFragment.dismiss();
-                            recipe.cookbook = false;
-                            long moment = getTimestampOfDay(calendar, thisDay);
-                            model.addEvent(moment, recipe, true);
-                        }
-                    });
-                    return true;
-                }
+            imageButtons[day].setOnLongClickListener(view -> {
+                RecipeEditFragment editFragment = RecipeEditFragment.newInstance();
+                editFragment.showFullScreen(context.getSupportFragmentManager());
+                editFragment.setActionListener(new RecipeEditFragment.OnActionListener() {
+                    @Override
+                    public void onSubmit(RecipeEntity recipe) {
+                        editFragment.dismiss();
+                        recipe.cookbook = false;
+                        long moment = getTimestampOfDay(calendar, thisDay);
+                        model.addEvent(moment, recipe, true);
+                    }
+                });
+                return true;
             });
 
-            groceriesButtons[day].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    model.addEventToGroceries(products, items[thisDay], context, new WeekModel.EventToGroceriesCallback() {
-                        @Override
-                        public void onSuccess() {
-                            Toast.makeText(
-                                    context,
-                                    context.getString(R.string.calendar_product_added_plural),
-                                    Toast.LENGTH_SHORT
-                            ).show();
-                        }
+            groceriesButtons[day].setOnClickListener(view -> {
+                model.addEventToGroceries(products, items[thisDay], context, new WeekModel.EventToGroceriesCallback() {
+                    @Override
+                    public void onSuccess() {
+                        Toast.makeText(
+                                context,
+                                context.getString(R.string.calendar_product_added_plural),
+                                Toast.LENGTH_SHORT
+                        ).show();
+                    }
 
-                        @Override
-                        public void onFailure() {
-                            Toast.makeText(
-                                    context,
-                                    context.getString(R.string.calendar_product_added_plural),
-                                    Toast.LENGTH_SHORT
-                            ).show();
-                        }
-                    });
-                }
+                    @Override
+                    public void onFailure() {
+                        Toast.makeText(
+                                context,
+                                context.getString(R.string.calendar_product_added_plural),
+                                Toast.LENGTH_SHORT
+                        ).show();
+                    }
+                });
             });
 
         }
 
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case (R.id.item_back):{
-                        setLastWeek();
-                        break;
-                    }
-                    case (R.id.item_forward):{
-                        setNextWeek();
-                        break;
-                    }
-                    case (R.id.item_today):{
-                        setThisWeek();
-                        break;
-                    }
+        toolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case (R.id.item_back):{
+                    setLastWeek();
+                    break;
                 }
-                return true;
+                case (R.id.item_forward):{
+                    setNextWeek();
+                    break;
+                }
+                case (R.id.item_today):{
+                    setThisWeek();
+                    break;
+                }
             }
+            return true;
         });
 
         setThisWeek();
 
-        model.getEvents().observe(context, new Observer<List<CalendarWithRecipe>>() {
-            @Override
-            public void onChanged(List<CalendarWithRecipe> calendarWithRecipes) {
-                updateItems(calendarWithRecipes);
-                setupInterface();
-            }
+        model.getEvents().observe(context, calendarWithRecipes -> {
+            updateItems(calendarWithRecipes);
+            setupInterface();
         });
 
-        model.getProducts().observe(context, new Observer<List<ProductEntity>>() {
-            @Override
-            public void onChanged(List<ProductEntity> productEntities) {
-                products = Util.productsToDict(productEntities);
-            }
-        });
-    }
-
-    // PUBLIC METHODS
-
-    public void updateProducts(List<ProductEntity> items) {
-        products = Util.productsToDict(items);
+        model.getProducts().observe(context, productEntities ->
+                products = Util.productsToDict(productEntities));
     }
 
     public void setThisWeek() {

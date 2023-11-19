@@ -8,19 +8,13 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,12 +22,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
-import com.pigeoff.menu.MenuApplication;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.adapters.IngredientsEditAdapter;
 import com.pigeoff.menu.adapters.StepAdapter;
 import com.pigeoff.menu.data.Ingredient;
-import com.pigeoff.menu.database.MenuDatabase;
 import com.pigeoff.menu.database.ProductEntity;
 import com.pigeoff.menu.database.RecipeEntity;
 import com.pigeoff.menu.models.RecipeViewModel;
@@ -94,8 +86,10 @@ public class RecipeEditFragment extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        long id = getArguments().getLong(RECIPE_ID, -1);
-        model = new RecipeViewModel(id, requireActivity().getApplication());
+        if (getArguments() != null) {
+            long id = getArguments().getLong(RECIPE_ID, -1);
+            model = new RecipeViewModel(id, requireActivity().getApplication());
+        }
 
     }
 
@@ -155,23 +149,17 @@ public class RecipeEditFragment extends DialogFragment {
             }
         });
 
-        editIngredientSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ProductFragment productFragment = new ProductFragment(true);
-                productFragment.addProductActionListener(new ProductFragment.OnProductAction() {
-                    @Override
-                    public void onItemSelected(ProductEntity item) {
-                        Ingredient ingredient = new Ingredient(
-                                item,
-                                0.0f,
-                                item.defaultUnit
-                        );
-                        ingredientAdapter.addItem(ingredient);
-                    }
-                });
-                productFragment.showFullScreen(getParentFragmentManager());
-            }
+        editIngredientSubmit.setOnClickListener(v -> {
+            ProductFragment productFragment = new ProductFragment(true);
+            productFragment.addProductActionListener(item -> {
+                Ingredient ingredient = new Ingredient(
+                        item,
+                        0.0f,
+                        item.defaultUnit
+                );
+                ingredientAdapter.addItem(ingredient);
+            });
+            productFragment.showFullScreen(getParentFragmentManager());
         });
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
@@ -189,43 +177,34 @@ public class RecipeEditFragment extends DialogFragment {
 
         recyclerViewSteps.setLayoutManager(new LinearLayoutManager(requireContext()));
 
-        editStepSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (editStep.getText().toString().equals("")) return;
+        editStepSubmit.setOnClickListener(v -> {
+            if (String.valueOf(editStep.getText()).equals("")) return;
 
-                String step = editStep.getText().toString();
-                stepAdapter.addItem(step);
+            String step = String.valueOf(editStep.getText());
+            stepAdapter.addItem(step);
 
-                editStep.setText("");
+            editStep.setText("");
+        });
+
+        editSubmit.setOnClickListener(v -> {
+            RecipeEntity returnRecipe = updateRecipe(recipe);
+            if (actionListener != null) actionListener.onSubmit(returnRecipe);
+            try {
+                dismissFullScreen(getParentFragmentManager());
+            } catch (Exception e) {
+                dismiss();
             }
         });
 
-        editSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                RecipeEntity returnRecipe = updateRecipe(recipe);
-                if (actionListener != null) actionListener.onSubmit(returnRecipe);
-                try {
-                    dismissFullScreen(getParentFragmentManager());
-                } catch (Exception e) {
-                    dismiss();
-                }
+        view.findViewById(R.id.button_back).setOnClickListener(v -> {
+            try {
+                dismissFullScreen(getParentFragmentManager());
+            } catch (Exception e) {
+                dismiss();
             }
         });
 
-        view.findViewById(R.id.button_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    dismissFullScreen(getParentFragmentManager());
-                } catch (Exception e) {
-                    dismiss();
-                }
-            }
-        });
-
-        model.getItem().observe(getViewLifecycleOwner(), object -> {
+        model.getRecipe().observe(getViewLifecycleOwner(), object -> {
             if (object.a == null || object.b == null) return;
 
             products = Util.productsToDict(object.b);
@@ -280,10 +259,10 @@ public class RecipeEditFragment extends DialogFragment {
 
         List<String> recipesTypes = Arrays.asList(Util.getRecipesTypes(requireContext()));
 
-        source.title = editTitle.getText().toString();
+        source.title = String.valueOf(editTitle.getText());
         source.category = recipesTypes.indexOf(editType.getText().toString());
         try {
-            source.portions = Integer.parseInt(editPortions.getText().toString());
+            source.portions = Integer.parseInt(String.valueOf(editPortions.getText()));
         } catch (Exception e) {
             source.portions = 1;
         }

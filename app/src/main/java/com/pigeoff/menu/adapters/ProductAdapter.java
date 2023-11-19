@@ -42,29 +42,23 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         ProductEntity item = items.get(position);
 
         holder.label.setText(item.label);
-        holder.card.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (listener != null) listener.onItemSelected(item);
-            }
+        holder.card.setOnClickListener(view -> {
+            if (listener != null) listener.onItemSelected(item);
         });
 
-        holder.options.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PopupMenu optionMenu = new PopupMenu(context, view);
-                optionMenu.getMenuInflater().inflate(R.menu.product_menu, optionMenu.getMenu());
-                optionMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        if (menuItem.getItemId() == R.id.item_delete) {
-                            if (listener != null) listener.onItemDeleted(item);
-                        }
-                        return true;
+        holder.options.setOnClickListener(view -> {
+            PopupMenu optionMenu = new PopupMenu(context, view);
+            optionMenu.getMenuInflater().inflate(R.menu.product_menu, optionMenu.getMenu());
+            optionMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    if (menuItem.getItemId() == R.id.item_delete) {
+                        if (listener != null) listener.onItemDeleted(item);
                     }
-                });
-                optionMenu.show();
-            }
+                    return true;
+                }
+            });
+            optionMenu.show();
         });
     }
 
@@ -73,7 +67,7 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return items.size();
     }
 
-    public class ProductViewHolder extends RecyclerView.ViewHolder {
+    public static class ProductViewHolder extends RecyclerView.ViewHolder {
 
         public TextView label;
         public MaterialCardView card;
@@ -85,10 +79,6 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             card = itemView.findViewById(R.id.card);
             options = itemView.findViewById(R.id.button_options);
         }
-    }
-
-    public void setOnItemActionListener(OnItemAction listener) {
-        this.listener = listener;
     }
 
     public interface OnItemAction {

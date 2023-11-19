@@ -92,7 +92,7 @@ public class IngredientsEditAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         return ingredients.size();
     }
 
-    public class IngredientEditViewHolder extends RecyclerView.ViewHolder {
+    public static class IngredientEditViewHolder extends RecyclerView.ViewHolder {
 
         TextView label;
         TextInputEditText editValue;
@@ -106,6 +106,7 @@ public class IngredientsEditAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         }
     }
 
+    // TODO Switch items
     public void switchItems(int start, int end) {
         Ingredient iStart = ingredients.get(start);
         Ingredient iEnd = ingredients.get(end);

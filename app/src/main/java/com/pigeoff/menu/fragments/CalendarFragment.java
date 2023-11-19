@@ -15,6 +15,7 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.adapters.WeekInterface;
+import com.pigeoff.menu.util.Util;
 
 public class CalendarFragment extends Fragment {
 
@@ -130,7 +131,11 @@ public class CalendarFragment extends Fragment {
                 toolbar,
                 toolbarLayout
         );
+    }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        Util.hideKeyboard(requireActivity());
     }
 }

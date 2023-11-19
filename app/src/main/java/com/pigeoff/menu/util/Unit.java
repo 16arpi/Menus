@@ -28,20 +28,5 @@ public class Unit {
                 new Unit("pot(s)", 1.0f, 10)
         };
     }
-
-    public static int getUnitId(String label) {
-        Unit[] units = getUnits();
-        int i = 0;
-        for (Unit u : units) {
-            if (Objects.equals(u.label, label)) return i;
-            i++;
-        }
-        throw new Error("Unit label not found");
-    }
-
-    public static Unit getUnit(int id) {
-        Unit[] units = getUnits();
-        return units[id];
-    }
 }
 

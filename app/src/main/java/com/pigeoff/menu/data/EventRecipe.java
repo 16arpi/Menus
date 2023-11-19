@@ -41,7 +41,7 @@ public class EventRecipe {
                 ));
             } else {
                 EventRecipe r = eventRecipes.get(g.eventId);
-                r.groceries.add(g);
+                if (r != null) r.groceries.add(g);
             }
         }
 

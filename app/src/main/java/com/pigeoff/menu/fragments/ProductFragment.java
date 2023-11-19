@@ -5,10 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,14 +20,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.pigeoff.menu.MenuApplication;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.adapters.ProductAdapter;
 import com.pigeoff.menu.adapters.ProductSectionAdapter;
-import com.pigeoff.menu.data.Ingredient;
-import com.pigeoff.menu.database.MenuDatabase;
 import com.pigeoff.menu.database.ProductEntity;
-import com.pigeoff.menu.database.RecipeEntity;
 import com.pigeoff.menu.models.ProductViewModel;
 import com.pigeoff.menu.util.Constants;
 import com.pigeoff.menu.util.Util;
@@ -39,7 +33,7 @@ import java.util.List;
 
 public class ProductFragment extends DialogFragment {
 
-    private boolean picker = false;
+    private final boolean picker;
 
     ProductViewModel model;
     List<ProductEntity> products;
@@ -57,17 +51,6 @@ public class ProductFragment extends DialogFragment {
         this.picker = picker;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        /*Dialog dialog = getDialog();
-        if (dialog != null) {
-            int width = ViewGroup.LayoutParams.MATCH_PARENT;
-            int height = ViewGroup.LayoutParams.MATCH_PARENT;
-            dialog.getWindow().setLayout(width, height);
-        }*/
-    }
-
     public ProductFragment addProductActionListener(OnProductAction listener) {
         this.listener = listener;
         return this;
@@ -76,8 +59,6 @@ public class ProductFragment extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        /*setStyle(DialogFragment.STYLE_NO_FRAME, getTheme());*/
 
         model = new ProductViewModel(requireActivity().getApplication());
         products = new ArrayList<>();
@@ -99,21 +80,25 @@ public class ProductFragment extends DialogFragment {
         floatingActionButton = view.findViewById(R.id.floating_action_button);
 
 
-        model.getItems().observe(getViewLifecycleOwner(), new Observer<List<ProductEntity>>() {
-            @Override
-            public void onChanged(List<ProductEntity> productEntities) {
-                products = productEntities;
-                editSearch.setAdapter(
-                        new ArrayAdapter<>(requireContext(),
-                                android.R.layout.simple_list_item_1, products)
-                );
-                updateData();
-            }
+        model.getItems().observe(getViewLifecycleOwner(), productEntities -> {
+            products = productEntities;
+            editSearch.setAdapter(
+                    new ArrayAdapter<>(requireContext(),
+                            android.R.layout.simple_list_item_1, products)
+            );
+            updateData();
         });
 
         setupUI();
+    }
 
-        if (picker) editSearch.requestFocus();
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (picker) {
+            editSearch.requestFocus();
+            Util.showKeyboard(requireActivity());
+        }
     }
 
     @NonNull
@@ -140,26 +125,23 @@ public class ProductFragment extends DialogFragment {
             }
         });
 
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ProductEntity item = new ProductEntity();
-                item.label = editSearch.getText().toString();
-                ProductEditFragment editFragment = new ProductEditFragment(item, tab);
-                editFragment.setOnEditListener(new ProductEditFragment.OnEditListener() {
-                    @Override
-                    public void onSubmit(ProductEntity product) {
-                        model.addProduct(item, requireActivity(), id -> {
-                            if (picker && listener != null) {
-                                product.id = id;
-                                listener.onItemSelected(product);
-                                dismissFullScreen(getParentFragmentManager());
-                            }
-                        });
-                    }
-                });
-                editFragment.show(requireActivity().getSupportFragmentManager(), "edit");
-            }
+        floatingActionButton.setOnClickListener(view -> {
+            ProductEntity item = new ProductEntity();
+            item.label = editSearch.getText().toString();
+            ProductEditFragment editFragment = new ProductEditFragment(item, tab);
+            editFragment.setOnEditListener(new ProductEditFragment.OnEditListener() {
+                @Override
+                public void onSubmit(ProductEntity product) {
+                    model.addProduct(item, requireActivity(), id -> {
+                        if (picker && listener != null) {
+                            product.id = id;
+                            listener.onItemSelected(product);
+                            dismissFullScreen(getParentFragmentManager());
+                        }
+                    });
+                }
+            });
+            editFragment.show(requireActivity().getSupportFragmentManager(), "edit");
         });
 
         adapter = new ProductSectionAdapter(requireContext(), new ArrayList<>(), new ProductAdapter.OnItemAction() {
@@ -189,12 +171,9 @@ public class ProductFragment extends DialogFragment {
 
         viewPager.setAdapter(adapter);
 
-        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
-            @Override
-            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                String[] sections = requireContext().getResources().getStringArray(R.array.section);
-                tab.setText(sections[position]);
-            }
+        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+            String[] sections = requireContext().getResources().getStringArray(R.array.section);
+            tab.setText(sections[position]);
         });
 
         tabLayoutMediator.attach();
@@ -213,12 +192,9 @@ public class ProductFragment extends DialogFragment {
         else {
             ProductEditFragment editFragment = new ProductEditFragment(product, tab);
             editFragment.show(requireActivity().getSupportFragmentManager(), "edit");
-            editFragment.setOnEditListener(new ProductEditFragment.OnEditListener() {
-                @Override
-                public void onSubmit(ProductEntity product) {
-                    model.updateProduct(product);
-                    editFragment.dismiss();
-                }
+            editFragment.setOnEditListener(p -> {
+                model.updateProduct(p);
+                editFragment.dismiss();
             });
         }
     }

@@ -1,20 +1,15 @@
 package com.pigeoff.menu.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuBuilder;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.card.MaterialCardView;
@@ -24,24 +19,23 @@ import com.pigeoff.menu.adapters.IngredientAdapter;
 import com.pigeoff.menu.adapters.StepAdapter;
 import com.pigeoff.menu.data.Ingredient;
 import com.pigeoff.menu.database.CalendarWithRecipe;
-import com.pigeoff.menu.database.MenuDatabase;
 import com.pigeoff.menu.database.ProductEntity;
 import com.pigeoff.menu.database.RecipeEntity;
 import com.pigeoff.menu.fragments.RecipeEditFragment;
 import com.pigeoff.menu.models.EventViewModel;
 import com.pigeoff.menu.models.RecipeViewModel;
 import com.pigeoff.menu.util.Constants;
+import com.pigeoff.menu.util.ImportExport;
 import com.pigeoff.menu.util.Util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
-public class RecipeActivity extends AppCompatActivity {
-
-    MenuDatabase database;
-
+public class RecipeActivity extends FragmentActivity {
     HashMap<Long, ProductEntity> products;
-
+    ImportExport<FragmentActivity> importExport;
     MaterialToolbar toolbar;
     MaterialCardView cardPortions;
     Button buttonPortionsMore;
@@ -90,13 +84,15 @@ public class RecipeActivity extends AppCompatActivity {
         // Database
         if (recipeId > 0) {
             RecipeViewModel model = new RecipeViewModel(recipeId, getApplication());
+            importExport = new ImportExport<>(this, model);
 
             toolbar.inflateMenu(R.menu.recipe_item_menu);
 
-            model.getItem().observe(this, object -> {
+            model.getRecipe().observe(this, object -> {
                 if (object.a == null || object.b == null) return;
 
-                products = Util.productsToDict(object.b);
+                List<ProductEntity> allProducts = object.b;
+                products = Util.productsToDict(allProducts);
                 RecipeEntity recipe = object.a;
                 setupRecipeUI(recipe, recipe.portions);
 
@@ -117,6 +113,9 @@ public class RecipeActivity extends AppCompatActivity {
                     } else if (menu.getItemId() == R.id.item_edit) {
                         openEditDialog(model, recipe.id);
                     }
+                    else if (menu.getItemId() == R.id.item_export) {
+                        importExport.export(allProducts, Collections.singletonList(recipe));
+                    }
 
                     return true;
                 });
@@ -134,6 +133,12 @@ public class RecipeActivity extends AppCompatActivity {
                 setupCalendarUI(model, item);
             });
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Util.hideKeyboard(this);
     }
 
     private void setupRecipeUI(RecipeEntity item, int customPortions) {

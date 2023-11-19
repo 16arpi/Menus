@@ -11,21 +11,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.card.MaterialCardView;
 import com.pigeoff.menu.R;
-import com.pigeoff.menu.database.CalendarWithRecipe;
 import com.pigeoff.menu.database.RecipeEntity;
 import com.pigeoff.menu.util.DiffUtilCallback;
 import com.pigeoff.menu.util.Util;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private ArrayList<RecipeEntity> recipes;
-    private Context context;
-    private OnAdapterAction listener;
+    private final ArrayList<RecipeEntity> recipes;
+    private final Context context;
+    private OnAdapterAction<RecipeEntity> listener;
 
     public RecipeAdapter(Context context, ArrayList<RecipeEntity> recipes) {
         this.recipes = recipes;
@@ -52,32 +49,12 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         recipeViewHolder.itemTitle.setText(entity.title);
         recipeViewHolder.itemSubTitle.setText(Util.getRecipesTypes(context, entity.category));
-        recipeViewHolder.cardItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.onItemClick(entity);
-            }
-        });
+        recipeViewHolder.cardItem.setOnClickListener(view -> listener.onItemClick(entity));
     }
 
     @Override
     public int getItemCount() {
         return recipes.size();
-    }
-
-    public void addRecipe(RecipeEntity recipe) {
-        recipes.add(0, recipe);
-        notifyItemInserted(0);
-    }
-
-    public void editRecipe(RecipeEntity recipe, int position) {
-        recipes.set(position, recipe);
-        notifyItemChanged(position);
-    }
-
-    public void deleteRecipe(RecipeEntity recipe, int position) {
-        recipes.remove(position);
-        notifyItemRemoved(position);
     }
 
     public void updateRecipes(ArrayList<RecipeEntity> newItems) {
@@ -99,11 +76,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         result.dispatchUpdatesTo(this);
     }
 
-    public void setOnAdapterAction(OnAdapterAction listener) {
+    public void setOnAdapterAction(OnAdapterAction<RecipeEntity> listener) {
         this.listener = listener;
     }
 
-    private class RecipeViewHolder extends RecyclerView.ViewHolder {
+    private static class RecipeViewHolder extends RecyclerView.ViewHolder {
 
         public LinearLayout cardItem;
         public TextView itemLetter;

@@ -15,9 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.pigeoff.menu.R;
-import com.pigeoff.menu.database.CalendarEntity;
 import com.pigeoff.menu.database.CalendarWithRecipe;
-import com.pigeoff.menu.database.GroceryEntity;
 import com.pigeoff.menu.util.DiffUtilCallback;
 
 import java.util.ArrayList;
@@ -45,19 +43,11 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         CalendarWithRecipe event = items.get(position);
         eventHolder.textEvent.setText(event.calendar.label);
 
-        eventHolder.cardEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.onItemClick(event);
-            }
-        });
+        eventHolder.cardEvent.setOnClickListener(view ->
+                listener.onItemClick(event));
 
-        eventHolder.buttonEventOptions.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showMenu(view, R.menu.event_menu, event, eventHolder.getAdapterPosition());
-            }
-        });
+        eventHolder.buttonEventOptions.setOnClickListener(view ->
+                showMenu(view, event, eventHolder.getAdapterPosition()));
     }
 
     @Override
@@ -79,36 +69,22 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    private void showMenu(View view, int resource, CalendarWithRecipe event, int position) {
+    private void showMenu(View view, CalendarWithRecipe event, int position) {
         PopupMenu menu = new PopupMenu(context, view);
-        menu.getMenuInflater().inflate(resource, menu.getMenu());
-        menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.item_groceries:{
-                        listener.onItemClick(event, listener.ACTION_GROCERY);
-                        return true;
-                    }
-                    case R.id.item_delete:{
-                        listener.onItemLongClick(event, position);
-                        return true;
-                    }
-                }
-                return true;
+        menu.getMenuInflater().inflate(R.menu.event_menu, menu.getMenu());
+        menu.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.item_groceries) {
+                listener.onItemClick(event, listener.ACTION_GROCERY);
+            } else if (item.getItemId() == R.id.item_delete) {
+                listener.onItemLongClick(event, position);
             }
+            return true;
         });
         menu.show();
     }
 
     public void setOnAdapterAction(OnAdapterAction<CalendarWithRecipe> listener) {
         this.listener = listener;
-    }
-
-
-    public void deleteItem(int position) {
-        items.remove(position);
-        notifyItemRemoved(position);
     }
 
     public void updateItems(ArrayList<CalendarWithRecipe> newItems) {

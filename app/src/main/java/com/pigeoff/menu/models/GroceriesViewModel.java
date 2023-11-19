@@ -19,20 +19,19 @@ import com.pigeoff.menu.database.ProductEntity;
 import java.util.List;
 
 public class GroceriesViewModel extends AndroidViewModel {
-    private MenuDatabase database;
-    private LiveData<List<GroceryWithProduct>> items;
-    private LiveData<List<GroceryWithProduct>> eventsItems;
-    private LiveData<List<ProductEntity>> productsEntities;
-    private GroceryDAO groceryDAO;
-    private ProductDAO productDAO;
+    private final LiveData<List<GroceryWithProduct>> items;
+    private final LiveData<List<GroceryWithProduct>> eventsItems;
+    private final LiveData<List<ProductEntity>> productsEntities;
+    private final GroceryDAO groceryDAO;
+
     public GroceriesViewModel(@NonNull Application application) {
         super(application);
 
         MenuApplication app = (MenuApplication) application;
-        this.database = app.database;
-        this.groceryDAO = database.groceryDAO();
-        this.productDAO = database.productDAO();
+        MenuDatabase database = app.database;
 
+        ProductDAO productDAO = database.productDAO();
+        this.groceryDAO = database.groceryDAO();
         this.items = groceryDAO.getGroceries();
         this.eventsItems = groceryDAO.getEventsGroceries();
         this.productsEntities = productDAO.getAll();
@@ -59,15 +58,7 @@ public class GroceriesViewModel extends AndroidViewModel {
         });
     }
 
-    public void updateItem(GroceryEntity item) {
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                groceryDAO.updateGrocery(item);
-            }
-        });
-    }
-
+    // TODO Swipe to delete
     public void deleteItem(GroceryEntity item) {
         AsyncTask.execute(new Runnable() {
             @Override
@@ -82,15 +73,6 @@ public class GroceriesViewModel extends AndroidViewModel {
             @Override
             public void run() {
                 groceryDAO.deleteAllChecked();
-            }
-        });
-    }
-
-    public void checkGrocery(GroceryWithProduct item, boolean checked) {
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                groceryDAO.checkGrocery(item.grocery.id, checked);
             }
         });
     }

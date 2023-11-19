@@ -22,9 +22,9 @@ import java.util.List;
 
 public class RecipeEventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private Context context;
-    private List<EventRecipe> items;
-    private OnAdapterAction listener;
+    private final Context context;
+    private final List<EventRecipe> items;
+    private final OnAdapterAction listener;
 
     public RecipeEventAdapter(Context context, List<EventRecipe> items, OnAdapterAction listener) {
         this.context = context;
@@ -45,22 +45,16 @@ public class RecipeEventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         holder.title.setText(item.recipeLabel);
         holder.subtitle.setText(Util.formatDate(item.datetime));
-        holder.options.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PopupMenu optionMenu = new PopupMenu(context, view);
-                optionMenu.getMenuInflater().inflate(R.menu.recipe_event_menu, optionMenu.getMenu());
-                optionMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        if (menuItem.getItemId() == R.id.item_delete) {
-                            deleteItem(holder.getAdapterPosition());
-                        }
-                        return true;
-                    }
-                });
-                optionMenu.show();
-            }
+        holder.options.setOnClickListener(view -> {
+            PopupMenu optionMenu = new PopupMenu(context, view);
+            optionMenu.getMenuInflater().inflate(R.menu.recipe_event_menu, optionMenu.getMenu());
+            optionMenu.setOnMenuItemClickListener(menuItem -> {
+                if (menuItem.getItemId() == R.id.item_delete) {
+                    deleteItem(holder.getAdapterPosition());
+                }
+                return true;
+            });
+            optionMenu.show();
         });
 
         int totalIngredients = item.groceries.size();
@@ -86,7 +80,7 @@ public class RecipeEventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public interface OnAdapterAction {
         void onItemDeleted(EventRecipe item);
     }
-    private class RecipeEventViewHolder extends RecyclerView.ViewHolder {
+    private static class RecipeEventViewHolder extends RecyclerView.ViewHolder {
         TextView title;
         TextView subtitle;
         ImageButton options;

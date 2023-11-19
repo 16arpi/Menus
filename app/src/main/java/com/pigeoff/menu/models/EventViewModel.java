@@ -16,7 +16,6 @@ import com.pigeoff.menu.database.MenuDatabase;
 import com.pigeoff.menu.database.ProductDAO;
 import com.pigeoff.menu.database.ProductEntity;
 import com.pigeoff.menu.database.RecipeDAO;
-import com.pigeoff.menu.database.RecipeEntity;
 
 import java.util.List;
 
@@ -27,7 +26,7 @@ public class EventViewModel extends AndroidViewModel {
     ProductDAO productDAO;
     RecipeDAO recipeDAO;
 
-    private CombinedLiveData eventWithProducts;
+    private final CombinedLiveData eventWithProducts;
 
     public EventViewModel(long eventId, @NonNull Application application) {
         super(application);

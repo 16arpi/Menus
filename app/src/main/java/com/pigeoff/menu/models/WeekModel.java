@@ -7,9 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.Transformations;
 
 import com.pigeoff.menu.MenuApplication;
@@ -24,7 +22,6 @@ import com.pigeoff.menu.database.ProductDAO;
 import com.pigeoff.menu.database.ProductEntity;
 import com.pigeoff.menu.database.RecipeDAO;
 import com.pigeoff.menu.database.RecipeEntity;
-import com.pigeoff.menu.util.Util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -148,17 +145,11 @@ public class WeekModel extends AndroidViewModel {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                boolean success = true;
-
-                if (!addToGrocerie(products, item)) {
-                    success = false;
-                }
-
-                boolean finalSuccess = success;
+                boolean success = addToGrocerie(products, item);
                 context.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (finalSuccess) callback.onSuccess();
+                        if (success) callback.onSuccess();
                         else callback.onFailure();
                     }
                 });
