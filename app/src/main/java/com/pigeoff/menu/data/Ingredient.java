@@ -2,13 +2,10 @@ package com.pigeoff.menu.data;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.pigeoff.menu.database.MenuDatabase;
 import com.pigeoff.menu.database.ProductEntity;
-import com.pigeoff.menu.util.Unit;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
 
 public class Ingredient {
     public ProductEntity product;

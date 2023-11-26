@@ -1,7 +1,5 @@
 package com.pigeoff.menu.util;
 
-import java.util.Objects;
-
 public class Unit {
     public String label;
     public float ratio;

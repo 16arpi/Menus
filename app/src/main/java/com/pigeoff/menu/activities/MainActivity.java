@@ -1,17 +1,13 @@
 package com.pigeoff.menu.activities;
 
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.fragments.CalendarFragment;
 import com.pigeoff.menu.fragments.GroceriesFragment;
