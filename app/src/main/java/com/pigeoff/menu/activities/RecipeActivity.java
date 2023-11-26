@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,7 +34,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class RecipeActivity extends FragmentActivity {
+public class RecipeActivity extends AppCompatActivity {
     HashMap<Long, ProductEntity> products;
     ImportExport<FragmentActivity> importExport;
     MaterialToolbar toolbar;

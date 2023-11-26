@@ -16,6 +16,7 @@
         android:theme="@style/Theme.Menu"
         tools:targetApi="31">
         <activity
+            android:theme="@style/Theme.Menu"
             android:name=".activities.RecipeActivity"
             android:exported="false"
             android:configChanges="orientation|screenSize"/>

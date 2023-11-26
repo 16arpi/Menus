@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activities.RecipeActivity">
+    android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -73,16 +72,16 @@
                         android:layout_height="wrap_content">
 
                         <Button
-                            android:id="@+id/button_less"
                             style="?attr/materialIconButtonFilledStyle"
+                            android:id="@+id/button_less"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
                             app:icon="@drawable/ic_remove" />
 
                         <TextView
-                            android:id="@+id/text_portions"
                             style="@style/TextAppearance.Material3.TitleMedium"
+                            android:id="@+id/text_portions"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"

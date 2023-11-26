@@ -29,12 +29,14 @@ import com.pigeoff.menu.database.RecipeEntity;
 import com.pigeoff.menu.models.RecipesViewModel;
 import com.pigeoff.menu.util.Constants;
 import com.pigeoff.menu.util.ImportExport;
+import com.pigeoff.menu.util.OnSearchCallback;
 import com.pigeoff.menu.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeFragment extends MenuFragment {
+    OnSearchCallback searchCallback;
     RecipesViewModel model;
     LiveData<List<RecipeEntity>> recipes;
     List<ProductEntity> products;
@@ -49,8 +51,9 @@ public class RecipeFragment extends MenuFragment {
     RecipeAdapter recipeAdapter;
     RecipeAdapter recipeAdapterSearch;
 
-    public RecipeFragment() {
+    public RecipeFragment(OnSearchCallback searchCallback) {
         // Required empty public constructor
+        this.searchCallback = searchCallback;
     }
 
     @Override
@@ -178,6 +181,9 @@ public class RecipeFragment extends MenuFragment {
         searchView.addTransitionListener(((searchView1, previousState, newState) -> {
             if (newState == SearchView.TransitionState.HIDDEN) {
                 recipeAdapterSearch.updateRecipes(new ArrayList<>());
+                if (searchCallback != null) searchCallback.onSearchClose();
+            } else if (newState == SearchView.TransitionState.SHOWING) {
+                if (searchCallback != null) searchCallback.onSearchOpen();
             }
         }));
     }

@@ -15,6 +15,9 @@ public interface ProductDAO {
     @Query("SELECT * FROM ProductEntity ORDER BY LOWER(label)")
     LiveData<List<ProductEntity>> getAll();
 
+    @Query("SELECT * FROM ProductEntity WHERE label = :name")
+    ProductEntity selectByName(String name);
+
     @Update
     void updateProduct(ProductEntity product);
 

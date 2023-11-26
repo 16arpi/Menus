@@ -2,6 +2,8 @@ package com.pigeoff.menu.activities;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
@@ -14,6 +16,7 @@ import com.pigeoff.menu.R;
 import com.pigeoff.menu.fragments.CalendarFragment;
 import com.pigeoff.menu.fragments.GroceriesFragment;
 import com.pigeoff.menu.fragments.RecipeFragment;
+import com.pigeoff.menu.util.OnSearchCallback;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,7 +40,17 @@ public class MainActivity extends AppCompatActivity {
 
         fragments = new Fragment[] {
           new CalendarFragment(),
-          new RecipeFragment(),
+          new RecipeFragment(new OnSearchCallback() {
+              @Override
+              public void onSearchOpen() {
+                  bottomNavigationView.setVisibility(View.GONE);
+              }
+
+              @Override
+              public void onSearchClose() {
+                  bottomNavigationView.setVisibility(View.VISIBLE);
+              }
+          }),
           new GroceriesFragment()
         };
 
@@ -61,5 +74,9 @@ public class MainActivity extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.frame_layout, fragments[tab])
                 .commit();
+    }
+
+    private void showHideBottomNavigation(boolean show) {
+
     }
 }

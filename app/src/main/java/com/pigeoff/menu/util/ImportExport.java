@@ -8,9 +8,9 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 
 import com.google.gson.Gson;
 import com.pigeoff.menu.R;
@@ -37,8 +37,8 @@ public class ImportExport<T> {
         this.context = context;
         this.model = model;
 
-        if (context instanceof FragmentActivity) {
-            FragmentActivity activity = (FragmentActivity) context;
+        if (context instanceof AppCompatActivity) {
+            AppCompatActivity activity = (AppCompatActivity) context;
             this.launcherCallback = activity.registerForActivityResult(new ActivityResultContracts.OpenDocument(), new ActivityResultCallback<Uri>() {
                 @Override
                 public void onActivityResult(Uri result) {
@@ -108,8 +108,8 @@ public class ImportExport<T> {
     }
 
     private Context getContext(T parent) {
-        if (parent instanceof FragmentActivity) {
-            return (FragmentActivity) parent;
+        if (parent instanceof AppCompatActivity) {
+            return (AppCompatActivity) parent;
         } else if (parent instanceof Fragment) {
             return ((Fragment) parent).getContext();
         } else {
@@ -141,8 +141,8 @@ public class ImportExport<T> {
 
     private void addProductsAndRecipes(Export export) {
         model.importRecipes(export.products, export.recipes, () -> {
-            if (this.context instanceof FragmentActivity) {
-                FragmentActivity activity = (FragmentActivity) this.context;
+            if (this.context instanceof AppCompatActivity) {
+                AppCompatActivity activity = (AppCompatActivity) this.context;
                 activity.runOnUiThread(new FailureToast(activity));
             } else if (this.context instanceof Fragment) {
                 Fragment fragment = (Fragment) this.context;

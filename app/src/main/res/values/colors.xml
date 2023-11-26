@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="surface_transparent">#AA000000</color>
-    <color name="seed">#885200</color>
+    <!--<color name="surface_transparent">#AA000000</color>
+    <color name="seed">#885200</color>-->
     <color name="md_theme_light_primary">#885200</color>
     <color name="md_theme_light_onPrimary">#FFFFFF</color>
     <color name="md_theme_light_primaryContainer">#FFDDBB</color>

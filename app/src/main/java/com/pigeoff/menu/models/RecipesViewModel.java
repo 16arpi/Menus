@@ -91,12 +91,19 @@ public class RecipesViewModel extends AndroidViewModel {
                     Gson gson = new Gson();
                     HashMap<Long, Long> oldNewProductIds = new HashMap<>();
                     for (ProductEntity p : products) {
-                        ProductEntity blank = new ProductEntity();
-                        blank.defaultUnit = p.defaultUnit;
-                        blank.label = p.label;
-                        blank.secion = p.secion;
 
-                        oldNewProductIds.put(p.id, productDAO.insertProduct(blank));
+                        ProductEntity existing = productDAO.selectByName(p.label);
+
+                        if (existing != null) {
+                            oldNewProductIds.put(p.id, existing.id);
+                        } else {
+                            ProductEntity blank = new ProductEntity();
+                            blank.defaultUnit = p.defaultUnit;
+                            blank.label = p.label;
+                            blank.secion = p.secion;
+
+                            oldNewProductIds.put(p.id, productDAO.insertProduct(blank));
+                        }
                     }
 
 
