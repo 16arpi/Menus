@@ -20,7 +20,7 @@ The ingredients of the recipes use generic products shared among all the recipes
 
 Users can add their menus to the shopping list. Similar products are gathered together to avoid duplicates.
 
-## Etapes de développement
+## Development steps
 
 - [X] Data
   - [X] Data structure
