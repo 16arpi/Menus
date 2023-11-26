@@ -12,6 +12,10 @@
     <string name="item_next_week">Prochaine semaine</string>
     <string name="item_today">Aujourd\'hui</string>
 
+    <!-- RECIPE FRAGMENT -->
+    <string name="empty_title">¯\\_(ツ)_/¯</string>
+    <string name="empty_message">Livre des recettes vide. Ajoutez quelques recettes pour commencer à planifier vos menus.</string>
+
     <!-- EDIT RECIPE -->
     <string name="label_submit">Enregistrer</string>
     <string name="label_title">Titre</string>

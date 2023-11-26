@@ -135,7 +135,9 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_ingredients"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:clipToPadding="false"/>
 
             <LinearLayout
                 android:orientation="vertical"
@@ -175,7 +177,6 @@
         android:layout_height="wrap_content" >
 
         <LinearLayout
-            android:padding="8dp"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
@@ -183,12 +184,15 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_steps"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:clipToPadding="false"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:padding="8dp">
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="?attr/textInputFilledStyle"

@@ -39,6 +39,14 @@
                         android:layout_height="wrap_content"
                         android:text="@string/calendar_monday" />
 
+                    <ImageView
+                        android:id="@+id/iconTodayMonday"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_today"
+                        android:layout_margin="8dp"
+                        app:tint="?colorAccent" />
+
 
                 </LinearLayout>
 
@@ -101,6 +109,14 @@
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="@string/calendar_tuesday" />
+
+                    <ImageView
+                        android:id="@+id/iconTodayTuesday"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_today"
+                        android:layout_margin="8dp"
+                        app:tint="?colorAccent" />
 
                 </LinearLayout>
 
@@ -171,6 +187,14 @@
                         android:layout_height="wrap_content"
                         android:text="@string/calendar_wednesday" />
 
+                    <ImageView
+                        android:id="@+id/iconTodayWednesday"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_today"
+                        android:layout_margin="8dp"
+                        app:tint="?colorAccent" />
+
 
                 </LinearLayout>
 
@@ -234,6 +258,14 @@
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="@string/calendar_thursday" />
+
+                    <ImageView
+                        android:id="@+id/iconTodayThursday"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_today"
+                        android:layout_margin="8dp"
+                        app:tint="?colorAccent" />
 
 
                 </LinearLayout>
@@ -304,6 +336,14 @@
                         android:layout_height="wrap_content"
                         android:text="@string/calendar_friday" />
 
+                    <ImageView
+                        android:id="@+id/iconTodayFriday"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_today"
+                        android:layout_margin="8dp"
+                        app:tint="?colorAccent" />
+
 
                 </LinearLayout>
 
@@ -366,6 +406,14 @@
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="@string/calendar_saturday" />
+
+                    <ImageView
+                        android:id="@+id/iconTodaySaturday"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_today"
+                        android:layout_margin="8dp"
+                        app:tint="?colorAccent" />
 
 
                 </LinearLayout>
@@ -435,6 +483,15 @@
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="@string/calendar_sunday" />
+
+                    <ImageView
+                        android:id="@+id/iconTodaySunday"
+                        android:visibility="gone"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_today"
+                        android:layout_margin="8dp"
+                        app:tint="?colorAccent" />
 
 
                 </LinearLayout>

@@ -34,6 +34,7 @@ import java.util.List;
 public class ProductFragment extends DialogFragment {
 
     private final boolean picker;
+    private final int section;
 
     ProductViewModel model;
     List<ProductEntity> products;
@@ -47,8 +48,9 @@ public class ProductFragment extends DialogFragment {
     ViewPager2 viewPager;
     FloatingActionButton floatingActionButton;
 
-    public ProductFragment(boolean picker) {
+    public ProductFragment(boolean picker, int section) {
         this.picker = picker;
+        this.section = section;
     }
 
     public ProductFragment addProductActionListener(OnProductAction listener) {
@@ -177,6 +179,10 @@ public class ProductFragment extends DialogFragment {
         });
 
         tabLayoutMediator.attach();
+
+        //tabLayout.selectTab(tabLayout.getTabAt(this.section));
+        System.out.println("Going to tab n°" + this.section);
+        viewPager.setCurrentItem(this.section);
 
     }
 

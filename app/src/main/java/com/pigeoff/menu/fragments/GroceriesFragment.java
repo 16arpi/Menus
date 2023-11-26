@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +21,7 @@ import com.pigeoff.menu.R;
 import com.pigeoff.menu.adapters.GroceriesAdapter;
 import com.pigeoff.menu.adapters.OnAdapterAction;
 import com.pigeoff.menu.data.GrocerieGroup;
+import com.pigeoff.menu.database.GroceryEntity;
 import com.pigeoff.menu.database.GroceryWithProduct;
 import com.pigeoff.menu.models.GroceriesViewModel;
 import com.pigeoff.menu.util.Util;
@@ -105,6 +107,8 @@ public class GroceriesFragment extends Fragment {
             public void onItemClick(GrocerieGroup item, int action) {
                 if (action == OnAdapterAction.ACTION_CHECK) {
                     model.checkGrocery(item, item.checked);
+                } else if (action == OnAdapterAction.ACTION_ADD) {
+                    addCustomGrocerie(item.section);
                 }
             }
 
@@ -115,22 +119,40 @@ public class GroceriesFragment extends Fragment {
         });
 
         floatingActionButton.setOnClickListener(v -> {
-            new ProductFragment(true).addProductActionListener(item -> {
-                new GrocerieEditFragment(item, it -> {
-                    model.addItem(it);
-                }).show(getParentFragmentManager(), "edit_grocerie");
-            }).showFullScreen(getParentFragmentManager());
+            addCustomGrocerie(0);
         });
 
         recyclerView.setOnScrollChangeListener((v, sx, sy, osx, osy) -> {
             if (sy > osy) floatingActionButton.hide();
             else floatingActionButton.show();
         });
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                GrocerieGroup group = adapter.getGroup(viewHolder.getAdapterPosition());
+                if (group != null) for (GroceryEntity g : group.groceries) model.deleteItem(g);
+                else adapter.notifyItemChanged(viewHolder.getAdapterPosition());
+            }
+        }).attachToRecyclerView(recyclerView);
     }
 
     private void updateGroceries(List<GrocerieGroup> items) {
         items.sort(Comparator.comparing(t -> t.product.label));
         items.sort(Comparator.comparingInt(t -> t.product.secion));
         adapter.updateGroceries(new ArrayList<>(items));
+    }
+
+    private void addCustomGrocerie(int section) {
+        new ProductFragment(true, section).addProductActionListener(item -> {
+            new GrocerieEditFragment(item, it -> {
+                model.addItem(it);
+            }).show(getParentFragmentManager(), "edit_grocerie");
+        }).showFullScreen(getParentFragmentManager());
     }
 }

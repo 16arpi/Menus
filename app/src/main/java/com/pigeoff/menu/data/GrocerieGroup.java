@@ -14,12 +14,13 @@ public class GrocerieGroup {
 
     public String label;
     public String quantity;
+    public int section;
     public boolean checked;
 
     public ProductEntity product;
     public List<GroceryEntity> groceries;
 
-    public GrocerieGroup(ProductEntity product, List<GroceryEntity> groceries) {
+    public GrocerieGroup(ProductEntity product, List<GroceryEntity> groceries, int section) {
         Unit[] units = Unit.getUnits();
 
         HashMap<Integer, Integer> counter = new HashMap<>();
@@ -56,6 +57,8 @@ public class GrocerieGroup {
         this.label = product.label;
         this.groceries = groceries;
 
+        this.section = section;
+
     }
 
     public void setChecked(boolean checked) {
@@ -78,7 +81,7 @@ public class GrocerieGroup {
         }
 
         dict.forEach((key, val) -> {
-            group.add(new GrocerieGroup(key, val));
+            group.add(new GrocerieGroup(key, val, key.secion));
         });
 
         return group;
@@ -94,38 +97,35 @@ public class GrocerieGroup {
 
         public void balance() {
             Unit[] units = Unit.getUnits();
-            float value = this.value;
-            int unit = this.unit;
+            HashMap<Unit, Integer> idxOfUnits = new HashMap<>();
+            for (int i = 0; i < units.length; ++i) idxOfUnits.put(units[i], i);
 
-            int best = 99;
-            float bestValue = value;
-            int bestUnit = unit;
-            for (int i = 0; i < units.length; ++i) {
-                Unit u = units[i];
+            List<Unit> sameParent = new ArrayList<>();
+            for (Unit u : units) if (u.parent == units[this.unit].parent) sameParent.add(u);
+            sameParent.sort((t1, t2) -> {
+                float diff = t1.ratio - t2.ratio;
+                return diff < 0 ? -1 : (diff > 0 ? 1 : 0);
+            });
 
-                if (u.parent == unit) {
-                    float toValue = value / u.ratio;
-                    int left = toValue > 0 ? (int) Math.log10((int) toValue) + 1 : 1;
-                    int right = String.format(String.valueOf(toValue), "%.2f").split("\\.")[1].length();
-                    int equilibrum = left + right;
+            Unit originalUnit = units[this.unit];
+            float parentValue = value * originalUnit.ratio;
+            int parentUnit = originalUnit.parent;
 
-                    // TODO Find a better way to choose unit
-
-                    System.out.println("BALANCE");
-                    System.out.println(u.label);
-                    System.out.println(toValue);
-                    System.out.println(equilibrum);
-
-                    if (equilibrum < best) {
-                        best = equilibrum;
-                        bestValue = toValue;
-                        bestUnit = i;
-                    }
+            float finalValue = parentValue;
+            int finalUnit = parentUnit;
+            for (Unit u : sameParent) {
+                float toValue = parentValue / u.ratio;
+                int integerPart = (int) toValue;
+                if (integerPart > 0) {
+                    finalValue = toValue;
+                    finalUnit = idxOfUnits.get(u);
+                } else {
+                    break;
                 }
             }
 
-            this.value = bestValue;
-            this.unit = bestUnit;
+            this.value = finalValue;
+            this.unit = finalUnit;
         }
 
         public static String format(HashMap<Integer, ValueUnit> set) {

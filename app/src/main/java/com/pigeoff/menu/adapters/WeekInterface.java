@@ -3,6 +3,7 @@ package com.pigeoff.menu.adapters;
 import android.content.Intent;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
@@ -33,6 +34,7 @@ public class WeekInterface {
 
     private final WeekModel model;
     private final ImageButton[] imageButtons;
+    private final ImageView[] todayIcons;
     private final ImageButton[] groceriesButtons;
     private final CollapsingToolbarLayout toolbarLayout;
     private final EventAdapter[] adapters;
@@ -44,11 +46,13 @@ public class WeekInterface {
     public WeekInterface(
             FragmentActivity context,
             RecyclerView[] recyclerViews,
+            ImageView[] todayIcons,
             ImageButton[] imageButtons,
             ImageButton[] groceriesButtons,
             MaterialToolbar toolbar,
             CollapsingToolbarLayout toolbarLayout
     ) {
+        this.todayIcons = todayIcons;
         this.imageButtons = imageButtons;
         this.groceriesButtons = groceriesButtons;
         this.toolbarLayout = toolbarLayout;
@@ -283,8 +287,18 @@ public class WeekInterface {
                 imageButtons[day].setVisibility(View.VISIBLE);
                 groceriesButtons[day].setVisibility(View.VISIBLE);
             }
-            System.out.println(thisDay);
-            System.out.println(nowDay);
+
+            Calendar thisDayCalendar = Calendar.getInstance();
+            thisDayCalendar.setTimeInMillis(thisDay);
+
+            Calendar nowDayCalendar = Calendar.getInstance();
+
+            if (thisDayCalendar.get(Calendar.DAY_OF_YEAR) == nowDayCalendar.get(Calendar.DAY_OF_YEAR)
+            && thisDayCalendar.get(Calendar.YEAR) == nowDayCalendar.get(Calendar.YEAR)) {
+                todayIcons[day].setVisibility(View.VISIBLE);
+            } else {
+                todayIcons[day].setVisibility(View.GONE);
+            }
         }
     }
 

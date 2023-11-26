@@ -102,6 +102,8 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
+                android:visibility="gone"
+
                 android:id="@+id/card_ingredients"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -109,29 +111,32 @@
                 app:strokeWidth="0dp"
                 app:cardBackgroundColor="?attr/colorSurfaceContainerLow">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_margin="8dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/label_ingredient"
-                        style="@style/TextAppearance.Material3.TitleMedium"
-                        android:layout_margin="8dp" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recycler_view_ingredients"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="8dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_ingredient"
+                    style="@style/TextAppearance.Material3.TitleMedium"
+                    android:layout_margin="8dp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_ingredients"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
             <com.google.android.material.card.MaterialCardView
+                android:visibility="gone"
+
                 android:id="@+id/card_steps"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -139,27 +144,29 @@
                 app:strokeWidth="0dp"
                 app:cardBackgroundColor="?attr/colorSurfaceContainerLow">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_margin="8dp">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/label_steps"
-                        style="@style/TextAppearance.Material3.TitleMedium"
-                        android:layout_margin="8dp" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recycler_view_steps"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="8dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_steps"
+                    style="@style/TextAppearance.Material3.TitleMedium"
+                    android:layout_margin="8dp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_steps"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

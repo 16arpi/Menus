@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -47,6 +48,7 @@ public class RecipeFragment extends MenuFragment {
     FloatingActionButton addButton;
     RecyclerView recyclerView;
     RecyclerView recyclerViewSearch;
+    LinearLayout layoutEmpty;
 
     RecipeAdapter recipeAdapter;
     RecipeAdapter recipeAdapterSearch;
@@ -83,6 +85,7 @@ public class RecipeFragment extends MenuFragment {
 
         recyclerView = view.findViewById(R.id.recycler_view_recipe);
         recyclerViewSearch = view.findViewById(R.id.recycler_view_recipe_search);
+        layoutEmpty = view.findViewById(R.id.layout_empty);
         addButton = view.findViewById(R.id.add_button);
         searchView = view.findViewById(R.id.search_view);
         searchBar = view.findViewById(R.id.search_bar);
@@ -101,11 +104,18 @@ public class RecipeFragment extends MenuFragment {
     }
 
     private void setupUI(List<RecipeEntity> items) {
+
+        if (items.size() > 0) {
+            layoutEmpty.setVisibility(View.GONE);
+        } else {
+            layoutEmpty.setVisibility(View.VISIBLE);
+        }
+
         recipeAdapter.updateRecipes(new ArrayList<>(items));
 
         searchBar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.item_products) {
-                ProductFragment productFragment = new ProductFragment(false);
+                ProductFragment productFragment = new ProductFragment(false, Constants.TAB_GROCERIES);
                 productFragment.showFullScreen(requireActivity().getSupportFragmentManager());
             } else if (item.getItemId() == R.id.item_export_recipes) {
                 if (products != null) importExport.export(products, items);
@@ -118,7 +128,10 @@ public class RecipeFragment extends MenuFragment {
         addButton.setOnClickListener(v -> {
             RecipeEditFragment editFragment = RecipeEditFragment.newInstance();
             editFragment.showFullScreen(requireActivity().getSupportFragmentManager());
-            editFragment.setActionListener(recipe -> model.addItem(recipe));
+            editFragment.setActionListener(recipe -> {
+                model.addItem(recipe);
+                Util.hideKeyboard(requireActivity());
+            });
         });
 
         recipeAdapter.setOnAdapterAction(new OnAdapterAction<RecipeEntity>() {

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +33,15 @@ public class CalendarFragment extends Fragment {
     RecyclerView recyclerViewFriday;
     RecyclerView recyclerViewSaturday;
     RecyclerView recyclerViewSunday;
+
+    // Today icons
+    ImageView iconTodayMonday;
+    ImageView iconTodayTuesday;
+    ImageView iconTodayWednesday;
+    ImageView iconTodayThursday;
+    ImageView iconTodayFriday;
+    ImageView iconTodaySaturday;
+    ImageView iconTodaySunday;
 
     // Add buttons
     ImageButton buttonAddMonday;
@@ -83,6 +93,14 @@ public class CalendarFragment extends Fragment {
         recyclerViewSaturday = view.findViewById(R.id.recycler_view_saturday);
         recyclerViewSunday = view.findViewById(R.id.recycler_view_sunday);
 
+        iconTodayMonday = view.findViewById(R.id.iconTodayMonday);
+        iconTodayTuesday = view.findViewById(R.id.iconTodayTuesday);
+        iconTodayWednesday = view.findViewById(R.id.iconTodayWednesday);
+        iconTodayThursday = view.findViewById(R.id.iconTodayThursday);
+        iconTodayFriday = view.findViewById(R.id.iconTodayFriday);
+        iconTodaySaturday = view.findViewById(R.id.iconTodaySaturday);
+        iconTodaySunday = view.findViewById(R.id.iconTodaySunday);
+
         buttonAddMonday = view.findViewById(R.id.button_add_monday);
         buttonAddTuesday = view.findViewById(R.id.button_add_tuesday);
         buttonAddWednesday = view.findViewById(R.id.button_add_wednesday);
@@ -109,6 +127,15 @@ public class CalendarFragment extends Fragment {
                     recyclerViewFriday,
                     recyclerViewSaturday,
                     recyclerViewSunday
+                },
+                new ImageView[] {
+                        iconTodayMonday,
+                        iconTodayTuesday,
+                        iconTodayWednesday,
+                        iconTodayThursday,
+                        iconTodayFriday,
+                        iconTodaySaturday,
+                        iconTodaySunday
                 },
                 new ImageButton[] {
                         buttonAddMonday,

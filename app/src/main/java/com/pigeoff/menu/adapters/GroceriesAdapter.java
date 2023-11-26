@@ -53,7 +53,7 @@ public class GroceriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             ProductEntity p = gp.product;
 
             if (p.secion != lastHeader) {
-                result.add(i, new GrocerieGroup(new ProductEntity(), new ArrayList<>()));
+                result.add(i, new GrocerieGroup(new ProductEntity(), new ArrayList<>(), gp.section));
                 result.add(i + 1, gp);
                 lastHeader = p.secion;
                 i += 2;
@@ -110,8 +110,8 @@ public class GroceriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        GrocerieGroup gp = items.get(position);
         if (holder instanceof GroceriesViewHolder) {
-            GrocerieGroup gp = items.get(position);
             ProductEntity product = gp.product;
 
             GroceriesViewHolder groceriesHolder = (GroceriesViewHolder) holder;
@@ -148,6 +148,11 @@ public class GroceriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         } else {
             SectionViewHolder sectionViewHolder = (SectionViewHolder) holder;
             sectionViewHolder.section.setText(Util.getSectionsLabel(context)[sectionViewHolder.type]);
+            sectionViewHolder.add.setOnClickListener(view -> {
+                System.out.println("Add product section " + gp.section);
+                listener.onItemClick(gp, OnAdapterAction.ACTION_ADD);
+
+            });
         }
     }
 
@@ -177,12 +182,14 @@ public class GroceriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private static class SectionViewHolder extends RecyclerView.ViewHolder {
 
         TextView section;
+        ImageButton add;
         int type;
 
         public SectionViewHolder(int viewType, @NonNull View itemView) {
             super(itemView);
             type = viewType;
             section = itemView.findViewById(R.id.text_title);
+            add = itemView.findViewById(R.id.button_add);
         }
     }
 
@@ -215,6 +222,14 @@ public class GroceriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         viewTypes = prepareViewTypes(newItems);
 
         result.dispatchUpdatesTo(this);
+    }
+
+    public GrocerieGroup getGroup(int position) {
+        if (getItemViewType(position) == VIEW_GROCERY) {
+            return items.get(position);
+        } else {
+            return null;
+        }
     }
 
 }

@@ -6,72 +6,79 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp" >
-
-
-        <TextView
-            style="@style/TextAppearance.Material3.TitleMedium"
-            android:lines="1"
-            android:layout_margin="16dp"
-            android:id="@+id/edit_ingredient_label"
-            android:text="@string/label_ingredient_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
+        android:layout_margin="8dp">
 
         <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:padding="8dp" >
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="?attr/textInputFilledStyle"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:hint="@string/label_ingredient_value"
-                android:layout_margin="8dp">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_ingredient_value"
-                    android:layout_width="match_parent"
+            <TextView
+                style="@style/TextAppearance.Material3.TitleMedium"
+                android:lines="1"
+                android:layout_margin="16dp"
+                android:id="@+id/edit_ingredient_label"
+                android:text="@string/label_ingredient_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="?attr/textInputFilledStyle"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:inputType="numberDecimal"
-                    />
+                    android:hint="@string/label_ingredient_value"
+                    android:layout_margin="8dp">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_ingredient_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:inputType="numberDecimal"
+                        />
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:hint="@string/label_ingredient_unit"
-                android:layout_margin="8dp">
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <AutoCompleteTextView
-                    android:focusable="false"
-                    android:id="@+id/edit_ingredient_unit"
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    app:simpleItems="@array/units"
-                    android:maxLines="1"
-                    />
+                    android:hint="@string/label_ingredient_unit"
+                    android:layout_margin="8dp">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <AutoCompleteTextView
+                        android:focusable="false"
+                        android:id="@+id/edit_ingredient_unit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:simpleItems="@array/units"
+                        android:maxLines="1"
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+
         </LinearLayout>
 
+    </com.google.android.material.card.MaterialCardView>
 
-    </LinearLayout>
-
-    <View
+    <!--<View
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="?android:attr/listDivider" />
+        android:background="?android:attr/listDivider" />-->
 
 </LinearLayout>

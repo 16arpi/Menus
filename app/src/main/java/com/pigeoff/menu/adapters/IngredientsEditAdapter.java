@@ -19,6 +19,7 @@ import com.pigeoff.menu.util.Util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class IngredientsEditAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -108,14 +109,8 @@ public class IngredientsEditAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     // TODO Switch items
     public void switchItems(int start, int end) {
-        Ingredient iStart = ingredients.get(start);
-        Ingredient iEnd = ingredients.get(end);
-
-        ingredients.set(end, iStart);
-        ingredients.set(start, iEnd);
-
-        notifyItemChanged(start);
-        notifyItemChanged(end);
+        Collections.swap(ingredients, start, end);
+        notifyItemMoved(start, end);
     }
 
     public void addItem(Ingredient ingredient) {

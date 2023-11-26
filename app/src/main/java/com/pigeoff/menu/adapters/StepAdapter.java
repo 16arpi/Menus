@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.pigeoff.menu.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class StepAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -38,9 +39,11 @@ public class StepAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         if (editable) {
             itemHolder.buttonClose.setVisibility(View.VISIBLE);
+            itemHolder.checkBox.setVisibility(View.GONE);
         }
         else {
             itemHolder.buttonClose.setVisibility(View.GONE);
+            itemHolder.checkBox.setVisibility(View.VISIBLE);
         }
 
 
@@ -57,14 +60,8 @@ public class StepAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     // TODO switch items
     public void switchItems(int start, int end) {
-        String iStart = steps.get(start);
-        String iEnd = steps.get(end);
-
-        steps.set(end, iStart);
-        steps.set(start, iEnd);
-
-        notifyItemChanged(start);
-        notifyItemChanged(end);
+        Collections.swap(steps, start, end);
+        notifyItemMoved(start, end);
     }
 
     public void addItem(String item) {

@@ -27,6 +27,36 @@
                 <!-- Screen content goes here. -->
             </androidx.recyclerview.widget.RecyclerView>
 
+            <LinearLayout
+                android:id="@+id/layout_empty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:textAlignment="center"
+                android:visibility="gone"
+                android:paddingTop="100dp"
+                android:layout_margin="8dp">
+
+                <TextView
+                    style="@style/TextAppearance.Material3.DisplayLarge"
+                    android:textAlignment="center"
+                    android:alpha="0.5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/empty_title"
+                    android:layout_margin="8dp"/>
+
+                <TextView
+                    style="@style/TextAppearance.Material3.TitleLarge"
+                    android:textAlignment="center"
+                    android:alpha="0.5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/empty_message"
+                    android:layout_margin="8dp"/>
+
+            </LinearLayout>
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

@@ -29,6 +29,7 @@ import com.pigeoff.menu.data.Ingredient;
 import com.pigeoff.menu.database.ProductEntity;
 import com.pigeoff.menu.database.RecipeEntity;
 import com.pigeoff.menu.models.RecipeViewModel;
+import com.pigeoff.menu.util.Constants;
 import com.pigeoff.menu.util.Util;
 
 import java.util.ArrayList;
@@ -150,7 +151,7 @@ public class RecipeEditFragment extends DialogFragment {
         });
 
         editIngredientSubmit.setOnClickListener(v -> {
-            ProductFragment productFragment = new ProductFragment(true);
+            ProductFragment productFragment = new ProductFragment(true, Constants.TAB_GROCERIES);
             productFragment.addProductActionListener(item -> {
                 Ingredient ingredient = new Ingredient(
                         item,
@@ -234,6 +235,35 @@ public class RecipeEditFragment extends DialogFragment {
             stepAdapter = new StepAdapter(requireContext(), steps, true);
             recyclerViewSteps.setAdapter(stepAdapter);
 
+            new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
+                @Override
+                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                    int from = viewHolder.getAdapterPosition();
+                    int to = target.getAdapterPosition();
+                    stepAdapter.switchItems(from, to);
+                    return true;
+                }
+
+                @Override
+                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+                }
+            }).attachToRecyclerView(recyclerViewSteps);
+
+            new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
+                @Override
+                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                    int from = viewHolder.getAdapterPosition();
+                    int to = target.getAdapterPosition();
+                    ingredientAdapter.switchItems(from, to);
+                    return true;
+                }
+
+                @Override
+                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+                }
+            }).attachToRecyclerView(recyclerViewIngredients);
         });
 
     }

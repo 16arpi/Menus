@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="8dp">
 
     <TextView
-        android:layout_margin="16dp"
+        android:layout_margin="8dp"
         style="@style/TextAppearance.Material3.TitleMedium"
         android:id="@+id/text_title"
-        android:layout_width="match_parent"
+        android:text="@string/product_section"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content" />
+
+    <ImageButton
+        android:id="@+id/button_add"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_margin="8dp"
+        android:src="@drawable/ic_add"
+        android:background="?selectableItemBackgroundBorderless" />
 
 </LinearLayout>
