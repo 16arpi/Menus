@@ -1,4 +1,4 @@
-# À Table !
+# Let's diner !
 
 Android application to organise menus and shopping list.
 
