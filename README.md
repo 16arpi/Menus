@@ -1,54 +1,57 @@
 # À Table !
 
-Application android pour organiser les menus et les courses.
+Android application to organise menus and shopping list.
 
 ![./assets/preview.png](./assets/preview.jpg)
 
-## Fonctionnalités
+## Features
 
-### Agenda des menus
+### Menus' calendar
 
-Pour chaque jour des prochaines semaines, indiquer les plats et désserts prévus. Ils peuvent provenir du livre des recettes, mais peuvent aussi être créés à la volée. Une fois les plats ajoutés, une option permet d'ajouter les ingrédients à la liste de courses.
+For each day of the next weeks, plan the meals and desserts you want to cook. They can come your cookbook or they can be created directly. Once meals are added, an option allows to add all their ingredients to the shopping list. 
 
-### Livre de recettes
+### Cookbook
 
-Section d'exploration des recettes ajoutées à l'application. L'exploration peut-être libre, filtrée par type de recette (entrée, plat, dessert etc.) et/ou à partir d'une recherche par mots clés.
+Exploration section of all your recipes. See the details of your recipes or edit them.
 
-Les ingrédients des recettes utilisent une banque de produits enrichie par l'utilisateur. Les produits utilisent des unités génériques préalablement établies dans l'application. Cela permet le regroupement d'ingrédients similaires lors de la génération de la liste de courses.
+The ingredients of the recipes use generic products shared among all the recipes. It allows the app to easily create a clean and simple shopping list.
 
-### Liste de courses
+### Shopping list
 
-L'utilisateur peut ajouter ses menus à la liste des courses. Les produits similaires entre recettes sont regroupés pour éviter les doublons.
+Users can add their menus to the shopping list. Similar products are gathered together to avoid duplicates.
 
 ## Etapes de développement
 
-- [X] Données
-  - [X] Structures de données
-    - [X] Base de données
-    - [X] Entité pour les recettes
-    - [X] Entité pour les plats de l'agenda
-    - [X] Entité pour les éléments des courses
-    - [X] Classe de la liste de courses
-    - [x] Entité pour les produits alimentaires (et leur unité)
-    - [ ] Entité pour l'inventaire des produits
-  - [X] Manipulation des données
-    - [x] Produits des courses => liste des courses
-  - [X] Utilisation de LiveData pour les objets de la base de données
+- [X] Data
+  - [X] Data structure
+    - [X] Database
+    - [X] Entity for recipes
+    - [X] Entity for meals' calendar
+    - [X] Entity for shopping list items
+    - [X] Class for gathered shopping list items
+    - [x] Entity for products
+    - [ ] Entity for products inventory
+  - [X] Data manipulation
+    - [x] Calendar's recipes ingredients => shopping list
+  - [X] Usage of LiveData for database objects
 - [X] Interface
-  - [X] Agenda
-  - [X] Recettes
-  - [X] Courses
-  - [X] Produits
-  - [ ] Inventaire
-- [X] Fonctionnalités supplémentaires
-  - [X] Exporter les recettes
-  - [ ] Importer les recettes
+  - [X] Calendar
+  - [X] Cookbook
+  - [X] Shopping list
+  - [X] Products
+  - [ ] Inventory
+- [X] Other features
+  - [X] Export recipes
+  - [X] Import recipes
+- [X] Langages
+  - [X] English
+  - [X] French
 
-### Produits
+### Products
 
-Pour ajouter un ingrédient dans une recette, l'utilisateur doit choisir ou créer le produit associé à l'aide de l'interface ad hoc. Cela enrichie une banque de produits commune à toutes les recettes. L'avantage de cette banque est de faciliter le regroupement d'ingrédients quand ils passent dans la liste des courses (ex: 100g de farine dans la recette A et 50g de farine dans la recette B donne 150g de farine dans la liste des courses). 
+To add ingredients in a recipe, user needs to choose or create the related product using the ad hoc interface. This feeds a product batabase shared among all the recipes. The advantage of this system is to merge similar products and units (i.g. 100g of flour in recipe A and 1kg of flour in recipe B become 1.1kg of flour in the shopping list)
 
-### Inventaire EN PROJET
+### Inventaire (en projet)
 
 L'inventaire repertorirait les ingrédients/produits achetés. Deux moyens sont envisagés pour founir cet inventaire :
 

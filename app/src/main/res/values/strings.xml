@@ -1,95 +1,95 @@
 <resources>
-    <string name="app_name">À Table !</string>
+    <string name="app_name">Diner\'s ready !</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- MAIN NAVIGATION -->
-    <string name="item_calendar">Calendrier</string>
-    <string name="item_recipes">Recettes</string>
-    <string name="item_groceries">Courses</string>
-    <string name="item_search">Rechercher</string>
-    <string name="item_last_week">Semaine dernière</string>
-    <string name="item_next_week">Prochaine semaine</string>
-    <string name="item_today">Aujourd\'hui</string>
+    <string name="item_calendar">Calendar</string>
+    <string name="item_recipes">Cookbook</string>
+    <string name="item_groceries">Shopping</string>
+    <string name="item_search">Search</string>
+    <string name="item_last_week">Last week</string>
+    <string name="item_next_week">Next week</string>
+    <string name="item_today">Today</string>
 
     <!-- RECIPE FRAGMENT -->
     <string name="empty_title">¯\\_(ツ)_/¯</string>
-    <string name="empty_message">Livre des recettes vide. Ajoutez quelques recettes pour commencer à planifier vos menus.</string>
+    <string name="empty_message">The cookbook is empty. Add some recipes to start planning your menus.</string>
 
     <!-- EDIT RECIPE -->
-    <string name="label_submit">Enregistrer</string>
-    <string name="label_title">Titre</string>
+    <string name="label_submit">Save</string>
+    <string name="label_title">Title</string>
     <string name="label_meal">Type</string>
     <string name="label_portions">Portions</string>
-    <string name="label_ingredient">Ingrédients</string>
-    <string name="label_ingredient_value">Valeur</string>
-    <string name="label_ingredient_unit">Unité</string>
-    <string name="label_ingredient_label">Ingrédient</string>
-    <string name="label_steps">Préparation</string>
-    <string name="label_step_label">Etape</string>
+    <string name="label_ingredient">Ingredients</string>
+    <string name="label_ingredient_value">Value</string>
+    <string name="label_ingredient_unit">Unit</string>
+    <string name="label_ingredient_label">Ingredient</string>
+    <string name="label_steps">Preparation</string>
+    <string name="label_step_label">Step</string>
 
     <!--- TAB LABELS -->
-    <string name="tab_ingredient_groceries" >Epicerie</string>
-    <string name="tab_ingredient_fruits" >Fruits légumes</string>
-    <string name="tab_ingredient_meat" >Viandes poissons</string>
-    <string name="tab_ingredient_fresh" >Produits frais</string>
-    <string name="tab_ingredient_drinks" >Boissons</string>
-    <string name="tab_ingredient_divers" >Divers</string>
+    <string name="tab_ingredient_groceries" >Groceries</string>
+    <string name="tab_ingredient_fruits" >Fruits vegetables</string>
+    <string name="tab_ingredient_meat" >Meat fish</string>
+    <string name="tab_ingredient_fresh" >Fresh products</string>
+    <string name="tab_ingredient_drinks" >Drinks</string>
+    <string name="tab_ingredient_divers" >Other</string>
 
 
     <!-- CALENDAR FRAGMENT -->
-    <string name="calendar_monday">Lundi</string>
-    <string name="calendar_tuesday">Mardi</string>
-    <string name="calendar_wednesday">Mercredi</string>
-    <string name="calendar_thursday">Jeudi</string>
-    <string name="calendar_friday">Vendredi</string>
-    <string name="calendar_saturday">Samedi</string>
-    <string name="calendar_sunday">Dimanche</string>
+    <string name="calendar_monday">Monday</string>
+    <string name="calendar_tuesday">Tuesday</string>
+    <string name="calendar_wednesday">Wednesday</string>
+    <string name="calendar_thursday">Thursday</string>
+    <string name="calendar_friday">Friday</string>
+    <string name="calendar_saturday">Saturday</string>
+    <string name="calendar_sunday">Sunday</string>
 
-    <string name="calendar_add_groceries">Ajouter aux courses</string>
-    <string name="calendar_delete_event">Supprimer</string>
-    <string name="calendar_product_added">Recette ajoutée aux courses</string>
-    <string name="calendar_product_added_error">Erreur, le plat a déjà été ajouté aux courses</string>
-    <string name="calendar_product_added_plural">Recettes ajoutées aux courses</string>
+    <string name="calendar_add_groceries">Add to shopping list</string>
+    <string name="calendar_delete_event">Delete</string>
+    <string name="calendar_product_added">Recipe added to the shopping list</string>
+    <string name="calendar_product_added_error">Error, your meal is already in the shopping list</string>
+    <string name="calendar_product_added_plural">Recipes added to the shopping list</string>
 
     <!-- RECIPE ACTIVITY -->
-    <string name="label_delete">Supprimer</string>
-    <string name="label_edit">Modifier</string>
-    <string name="label_export">Exporter</string>
-    <string name="recipe_delete_title">Supprimer la recette</string>
-    <string name="recipe_delete_message">Attention, tous vos menus et vos courses liés à cette recette seront aussi supprimés.</string>
-    <string name="recipe_delete_delete">Supprimer</string>
-    <string name="recipe_delete_cancel">Annuler</string>
-    <string name="recipe_export">Exporter les recettes</string>
-    <string name="recipe_import">Importer des recettes</string>
+    <string name="label_delete">Delete</string>
+    <string name="label_edit">Edit</string>
+    <string name="label_export">Export</string>
+    <string name="recipe_delete_title">Delete the recipe</string>
+    <string name="recipe_delete_message">Warning, all your menus and shopping items related to this recipe will be deleted as well.</string>
+    <string name="recipe_delete_delete">Delete</string>
+    <string name="recipe_delete_cancel">Cancael</string>
+    <string name="recipe_export">Export the recipes</string>
+    <string name="recipe_import">Import recipes</string>
 
 
     <!-- IMPORT EXPORT -->
-    <string name="import_failed">L\'importation a échoué</string>
+    <string name="import_failed">Importation failed :(</string>
 
     <!-- GROCERIES -->
-    <string name="item_remove_check" >Nettoyer</string>
-    <string name="item_events_manager" >Gérer les plats</string>
-    <string name="item_remove_all" >Tout effacer</string>
+    <string name="item_remove_check" >Clean</string>
+    <string name="item_events_manager" >Manage meals</string>
+    <string name="item_remove_all" >Delete all items</string>
 
     <!--- PRODUCT -->
-    <string name="product">Produits</string>
-    <string name="product_singular">Produit</string>
-    <string name="product_name">Nom</string>
-    <string name="product_unit">Unité par défaut</string>
-    <string name="product_section">Catégorie</string>
+    <string name="product">Products</string>
+    <string name="product_singular">Product</string>
+    <string name="product_name">Name</string>
+    <string name="product_unit">Default unit</string>
+    <string name="product_section">Category</string>
 
 
-    <string name="product_delete_dialog_message" >Impossible de supprimer le produit car il est utilisé dans une de vos recettes.</string>
+    <string name="product_delete_dialog_message" >Impossible to delete the product because it is used in one of your recipes.</string>
     <string name="product_delete_dialog_ok" >Ok</string>
 
 
 
     <string-array name="meals" >
-        <item>Plat</item>
-        <item>Entrée</item>
+        <item>Meal</item>
+        <item>Starter</item>
         <item>Dessert</item>
-        <item>Divers</item>
+        <item>Other</item>
     </string-array>
 
     <string name="default_unit">g</string>
@@ -109,11 +109,11 @@
     </string-array>
 
     <string-array name="section" >
-        <item >Epicerie</item>
-        <item >Fruits légumes</item>
-        <item >Viandes poissons</item>
-        <item >Produits frais</item>
-        <item >Boissons</item>
-        <item >Divers</item>
+        <item >Groceries</item>
+        <item >Fruits vegetables</item>
+        <item >Meat fish</item>
+        <item >Fresh products</item>
+        <item >Drinks</item>
+        <item >Other</item>
     </string-array>
 </resources>
