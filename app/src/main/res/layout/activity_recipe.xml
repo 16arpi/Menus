@@ -31,7 +31,7 @@
 
             <TextView
                 android:id="@+id/recipe_title"
-                android:text="Title"
+                android:text=""
                 style="@style/TextAppearance.Material3.HeadlineLarge"
                 android:layout_margin="8dp"
                 android:layout_width="match_parent"
@@ -40,7 +40,7 @@
             <TextView
                 android:visibility="gone"
                 android:id="@+id/recipeType"
-                android:text="Title"
+                android:text=""
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
