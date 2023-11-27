@@ -2,10 +2,7 @@ package com.pigeoff.menu.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
@@ -32,12 +29,12 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new RecipeViewHolder(LayoutInflater.from(context).inflate(R.layout.adapter_recipe, parent, false));
+        return new ObjectListViewHolder(LayoutInflater.from(context).inflate(R.layout.adapter_recipe, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        RecipeViewHolder recipeViewHolder = (RecipeViewHolder) holder;
+        ObjectListViewHolder recipeViewHolder = (ObjectListViewHolder) holder;
         RecipeEntity entity = recipes.get(position);
 
         if (entity.title.length() > 1) {
@@ -78,22 +75,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public void setOnAdapterAction(OnAdapterAction<RecipeEntity> listener) {
         this.listener = listener;
-    }
-
-    private static class RecipeViewHolder extends RecyclerView.ViewHolder {
-
-        public LinearLayout cardItem;
-        public TextView itemLetter;
-        public TextView itemTitle;
-        public TextView itemSubTitle;
-
-        public RecipeViewHolder(@NonNull View itemView) {
-            super(itemView);
-            cardItem = itemView.findViewById(R.id.card_item);
-            itemLetter = itemView.findViewById(R.id.text_letter);
-            itemTitle = itemView.findViewById(R.id.text_recipe);
-            itemSubTitle = itemView.findViewById(R.id.text_recipe_sub);
-        }
     }
 
 }

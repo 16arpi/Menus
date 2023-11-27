@@ -31,7 +31,8 @@
 
             <LinearLayout
                 android:orientation="vertical"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:padding="8dp">
 
@@ -49,6 +50,15 @@
                     android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                     />
             </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/button_more"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_margin="16dp"
+                android:src="@drawable/ic_more"
+                android:background="?selectableItemBackgroundBorderless"
+                android:visibility="gone"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

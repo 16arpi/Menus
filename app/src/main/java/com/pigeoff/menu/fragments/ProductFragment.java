@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.chip.ChipGroup;
@@ -128,18 +128,15 @@ public class ProductFragment extends DialogFragment {
             ProductEntity item = new ProductEntity();
             item.label = String.valueOf(editSearch.getText());
             ProductEditFragment editFragment = new ProductEditFragment(item, getSection());
-            editFragment.setOnEditListener(new ProductEditFragment.OnEditListener() {
-                @Override
-                public void onSubmit(ProductEntity product) {
-                    model.addProduct(item, requireActivity(), id -> {
-                        if (picker && listener != null) {
-                            product.id = id;
-                            listener.onItemSelected(product);
-                            dismissFullScreen(getParentFragmentManager());
-                        }
-                    });
-                }
-            });
+            editFragment.setOnEditListener(product ->
+                model.addProduct(item, requireActivity(), id -> {
+                    if (picker && listener != null) {
+                        product.id = id;
+                        listener.onItemSelected(product);
+                        dismissFullScreen(getParentFragmentManager());
+                    }
+                })
+            );
             editFragment.show(requireActivity().getSupportFragmentManager(), "edit");
         });
 
@@ -168,7 +165,7 @@ public class ProductFragment extends DialogFragment {
             }
         });
 
-        recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(adapter);
 
         recyclerView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
@@ -194,9 +191,7 @@ public class ProductFragment extends DialogFragment {
             }
         });
 
-        chips.setOnCheckedStateChangeListener((group, ids) -> {
-            updateData();
-        });
+        chips.setOnCheckedStateChangeListener((group, ids) -> updateData());
 
         if (section >= 0) {
             if (section == 0) {
@@ -217,37 +212,29 @@ public class ProductFragment extends DialogFragment {
     }
 
     public void updateData() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                List<Integer> checked = chips.getCheckedChipIds();
-                List<ProductEntity> items = new ArrayList<>();
-                for (ProductEntity p : products) {
-                    if (Util.stringMatchSearch(p.label, query)) {
-                        if (p.secion == 0 && checked.contains(R.id.chip_filter_groceries)) {
-                            items.add(p);
-                        } else if (p.secion == 1 && checked.contains(R.id.chip_filter_fruits)) {
-                            items.add(p);
-                        } else if (p.secion == 2 && checked.contains(R.id.chip_filter_meat)) {
-                            items.add(p);
-                        } else if (p.secion == 3 && checked.contains(R.id.chip_filter_fresh)) {
-                            items.add(p);
-                        } else if (p.secion == 4 && checked.contains(R.id.chip_filter_drinks)) {
-                            items.add(p);
-                        } else if (p.secion == 5 && checked.contains(R.id.chip_filter_divers)) {
-                            items.add(p);
-                        } else if (checked.size() == 0) {
-                            items.add(p);
-                        }
+        new Thread(() -> {
+            List<Integer> checked = chips.getCheckedChipIds();
+            List<ProductEntity> items = new ArrayList<>();
+            for (ProductEntity p : products) {
+                if (Util.stringMatchSearch(p.label, query)) {
+                    if (p.secion == 0 && checked.contains(R.id.chip_filter_groceries)) {
+                        items.add(p);
+                    } else if (p.secion == 1 && checked.contains(R.id.chip_filter_fruits)) {
+                        items.add(p);
+                    } else if (p.secion == 2 && checked.contains(R.id.chip_filter_meat)) {
+                        items.add(p);
+                    } else if (p.secion == 3 && checked.contains(R.id.chip_filter_fresh)) {
+                        items.add(p);
+                    } else if (p.secion == 4 && checked.contains(R.id.chip_filter_drinks)) {
+                        items.add(p);
+                    } else if (p.secion == 5 && checked.contains(R.id.chip_filter_divers)) {
+                        items.add(p);
+                    } else if (checked.size() == 0) {
+                        items.add(p);
                     }
                 }
-                requireActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter.updateItems(items);
-                    }
-                });
             }
+            requireActivity().runOnUiThread(() -> adapter.updateItems(items));
         }).start();
     }
 

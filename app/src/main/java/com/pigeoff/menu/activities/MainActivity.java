@@ -71,8 +71,4 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.frame_layout, fragments[tab])
                 .commit();
     }
-
-    private void showHideBottomNavigation(boolean show) {
-
-    }
 }
