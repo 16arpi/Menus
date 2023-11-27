@@ -9,8 +9,7 @@
         android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:strokeWidth="0dp"
-        app:cardBackgroundColor="?attr/colorSurfaceVariant"
+
         android:focusable="true"
         android:clickable="true"
         android:layout_margin="8dp"

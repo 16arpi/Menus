@@ -2,6 +2,8 @@ package com.pigeoff.menu.fragments;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +15,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.android.material.textfield.TextInputEditText;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.adapters.ProductAdapter;
 import com.pigeoff.menu.adapters.ProductSectionAdapter;
@@ -34,18 +40,17 @@ public class ProductFragment extends DialogFragment {
 
     private final boolean picker;
     private final int section;
+    int tab = Constants.TAB_GROCERIES;
+    String query = "";
 
     ProductViewModel model;
     List<ProductEntity> products;
-
-    ProductSectionAdapter adapter;
-    int tab = Constants.TAB_GROCERIES;
-
+    ProductAdapter adapter;
     OnProductAction listener;
-    AutoCompleteTextView editSearch;
-    TabLayout tabLayout;
-    ViewPager2 viewPager;
+    TextInputEditText editSearch;
     FloatingActionButton floatingActionButton;
+    RecyclerView recyclerView;
+    ChipGroup chips;
 
     public ProductFragment(boolean picker, int section) {
         this.picker = picker;
@@ -76,17 +81,13 @@ public class ProductFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         editSearch = view.findViewById(R.id.search_bar);
-        tabLayout = view.findViewById(R.id.tab_layout);
-        viewPager = view.findViewById(R.id.view_pager);
         floatingActionButton = view.findViewById(R.id.floating_action_button);
+        chips = view.findViewById(R.id.chip_group_filter);
+        recyclerView = view.findViewById(R.id.recycler_view);
 
 
         model.getItems().observe(getViewLifecycleOwner(), productEntities -> {
             products = productEntities;
-            editSearch.setAdapter(
-                    new ArrayAdapter<>(requireContext(),
-                            android.R.layout.simple_list_item_1, products)
-            );
             updateData();
         });
 
@@ -108,28 +109,32 @@ public class ProductFragment extends DialogFragment {
         return super.onCreateDialog(savedInstanceState);
     }
 
+    private int getSection() {
+        if (chips.getCheckedChipIds().size() == 1) {
+            int id = chips.getCheckedChipIds().get(0);
+            if (id == R.id.chip_filter_groceries) {
+                return 0;
+            } else if (id == R.id.chip_filter_fruits) {
+                return 1;
+            } else if (id == R.id.chip_filter_meat) {
+                return 2;
+            } else if (id == R.id.chip_filter_fresh) {
+                return 3;
+            } else if (id == R.id.chip_filter_drinks) {
+                return 4;
+            } else if (id == R.id.chip_filter_divers) {
+                return 5;
+            }
+        }
+
+        return Constants.TAB_GROCERIES;
+    }
+
     private void setupUI() {
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab t) {
-                tab = t.getPosition();
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-
         floatingActionButton.setOnClickListener(view -> {
             ProductEntity item = new ProductEntity();
             item.label = editSearch.getText().toString();
-            ProductEditFragment editFragment = new ProductEditFragment(item, tab);
+            ProductEditFragment editFragment = new ProductEditFragment(item, getSection());
             editFragment.setOnEditListener(new ProductEditFragment.OnEditListener() {
                 @Override
                 public void onSubmit(ProductEntity product) {
@@ -145,7 +150,7 @@ public class ProductFragment extends DialogFragment {
             editFragment.show(requireActivity().getSupportFragmentManager(), "edit");
         });
 
-        adapter = new ProductSectionAdapter(requireContext(), new ArrayList<>(), new ProductAdapter.OnItemAction() {
+        adapter = new ProductAdapter(requireContext(), new ArrayList<>(), new ProductAdapter.OnItemAction() {
             @Override
             public void onItemSelected(ProductEntity product) {
                 chooseProduct(product);
@@ -170,23 +175,71 @@ public class ProductFragment extends DialogFragment {
             }
         });
 
-        viewPager.setAdapter(adapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
+        recyclerView.setAdapter(adapter);
 
-        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
-            String[] sections = requireContext().getResources().getStringArray(R.array.section);
-            tab.setText(sections[position]);
+        recyclerView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (scrollY > oldScrollY) floatingActionButton.hide();
+            else floatingActionButton.show();
         });
 
-        tabLayoutMediator.attach();
+        editSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-        //tabLayout.selectTab(tabLayout.getTabAt(this.section));
-        System.out.println("Going to tab n°" + this.section);
-        viewPager.setCurrentItem(this.section);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                query = charSequence.toString();
+                updateData();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        chips.setOnCheckedStateChangeListener((group, ids) -> {
+            updateData();
+        });
 
     }
 
     public void updateData() {
-        adapter.updateData(products);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<Integer> checked = chips.getCheckedChipIds();
+                List<ProductEntity> items = new ArrayList<>();
+                for (ProductEntity p : products) {
+                    if (Util.stringMatchSearch(p.label, query)) {
+                        if (p.secion == 0 && checked.contains(R.id.chip_filter_groceries)) {
+                            items.add(p);
+                        } else if (p.secion == 1 && checked.contains(R.id.chip_filter_fruits)) {
+                            items.add(p);
+                        } else if (p.secion == 2 && checked.contains(R.id.chip_filter_meat)) {
+                            items.add(p);
+                        } else if (p.secion == 3 && checked.contains(R.id.chip_filter_fresh)) {
+                            items.add(p);
+                        } else if (p.secion == 4 && checked.contains(R.id.chip_filter_drinks)) {
+                            items.add(p);
+                        } else if (p.secion == 5 && checked.contains(R.id.chip_filter_divers)) {
+                            items.add(p);
+                        } else if (checked.size() == 0) {
+                            items.add(p);
+                        }
+                    }
+                }
+                requireActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.updateItems(items);
+                    }
+                });
+            }
+        }).start();
     }
 
     private void chooseProduct(ProductEntity product) {
@@ -195,7 +248,7 @@ public class ProductFragment extends DialogFragment {
             dismissFullScreen(getParentFragmentManager());
         }
         else {
-            ProductEditFragment editFragment = new ProductEditFragment(product, tab);
+            ProductEditFragment editFragment = new ProductEditFragment(product, product.secion);
             editFragment.show(requireActivity().getSupportFragmentManager(), "edit");
             editFragment.setOnEditListener(p -> {
                 model.updateProduct(p);

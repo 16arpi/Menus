@@ -10,11 +10,13 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.database.ProductEntity;
+import com.pigeoff.menu.util.DiffUtilCallback;
 
 import java.util.List;
 
@@ -84,5 +86,22 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public interface OnItemAction {
         void onItemSelected(ProductEntity product);
         void onItemDeleted(ProductEntity product);
+    }
+
+    public void updateItems(List<ProductEntity> newItems) {
+        DiffUtilCallback<ProductEntity> diffCallback = new DiffUtilCallback<>(items, newItems, new DiffUtilCallback.DifferenceCallback<ProductEntity>() {
+            @Override
+            public boolean sameItem(ProductEntity oldElement, ProductEntity newElement) {
+                return oldElement.id == newElement.id;
+            }
+
+            @Override
+            public boolean sameContent(ProductEntity oldElement, ProductEntity newElement) {
+                return oldElement.equals(newElement);
+            }
+        });
+        DiffUtil.DiffResult result = DiffUtil.calculateDiff(diffCallback);
+        items = newItems;
+        result.dispatchUpdatesTo(this);
     }
 }
