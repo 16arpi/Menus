@@ -118,12 +118,12 @@
     </string-array>
 
     <string-array name="days" >
+        <item>Dimanche</item>
         <item>Lundi</item>
         <item>Mardi</item>
         <item>Mercredi</item>
         <item>Jeudi</item>
         <item>Vendredi</item>
         <item>Samedi</item>
-        <item>Dimanche</item>
     </string-array>
 </resources>

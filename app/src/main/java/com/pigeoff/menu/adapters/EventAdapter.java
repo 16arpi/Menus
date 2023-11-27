@@ -18,14 +18,15 @@ import com.pigeoff.menu.database.CalendarWithRecipe;
 import com.pigeoff.menu.util.DiffUtilCallback;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     Context context;
-    ArrayList<CalendarWithRecipe> items;
+    List<CalendarWithRecipe> items;
     OnAdapterAction<CalendarWithRecipe> listener;
 
-    public EventAdapter(Context context, ArrayList<CalendarWithRecipe> items) {
+    public EventAdapter(Context context, List<CalendarWithRecipe> items) {
         this.context = context;
         this.items = items;
     }
@@ -84,23 +85,5 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     public void setOnAdapterAction(OnAdapterAction<CalendarWithRecipe> listener) {
         this.listener = listener;
-    }
-
-    public void updateItems(ArrayList<CalendarWithRecipe> newItems) {
-        DiffUtilCallback<CalendarWithRecipe> utilCallback = new DiffUtilCallback<>(items, newItems, new DiffUtilCallback.DifferenceCallback<CalendarWithRecipe>() {
-            @Override
-            public boolean sameItem(CalendarWithRecipe oldElement, CalendarWithRecipe newElement) {
-                return oldElement.calendar.id == newElement.calendar.id;
-            }
-
-            @Override
-            public boolean sameContent(CalendarWithRecipe oldElement, CalendarWithRecipe newElement) {
-                return oldElement.equals(newElement);
-            }
-        });
-        DiffUtil.DiffResult result = DiffUtil.calculateDiff(utilCallback);
-        items.clear();
-        items.addAll(newItems);
-        result.dispatchUpdatesTo(this);
     }
 }

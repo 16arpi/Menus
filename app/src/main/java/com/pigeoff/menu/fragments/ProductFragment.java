@@ -7,8 +7,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,17 +15,13 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.android.material.textfield.TextInputEditText;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.adapters.ProductAdapter;
-import com.pigeoff.menu.adapters.ProductSectionAdapter;
 import com.pigeoff.menu.database.ProductEntity;
 import com.pigeoff.menu.models.ProductViewModel;
 import com.pigeoff.menu.util.Constants;
@@ -40,7 +34,6 @@ public class ProductFragment extends DialogFragment {
 
     private final boolean picker;
     private final int section;
-    int tab = Constants.TAB_GROCERIES;
     String query = "";
 
     ProductViewModel model;
@@ -53,8 +46,8 @@ public class ProductFragment extends DialogFragment {
     ChipGroup chips;
 
     public ProductFragment(boolean picker, int section) {
-        this.picker = picker;
         this.section = section;
+        this.picker = picker;
     }
 
     public ProductFragment addProductActionListener(OnProductAction listener) {
@@ -133,7 +126,7 @@ public class ProductFragment extends DialogFragment {
     private void setupUI() {
         floatingActionButton.setOnClickListener(view -> {
             ProductEntity item = new ProductEntity();
-            item.label = editSearch.getText().toString();
+            item.label = String.valueOf(editSearch.getText());
             ProductEditFragment editFragment = new ProductEditFragment(item, getSection());
             editFragment.setOnEditListener(new ProductEditFragment.OnEditListener() {
                 @Override
@@ -204,6 +197,22 @@ public class ProductFragment extends DialogFragment {
         chips.setOnCheckedStateChangeListener((group, ids) -> {
             updateData();
         });
+
+        if (section >= 0) {
+            if (section == 0) {
+                chips.check(R.id.chip_filter_groceries);
+            } else if (section == 1) {
+                chips.check(R.id.chip_filter_fruits);
+            } else if (section == 2) {
+                chips.check(R.id.chip_filter_meat);
+            } else if (section == 3) {
+                chips.check(R.id.chip_filter_fresh);
+            } else if (section == 4) {
+                chips.check(R.id.chip_filter_drinks);
+            } else if (section == 5) {
+                chips.check(R.id.chip_filter_divers);
+            }
+        }
 
     }
 

@@ -20,6 +20,7 @@ import com.pigeoff.menu.adapters.OnAdapterAction;
 import com.pigeoff.menu.data.GrocerieGroup;
 import com.pigeoff.menu.database.GroceryEntity;
 import com.pigeoff.menu.models.GroceriesViewModel;
+import com.pigeoff.menu.util.Constants;
 import com.pigeoff.menu.util.Util;
 
 import java.util.ArrayList;
@@ -115,7 +116,7 @@ public class GroceriesFragment extends Fragment {
         });
 
         floatingActionButton.setOnClickListener(v -> {
-            addCustomGrocerie(0);
+            addCustomGrocerie(Constants.NO_SECTION);
         });
 
         recyclerView.setOnScrollChangeListener((v, sx, sy, osx, osy) -> {

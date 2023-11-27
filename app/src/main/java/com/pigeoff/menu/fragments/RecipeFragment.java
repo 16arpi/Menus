@@ -111,7 +111,7 @@ public class RecipeFragment extends MenuFragment {
 
         searchBar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.item_products) {
-                ProductFragment productFragment = new ProductFragment(false, Constants.TAB_GROCERIES);
+                ProductFragment productFragment = new ProductFragment(false, Constants.NO_SECTION);
                 productFragment.showFullScreen(requireActivity().getSupportFragmentManager());
             } else if (item.getItemId() == R.id.item_export_recipes) {
                 if (products != null) importExport.export(products, items);

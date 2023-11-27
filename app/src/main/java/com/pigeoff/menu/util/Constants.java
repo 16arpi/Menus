@@ -6,4 +6,5 @@ public class Constants {
     public static String EDIT_FRAGMENT_TAG = "editfragmenttag";
 
     public static int TAB_GROCERIES = 0;
+    public static int NO_SECTION = -1;
 }
