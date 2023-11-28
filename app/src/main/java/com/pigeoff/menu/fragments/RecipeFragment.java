@@ -198,9 +198,9 @@ public class RecipeFragment extends MenuFragment {
         searchView.addTransitionListener(((searchView1, previousState, newState) -> {
             if (newState == SearchView.TransitionState.HIDDEN) {
                 recipeAdapterSearch.updateRecipes(new ArrayList<>());
-                if (searchCallback != null) searchCallback.onSearchClose();
+                if (searchCallback != null) searchCallback.onSearchOpen(false);
             } else if (newState == SearchView.TransitionState.SHOWING) {
-                if (searchCallback != null) searchCallback.onSearchOpen();
+                if (searchCallback != null) searchCallback.onSearchOpen(true);
             }
         }));
     }

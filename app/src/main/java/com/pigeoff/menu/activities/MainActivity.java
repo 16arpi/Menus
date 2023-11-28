@@ -12,19 +12,18 @@ import com.pigeoff.menu.R;
 import com.pigeoff.menu.fragments.CalendarFragment;
 import com.pigeoff.menu.fragments.GroceriesFragment;
 import com.pigeoff.menu.fragments.RecipeFragment;
-import com.pigeoff.menu.util.OnSearchCallback;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int TAB_CALENDAR = 0;
-    private static final int TAB_RECIPES = 1;
-    private static final int TAB_GROCERIES = 2;
+    private static final String FRAGMENT_CALENDAR = "calendar";
+    private static final String FRAGMENT_RECIPES = "recipes";
+    private static final String FRAGMENT_GROCERIES = "groceries";
 
 
 
     FrameLayout frameLayout;
     BottomNavigationView bottomNavigationView;
-    Fragment[] fragments;
+    Fragment activeFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,41 +33,50 @@ public class MainActivity extends AppCompatActivity {
         frameLayout = findViewById(R.id.frame_layout);
         bottomNavigationView = findViewById(R.id.bottom_navigation_view);
 
-        fragments = new Fragment[] {
-          new CalendarFragment(),
-          new RecipeFragment(new OnSearchCallback() {
-              @Override
-              public void onSearchOpen() {
-                  bottomNavigationView.setVisibility(View.GONE);
-              }
+        CalendarFragment calendarFragment = new CalendarFragment();
+        RecipeFragment recipeFragment = new RecipeFragment(open ->
+                bottomNavigationView.setVisibility(open ? View.GONE : View.VISIBLE)
+        );
+        GroceriesFragment groceriesFragment = new GroceriesFragment();
 
-              @Override
-              public void onSearchClose() {
-                  bottomNavigationView.setVisibility(View.VISIBLE);
-              }
-          }),
-          new GroceriesFragment()
-        };
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.frame_layout, groceriesFragment, FRAGMENT_GROCERIES)
+                .hide(calendarFragment)
+                .add(R.id.frame_layout, recipeFragment, FRAGMENT_RECIPES)
+                .hide(recipeFragment)
+                .add(R.id.frame_layout, calendarFragment, FRAGMENT_CALENDAR)
+                .commit();
 
-        setFragment(TAB_CALENDAR);
-        bottomNavigationView.setSelectedItemId(R.id.item_calendar);
+        activeFragment = calendarFragment;
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.item_calendar) {
-                setFragment(TAB_CALENDAR);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .hide(activeFragment)
+                        .show(calendarFragment)
+                        .commit();
+                activeFragment = calendarFragment;
             } else if (item.getItemId() == R.id.item_recipes) {
-                setFragment(TAB_RECIPES);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .hide(activeFragment)
+                        .show(recipeFragment)
+                        .commit();
+                activeFragment = recipeFragment;
             } else if (item.getItemId() == R.id.item_groceries) {
-                setFragment(TAB_GROCERIES);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .hide(activeFragment)
+                        .show(groceriesFragment)
+                        .commit();
+                activeFragment = groceriesFragment;
             }
             return true;
         });
+
+        bottomNavigationView.setSelectedItemId(R.id.item_calendar);
     }
 
-    private void setFragment(int tab) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.frame_layout, fragments[tab])
-                .commit();
-    }
 }
