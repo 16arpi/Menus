@@ -12,6 +12,8 @@ import com.pigeoff.menu.R;
 import com.pigeoff.menu.data.Ingredient;
 import com.pigeoff.menu.database.ProductEntity;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,6 +28,9 @@ public class Util {
 
         origin = origin.toLowerCase(Locale.ROOT);
         search = search.toLowerCase(Locale.ROOT);
+
+        origin = StringUtils.stripAccents(origin);
+        search = StringUtils.stripAccents(search);
 
         origin = origin.replaceAll("\\W", "");
         search = search.replaceAll("\\W", "");
@@ -96,9 +101,9 @@ public class Util {
         }
     }
 
-    public static void showKeyboard(FragmentActivity activity) {
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+    public static void showKeyboard(Context context) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
     public static void hideKeyboard(FragmentActivity activity) {

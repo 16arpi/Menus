@@ -14,6 +14,7 @@ import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.search.SearchBar;
 import com.google.android.material.search.SearchView;
@@ -41,6 +42,7 @@ public class RecipeFragment extends MenuFragment {
 
     SearchView searchView;
     SearchBar searchBar;
+    ChipGroup chips;
     FloatingActionButton addButton;
     RecyclerView recyclerView;
     RecyclerView recyclerViewSearch;
@@ -59,7 +61,7 @@ public class RecipeFragment extends MenuFragment {
         super.onCreate(savedInstanceState);
         model = new RecipesViewModel(requireActivity().getApplication());
         recipes = model.getRecipes();
-        importExport = new ImportExport<Fragment>(this, model);
+        importExport = new ImportExport<>(this, model);
     }
 
     @Override
@@ -85,6 +87,7 @@ public class RecipeFragment extends MenuFragment {
         addButton = view.findViewById(R.id.add_button);
         searchView = view.findViewById(R.id.search_view);
         searchBar = view.findViewById(R.id.search_bar);
+        chips = view.findViewById(R.id.chip_group_filter);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerViewSearch.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -95,11 +98,14 @@ public class RecipeFragment extends MenuFragment {
         recyclerView.setAdapter(recipeAdapter);
 
         model.getProducts().observe(getViewLifecycleOwner(), productEntities -> products = productEntities);
-        recipes.observe(getViewLifecycleOwner(), this::setupUI);
+        recipes.observe(getViewLifecycleOwner(), items -> {
+            chips.setOnCheckedStateChangeListener(((group, checkedIds) -> setupUI(checkedIds, items)));
+            setupUI(chips.getCheckedChipIds(), items);
+        });
 
     }
 
-    private void setupUI(List<RecipeEntity> items) {
+    private void setupUI(List<Integer> filters, List<RecipeEntity> items) {
 
         if (items.size() > 0) {
             layoutEmpty.setVisibility(View.GONE);
@@ -107,7 +113,9 @@ public class RecipeFragment extends MenuFragment {
             layoutEmpty.setVisibility(View.VISIBLE);
         }
 
-        recipeAdapter.updateRecipes(new ArrayList<>(items));
+        recipeAdapter.updateRecipes(new ArrayList<>(
+                getFilteredRecipes(filters, items)
+        ));
 
         searchBar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.item_products) {
@@ -196,4 +204,23 @@ public class RecipeFragment extends MenuFragment {
             }
         }));
     }
+
+    private static List<RecipeEntity> getFilteredRecipes(List<Integer> filters, List<RecipeEntity> items) {
+        List<RecipeEntity> filtered = new ArrayList<>();
+        for (RecipeEntity i : items) {
+            if (i.category == 0 && filters.contains(R.id.chip_filter_meal)) {
+                filtered.add(i);
+            } else if (i.category == 1 && filters.contains(R.id.chip_filter_starter)) {
+                filtered.add(i);
+            } else if (i.category == 2 && filters.contains(R.id.chip_filter_dessert)) {
+                filtered.add(i);
+            } else if (i.category == 3 && filters.contains(R.id.chip_filter_other)) {
+                filtered.add(i);
+            } else if (filters.size() == 0) {
+                filtered.add(i);
+            }
+        }
+        return filtered;
+    }
+
 }

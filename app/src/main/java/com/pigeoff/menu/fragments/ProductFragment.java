@@ -78,6 +78,9 @@ public class ProductFragment extends DialogFragment {
         chips = view.findViewById(R.id.chip_group_filter);
         recyclerView = view.findViewById(R.id.recycler_view);
 
+        if (picker) {
+            Util.showKeyboard(requireContext());
+        }
 
         model.getItems().observe(getViewLifecycleOwner(), productEntities -> {
             products = productEntities;
@@ -92,7 +95,7 @@ public class ProductFragment extends DialogFragment {
         super.onResume();
         if (picker) {
             editSearch.requestFocus();
-            Util.showKeyboard(requireActivity());
+            Util.showKeyboard(requireContext());
         }
     }
 

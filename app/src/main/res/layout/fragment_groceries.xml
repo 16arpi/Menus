@@ -12,34 +12,46 @@
         android:fitsSystemWindows="true"
         android:background="?colorSurface">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/top_app_bar_layout"
-            style="?attr/collapsingToolbarLayoutLargeStyle"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/top_app_bar"
+            app:menu="@menu/groceries_menu"
             app:layout_scrollFlags="scroll|enterAlways"
-            android:layout_width="match_parent"
             android:background="?colorSurface"
-            android:layout_height="?attr/collapsingToolbarLayoutMediumSize">
-
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/top_app_bar"
-                app:menu="@menu/groceries_menu"
-                app:title="@string/item_groceries"
-                android:background="?colorSurface"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize" />
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
+    <androidx.core.widget.NestedScrollView
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-        android:clipToPadding="false"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:id="@+id/recycler_view_groceries"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                style="@style/TextAppearance.Material3.DisplaySmall"
+                android:id="@+id/text_title"
+                android:text="@string/item_groceries"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_groceries"
+                android:clipToPadding="false"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"

@@ -18,6 +18,7 @@ import com.pigeoff.menu.database.CalendarWithRecipe;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class DayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     Context context;
@@ -44,7 +45,12 @@ public class DayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         cal.set(Calendar.HOUR_OF_DAY, 0);
 
         int dayNb = cal.get(Calendar.DAY_OF_WEEK) - 1;
-        String labelDay = context.getResources().getStringArray(R.array.days)[dayNb];
+        String labelDay = String.format(
+                Locale.getDefault(),
+                "%s %d",
+                context.getResources().getStringArray(R.array.days)[dayNb],
+                cal.get(Calendar.DAY_OF_MONTH)
+        );
 
         long thisDay = cal.getTimeInMillis();
         long nowDay = getTodayTimestamp();

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -13,14 +14,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.activities.RecipeActivity;
 import com.pigeoff.menu.adapters.DayAdapter;
 import com.pigeoff.menu.database.CalendarWithRecipe;
 import com.pigeoff.menu.database.ProductEntity;
-import com.pigeoff.menu.database.RecipeEntity;
 import com.pigeoff.menu.models.WeekModel;
 import com.pigeoff.menu.util.Constants;
 import com.pigeoff.menu.util.Util;
@@ -35,7 +34,7 @@ import java.util.Locale;
 public class CalendarFragment extends Fragment {
 
     private WeekModel model;
-    private CollapsingToolbarLayout toolbarLayout;
+    private TextView textTitle;
     private List<CalendarWithRecipe>[] items;
     private DayAdapter adapter;
     private Calendar calendar;
@@ -76,7 +75,7 @@ public class CalendarFragment extends Fragment {
         };
 
         MaterialToolbar toolbar = view.findViewById(R.id.top_app_bar);
-        toolbarLayout = view.findViewById(R.id.top_app_bar_layout);
+        textTitle = view.findViewById(R.id.text_title);
 
         toolbar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
@@ -157,12 +156,9 @@ public class CalendarFragment extends Fragment {
             public void pickRecipe(int day) {
                 RecipePickerFragment picker = new RecipePickerFragment();
                 picker.show(requireActivity().getSupportFragmentManager(), Constants.EDIT_FRAGMENT_TAG);
-                picker.setOnRecipePicked(new RecipePickerFragment.OnRecipePicked() {
-                    @Override
-                    public void onRecipePicked(RecipeEntity recipe) {
-                        picker.dismiss();
-                        model.addEvent(getTimestampOfDay(calendar, day), recipe, false);
-                    }
+                picker.setOnRecipePicked((recipe) -> {
+                    picker.dismiss();
+                    model.addEvent(getTimestampOfDay(calendar, day), recipe, false);
                 });
             }
 
@@ -243,8 +239,7 @@ public class CalendarFragment extends Fragment {
     }
 
     private void updateItems(List<CalendarWithRecipe> data) {
-
-        toolbarLayout.setTitle(formatWeekDate());
+        textTitle.setText(formatWeekDate());
 
         Calendar cal = (Calendar) calendar.clone();
         for (int i = 0; i < 7; ++i) {

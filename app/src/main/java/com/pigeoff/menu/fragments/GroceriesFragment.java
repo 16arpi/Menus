@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,6 +32,7 @@ public class GroceriesFragment extends Fragment {
 
     GroceriesViewModel model;
     MaterialToolbar toolbar;
+    TextView textTitle;
     RecyclerView recyclerView;
     FloatingActionButton floatingActionButton;
     GroceriesAdapter adapter;
@@ -66,6 +68,7 @@ public class GroceriesFragment extends Fragment {
 
         toolbar = view.findViewById(R.id.top_app_bar);
         recyclerView = view.findViewById(R.id.recycler_view_groceries);
+        textTitle = view.findViewById(R.id.text_title);
         floatingActionButton = view.findViewById(R.id.add_button);
 
         adapter = new GroceriesAdapter(requireContext(), new ArrayList<>());
@@ -115,9 +118,7 @@ public class GroceriesFragment extends Fragment {
             }
         });
 
-        floatingActionButton.setOnClickListener(v -> {
-            addCustomGrocerie(Constants.NO_SECTION);
-        });
+        floatingActionButton.setOnClickListener(v -> addCustomGrocerie(Constants.NO_SECTION));
 
         recyclerView.setOnScrollChangeListener((v, sx, sy, osx, osy) -> {
             if (sy > osy) floatingActionButton.hide();
@@ -146,10 +147,10 @@ public class GroceriesFragment extends Fragment {
     }
 
     private void addCustomGrocerie(int section) {
-        new ProductFragment(true, section).addProductActionListener(item -> {
-            new GrocerieEditFragment(item, it -> {
-                model.addItem(it);
-            }).show(getParentFragmentManager(), "edit_grocerie");
-        }).showFullScreen(getParentFragmentManager());
+        new ProductFragment(true, section).addProductActionListener(item ->
+            new GrocerieEditFragment(item, it ->
+                model.addItem(it)
+            ).show(getParentFragmentManager(), "edit_grocerie")
+        ).showFullScreen(getParentFragmentManager());
     }
 }

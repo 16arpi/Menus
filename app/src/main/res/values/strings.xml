@@ -79,6 +79,12 @@
     <string name="product_unit">Default unit</string>
     <string name="product_section">Category</string>
 
+    <!-- CATEGORIES -->
+    <string name="category_meal">Meal</string>
+    <string name="category_starter">Starter</string>
+    <string name="category_dessert">Dessert</string>
+    <string name="category_other">Other</string>
+
 
     <string name="product_delete_dialog_message" >Impossible to delete the product because it is used in one of your recipes.</string>
     <string name="product_delete_dialog_ok" >Ok</string>
