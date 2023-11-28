@@ -33,7 +33,7 @@ import com.pigeoff.menu.util.Util;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecipeFragment extends MenuFragment {
+public class RecipeFragment extends Fragment {
     OnSearchCallback searchCallback;
     RecipesViewModel model;
     LiveData<List<RecipeEntity>> recipes;
@@ -51,9 +51,12 @@ public class RecipeFragment extends MenuFragment {
     RecipeAdapter recipeAdapter;
     RecipeAdapter recipeAdapterSearch;
 
-    public RecipeFragment(OnSearchCallback searchCallback) {
-        // Required empty public constructor
-        this.searchCallback = searchCallback;
+    public RecipeFragment() {
+
+    }
+
+    public void addCallback(OnSearchCallback callback) {
+        this.searchCallback = callback;
     }
 
     @Override

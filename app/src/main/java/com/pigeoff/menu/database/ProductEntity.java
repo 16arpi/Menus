@@ -4,8 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.Gson;
+import com.pigeoff.menu.util.Serializable;
+
 @Entity
-public class ProductEntity {
+public class ProductEntity extends Serializable {
     @PrimaryKey(autoGenerate = true)
     public long id;
     // Ingredient label
@@ -18,5 +21,14 @@ public class ProductEntity {
     @NonNull
     public String toString() {
         return this.label;
+    }
+
+    @Override
+    public String toSerialize() {
+        return new Gson().toJson(this);
+    }
+
+    public static ProductEntity toObject(String json) {
+        return new Gson().fromJson(json, ProductEntity.class);
     }
 }

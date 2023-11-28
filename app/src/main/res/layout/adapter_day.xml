@@ -10,8 +10,7 @@
         android:layout_margin="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:strokeWidth="0dp"
-        app:cardBackgroundColor="?attr/colorSurfaceVariant">
+        >
 
         <LinearLayout
             android:orientation="vertical"

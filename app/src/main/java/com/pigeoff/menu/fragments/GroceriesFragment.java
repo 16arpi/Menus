@@ -147,10 +147,10 @@ public class GroceriesFragment extends Fragment {
     }
 
     private void addCustomGrocerie(int section) {
-        new ProductFragment(true, section).addProductActionListener(item ->
-            new GrocerieEditFragment(item, it ->
-                model.addItem(it)
-            ).show(getParentFragmentManager(), "edit_grocerie")
-        ).showFullScreen(getParentFragmentManager());
+        new ProductFragment(true, section).addProductActionListener(item -> {
+                GrocerieEditFragment fragment = GrocerieEditFragment.newInstance(item);
+                fragment.addOnCallback(it -> model.addItem(it));
+                fragment.show(getParentFragmentManager(), "ewdit_grocerie");
+        }).showFullScreen(getParentFragmentManager());
     }
 }

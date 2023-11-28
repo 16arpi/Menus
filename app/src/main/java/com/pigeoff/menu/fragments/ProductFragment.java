@@ -130,7 +130,7 @@ public class ProductFragment extends DialogFragment {
         floatingActionButton.setOnClickListener(view -> {
             ProductEntity item = new ProductEntity();
             item.label = String.valueOf(editSearch.getText());
-            ProductEditFragment editFragment = new ProductEditFragment(item, getSection());
+            ProductEditFragment editFragment = ProductEditFragment.newInstance(item, getSection());
             editFragment.setOnEditListener(product ->
                 model.addProduct(item, requireActivity(), id -> {
                     if (picker && listener != null) {
@@ -247,7 +247,7 @@ public class ProductFragment extends DialogFragment {
             dismissFullScreen(getParentFragmentManager());
         }
         else {
-            ProductEditFragment editFragment = new ProductEditFragment(product, product.secion);
+            ProductEditFragment editFragment = ProductEditFragment.newInstance(product, product.secion);
             editFragment.show(requireActivity().getSupportFragmentManager(), "edit");
             editFragment.setOnEditListener(p -> {
                 model.updateProduct(p);

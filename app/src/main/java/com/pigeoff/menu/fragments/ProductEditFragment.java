@@ -14,12 +14,16 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.database.ProductEntity;
+import com.pigeoff.menu.util.Constants;
 import com.pigeoff.menu.util.Util;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class ProductEditFragment extends BottomSheetDialogFragment {
+
+    private static final String BUNDLE_ITEM = "bundleitem";
+    private static final String BUNDLE_SECTION = "bundlesection";
 
     ProductEntity product;
     int section;
@@ -30,9 +34,28 @@ public class ProductEditFragment extends BottomSheetDialogFragment {
     AutoCompleteTextView editDefaultUnit;
     MaterialButton buttonSubmit;
 
-    public ProductEditFragment(ProductEntity item, int section) {
-        this.product = item == null ? new ProductEntity() : item;
-        this.section = section;
+    public ProductEditFragment() {
+
+    }
+
+    public static ProductEditFragment newInstance(ProductEntity item, int section) {
+        ProductEditFragment fragment = new ProductEditFragment();
+        Bundle bundle = new Bundle();
+        if (item != null) bundle.putString(BUNDLE_ITEM, item.toSerialize());
+        bundle.putInt(BUNDLE_SECTION, section);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            String itemJson = bundle.getString(BUNDLE_ITEM, null);
+            if (itemJson != null) this.product = ProductEntity.toObject(itemJson);
+            this.section = bundle.getInt(BUNDLE_SECTION, Constants.TAB_GROCERIES);
+        }
     }
 
     @Nullable

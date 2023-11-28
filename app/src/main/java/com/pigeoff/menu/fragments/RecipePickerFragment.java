@@ -33,6 +33,10 @@ public class RecipePickerFragment extends BottomSheetDialogFragment {
     private TextInputEditText searchBar;
     private ChipGroup chips;
 
+    public RecipePickerFragment() {
+
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

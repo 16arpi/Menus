@@ -34,10 +34,12 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_navigation_view);
 
         CalendarFragment calendarFragment = new CalendarFragment();
-        RecipeFragment recipeFragment = new RecipeFragment(open ->
+        RecipeFragment recipeFragment = new RecipeFragment();
+        GroceriesFragment groceriesFragment = new GroceriesFragment();
+
+        recipeFragment.addCallback(open ->
                 bottomNavigationView.setVisibility(open ? View.GONE : View.VISIBLE)
         );
-        GroceriesFragment groceriesFragment = new GroceriesFragment();
 
         getSupportFragmentManager()
                 .beginTransaction()

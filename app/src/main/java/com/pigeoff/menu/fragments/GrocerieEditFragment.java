@@ -22,6 +22,8 @@ import java.util.List;
 
 public class GrocerieEditFragment extends BottomSheetDialogFragment {
 
+    public static final String BUNDLE_PRODUCT = "bundleproduct";
+
     public ProductEntity product;
     public TextInputEditText label;
     public TextInputEditText value;
@@ -30,9 +32,30 @@ public class GrocerieEditFragment extends BottomSheetDialogFragment {
 
     public OnGrocerieChoose listener;
 
-    public GrocerieEditFragment(ProductEntity product, OnGrocerieChoose listener) {
-        this.product = product;
+    public GrocerieEditFragment() {
+
+    }
+
+    public static GrocerieEditFragment newInstance(ProductEntity product) {
+        GrocerieEditFragment fragment = new GrocerieEditFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(BUNDLE_PRODUCT, product.toSerialize());
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    public void addOnCallback(OnGrocerieChoose listener) {
         this.listener = listener;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            String json = bundle.getString(BUNDLE_PRODUCT, "");
+            this.product = json.isEmpty() ? new ProductEntity() : ProductEntity.toObject(json);
+        }
     }
 
     @Nullable
@@ -72,7 +95,7 @@ public class GrocerieEditFragment extends BottomSheetDialogFragment {
             item.value = itemValue;
             item.unit = units.indexOf(unit.getText().toString());
 
-            listener.onGrocerieChoose(item);
+            if (listener != null) listener.onGrocerieChoose(item);
 
             dismiss();
         });

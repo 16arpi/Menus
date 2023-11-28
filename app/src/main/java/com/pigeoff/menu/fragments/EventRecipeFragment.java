@@ -25,6 +25,11 @@ public class EventRecipeFragment extends BottomSheetDialogFragment {
     GroceriesViewModel model;
     LiveData<List<GroceryWithProduct>> items;
     RecyclerView recyclerView;
+
+    public EventRecipeFragment() {
+
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,9 +53,9 @@ public class EventRecipeFragment extends BottomSheetDialogFragment {
 
         items.observe(getViewLifecycleOwner(), groceryWithProducts -> {
             List<EventRecipe> eventRecipes = EventRecipe.fromGroceries(groceryWithProducts);
-            recyclerView.setAdapter(new RecipeEventAdapter(requireContext(), eventRecipes, item -> {
-                model.deleteGroceriesForCalendar(item.eventId);
-            }));
+            recyclerView.setAdapter(new RecipeEventAdapter(requireContext(), eventRecipes, item ->
+                model.deleteGroceriesForCalendar(item.eventId)
+            ));
         });
 
 
