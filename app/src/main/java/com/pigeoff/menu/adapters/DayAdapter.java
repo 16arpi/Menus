@@ -92,7 +92,7 @@ public class DayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             @Override
             public void onItemClick(CalendarWithRecipe item, int action) {
                 if (action == OnAdapterAction.ACTION_GROCERY) {
-                    if (callback != null) callback.addToGroceries(item);
+                    if (callback != null) callback.onAddToGroceries(item);
                 }
             }
 
@@ -114,7 +114,7 @@ public class DayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         });
 
         holder.buttonGroceries.setOnClickListener(v -> {
-            if (callback != null) callback.addToGroceries(items[holder.getAdapterPosition()]);
+            if (callback != null) callback.onAddToGroceries(items[holder.getAdapterPosition()]);
         });
 
     }
@@ -155,8 +155,8 @@ public class DayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public interface Callback {
-        void addToGroceries(CalendarWithRecipe item);
-        void addToGroceries(List<CalendarWithRecipe> items);
+        void onAddToGroceries(CalendarWithRecipe item);
+        void onAddToGroceries(List<CalendarWithRecipe> items);
         void deleteEvent(CalendarWithRecipe item);
         void onClick(CalendarWithRecipe item);
         void pickRecipe(int day);

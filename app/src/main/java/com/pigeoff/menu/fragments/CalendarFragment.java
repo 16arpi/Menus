@@ -97,7 +97,7 @@ public class CalendarFragment extends Fragment {
 
         adapter = new DayAdapter(requireContext(), items, calendar, new DayAdapter.Callback() {
             @Override
-            public void addToGroceries(CalendarWithRecipe item) {
+            public void onAddToGroceries(CalendarWithRecipe item) {
                 model.addEventToGroceries(products, item, requireActivity(), new WeekModel.EventToGroceriesCallback() {
                     @Override
                     public void onSuccess() {
@@ -118,7 +118,7 @@ public class CalendarFragment extends Fragment {
             }
 
             @Override
-            public void addToGroceries(List<CalendarWithRecipe> items) {
+            public void onAddToGroceries(List<CalendarWithRecipe> items) {
                 model.addEventToGroceries(products, items, requireActivity(), new WeekModel.EventToGroceriesCallback() {
                     @Override
                     public void onSuccess() {
