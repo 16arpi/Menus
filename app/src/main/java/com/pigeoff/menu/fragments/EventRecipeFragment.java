@@ -27,7 +27,7 @@ public class EventRecipeFragment extends BottomSheetDialogFragment {
     RecyclerView recyclerView;
 
     public EventRecipeFragment() {
-
+        super();
     }
 
     @Override

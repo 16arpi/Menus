@@ -79,34 +79,27 @@ public class WeekModel extends AndroidViewModel {
     }
 
     public void addEvent(long datetime, RecipeEntity recipe, boolean newRecipe) {
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-
-                if (newRecipe) {
-                    recipe.id = recipeDAO.insert(recipe);
-                }
-
-                CalendarEntity event = new CalendarEntity();
-                event.label = recipe.title;
-                event.portions = recipe.portions;
-                event.recipe = recipe.id;
-                event.datetime = datetime; // getTimestampAtDay(Calendar, day)
-                event.groceriesState = 0;
-                calendarDAO.insert(event);
+        AsyncTask.execute(() -> {
+            if (newRecipe) {
+                recipe.id = recipeDAO.insert(recipe);
             }
+
+            CalendarEntity event = new CalendarEntity();
+            event.label = recipe.title;
+            event.portions = recipe.portions;
+            event.recipe = recipe.id;
+            event.datetime = datetime; // getTimestampAtDay(Calendar, day)
+            event.groceriesState = 0;
+            calendarDAO.insert(event);
         });
     }
 
 
     public void deleteEvent(CalendarWithRecipe item) {
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                calendarDAO.delete(item.calendar);
-                groceryDAO.deleteGroceriesForCalendar(item.calendar.id);
-                if (!item.recipe.cookbook) recipeDAO.delete(item.recipe);
-            }
+        AsyncTask.execute(() -> {
+            calendarDAO.delete(item.calendar);
+            groceryDAO.deleteGroceriesForCalendar(item.calendar.id);
+            if (!item.recipe.cookbook) recipeDAO.delete(item.recipe);
         });
     }
     public void addEventToGroceries(
@@ -114,26 +107,20 @@ public class WeekModel extends AndroidViewModel {
             List<CalendarWithRecipe> items,
             FragmentActivity context,
             EventToGroceriesCallback callback) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                boolean success = true;
+        new Thread(() -> {
+            boolean success = true;
 
-                for (CalendarWithRecipe i : items) {
-                    if (!addToGrocerie(products, i)) {
-                        success = false;
-                    }
+            for (CalendarWithRecipe i : items) {
+                if (!addToGrocerie(products, i)) {
+                    success = false;
                 }
-
-                boolean finalSuccess = success;
-                context.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (finalSuccess) callback.onSuccess();
-                        else callback.onFailure();
-                    }
-                });
             }
+
+            boolean finalSuccess = success;
+            context.runOnUiThread(() -> {
+                if (finalSuccess) callback.onSuccess();
+                else callback.onFailure();
+            });
         }).start();
     }
 
@@ -142,23 +129,30 @@ public class WeekModel extends AndroidViewModel {
             CalendarWithRecipe item,
             FragmentActivity context,
             EventToGroceriesCallback callback) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                boolean success = addToGrocerie(products, item);
-                context.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (success) callback.onSuccess();
-                        else callback.onFailure();
-                    }
-                });
-            }
+        new Thread(() -> {
+            boolean success = addToGrocerie(products, item);
+            context.runOnUiThread(() -> {
+                if (success) callback.onSuccess();
+                else callback.onFailure();
+            });
         }).start();
     }
 
     private boolean addToGrocerie(HashMap<Long, ProductEntity> products, CalendarWithRecipe item) {
-        if (groceryDAO.eventAlreadyAdded(item.calendar.id)) return false;
+        /*
+            Deux modes possibles ici :
+            if (groceryDAO.eventAlreadyAdded(item.calendar.id)) return false;
+            => on empêche de remettre dans la liste des courses des produits déjà ajoutés
+
+            groceryDAO.deleteGroceriesForCalendar(item.calendar.id);
+            => on écrase les anciens produits liés à l'évènement, quitte à ajouter
+               ceux qui avaient été précédement supprimés par l'utilisateur
+
+            Idée pour l'avenir : créer un DIALOG qui permet :
+            - décocher les produits qu'on ne veut pas ajouter
+            - choisir d'écraser ou pas les anciens produits du même évènement
+         */
+        groceryDAO.deleteGroceriesForCalendar(item.calendar.id);
 
         ArrayList<Ingredient> ingredients = Ingredient.fromJson(products, item.recipe.ingredients);
 
