@@ -71,6 +71,9 @@
     <string name="item_remove_check" >Nettoyer</string>
     <string name="item_events_manager" >Gérer les plats</string>
     <string name="item_remove_all" >Tout effacer</string>
+    <string name="dialog_product">Produit</string>
+    <string name="dialog_unit">Unité</string>
+    <string name="dialog_value">Valeur</string>
 
     <!--- PRODUCT -->
     <string name="product">Produits</string>

@@ -71,6 +71,9 @@
     <string name="item_remove_check" >Clean</string>
     <string name="item_events_manager" >Manage meals</string>
     <string name="item_remove_all" >Delete all items</string>
+    <string name="dialog_product">Product</string>
+    <string name="dialog_unit">Unit</string>
+    <string name="dialog_value">Value</string>
 
     <!--- PRODUCT -->
     <string name="product">Products</string>

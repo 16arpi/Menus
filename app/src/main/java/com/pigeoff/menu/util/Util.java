@@ -1,6 +1,7 @@
 package com.pigeoff.menu.util;
 
 import android.content.Context;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 
@@ -101,9 +102,9 @@ public class Util {
         }
     }
 
-    public static void showKeyboard(Context context) {
+    public static void showKeyboard(View focusedView, Context context) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
+        imm.showSoftInput(focusedView, 0);
     }
 
     public static void hideKeyboard(FragmentActivity activity) {

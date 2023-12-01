@@ -1,10 +1,12 @@
 package com.pigeoff.menu.fragments;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,7 +27,7 @@ public class GrocerieEditFragment extends BottomSheetDialogFragment {
     public static final String BUNDLE_PRODUCT = "bundleproduct";
 
     public ProductEntity product;
-    public TextInputEditText label;
+    public TextView label;
     public TextInputEditText value;
     public AutoCompleteTextView unit;
     public MaterialButton submit;
@@ -100,6 +102,12 @@ public class GrocerieEditFragment extends BottomSheetDialogFragment {
             dismiss();
         });
 
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        Util.hideKeyboard(requireActivity());
+        super.onDismiss(dialog);
     }
 
     public interface OnGrocerieChoose {

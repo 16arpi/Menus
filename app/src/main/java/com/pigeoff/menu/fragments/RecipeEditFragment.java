@@ -151,7 +151,7 @@ public class RecipeEditFragment extends DialogFragment {
         });
 
         editIngredientSubmit.setOnClickListener(v -> {
-            ProductFragment productFragment = new ProductFragment(true, Constants.NO_SECTION);
+            ProductFragment productFragment = ProductFragment.newInstance(false, true, Constants.NO_SECTION);
             productFragment.addProductActionListener(item -> {
                 Ingredient ingredient = new Ingredient(
                         item,
@@ -160,7 +160,7 @@ public class RecipeEditFragment extends DialogFragment {
                 );
                 ingredientAdapter.addItem(ingredient);
             });
-            productFragment.showFullScreen(getParentFragmentManager());
+            productFragment.show(getParentFragmentManager(), "edit_product");
         });
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {

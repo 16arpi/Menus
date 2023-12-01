@@ -1,7 +1,6 @@
 package com.pigeoff.menu;
 
 import android.app.Application;
-
 import androidx.room.Room;
 
 import com.pigeoff.menu.database.MenuDatabase;
