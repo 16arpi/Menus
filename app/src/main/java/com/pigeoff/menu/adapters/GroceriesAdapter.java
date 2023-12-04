@@ -161,6 +161,10 @@ public class GroceriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return items.size();
     }
 
+    public void switchItems() {
+
+    }
+
     private static class GroceriesViewHolder extends RecyclerView.ViewHolder {
 
         ImageButton checkBox;
