@@ -52,10 +52,10 @@ public class GroceriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             GrocerieGroup gp = all.get(x);
             ProductEntity p = gp.product;
 
-            if (p.secion != lastHeader) {
+            if (p.section != lastHeader) {
                 result.add(i, new GrocerieGroup(new ProductEntity(), new ArrayList<>(), gp.section));
                 result.add(i + 1, gp);
-                lastHeader = p.secion;
+                lastHeader = p.section;
                 i += 2;
             } else {
                 result.add(i, gp);
@@ -78,10 +78,10 @@ public class GroceriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             GrocerieGroup gp = all.get(x);
             ProductEntity p = gp.product;
 
-            if (p.secion != lastHeader) {
-                viewTypes[i] = p.secion;
+            if (p.section != lastHeader) {
+                viewTypes[i] = p.section;
                 viewTypes[i+1] = VIEW_GROCERY;
-                lastHeader = p.secion;
+                lastHeader = p.section;
                 i += 2;
             } else {
                 viewTypes[i] = VIEW_GROCERY;
@@ -159,10 +159,6 @@ public class GroceriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public int getItemCount() {
         return items.size();
-    }
-
-    public void switchItems() {
-
     }
 
     private static class GroceriesViewHolder extends RecyclerView.ViewHolder {

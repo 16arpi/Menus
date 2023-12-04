@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
@@ -17,33 +18,26 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.database.GroceryEntity;
 import com.pigeoff.menu.database.ProductEntity;
+import com.pigeoff.menu.models.ProductViewModel;
 import com.pigeoff.menu.util.Util;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GrocerieEditFragment extends BottomSheetDialogFragment {
-
-    public static final String BUNDLE_PRODUCT = "bundleproduct";
-
-    public ProductEntity product;
-    public TextView label;
-    public TextInputEditText value;
-    public AutoCompleteTextView unit;
-    public MaterialButton submit;
-
-    public OnGrocerieChoose listener;
+    private AutoCompleteTextView label;
+    private TextInputEditText value;
+    private AutoCompleteTextView unit;
+    private OnGrocerieChoose listener;
+    private ProductViewModel productViewModel;
 
     public GrocerieEditFragment() {
 
     }
 
-    public static GrocerieEditFragment newInstance(ProductEntity product) {
-        GrocerieEditFragment fragment = new GrocerieEditFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(BUNDLE_PRODUCT, product.toSerialize());
-        fragment.setArguments(bundle);
-        return fragment;
+    public static GrocerieEditFragment newInstance() {
+        return new GrocerieEditFragment();
     }
 
     public void addOnCallback(OnGrocerieChoose listener) {
@@ -53,11 +47,8 @@ public class GrocerieEditFragment extends BottomSheetDialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            String json = bundle.getString(BUNDLE_PRODUCT, "");
-            this.product = json.isEmpty() ? new ProductEntity() : ProductEntity.toObject(json);
-        }
+
+        productViewModel = new ProductViewModel(requireActivity().getApplication());
     }
 
     @Nullable
@@ -74,16 +65,36 @@ public class GrocerieEditFragment extends BottomSheetDialogFragment {
         label = view.findViewById(R.id.edit_label);
         value = view.findViewById(R.id.edit_value);
         unit = view.findViewById(R.id.edit_unit);
-        submit = view.findViewById(R.id.button_submit);
+        MaterialButton submit = view.findViewById(R.id.button_submit);
 
         List<String> units = Arrays.asList(Util.getUnitsLabel(requireContext()));
 
-        label.setText(product.label);
-        unit.setText(units.get(product.defaultUnit), false);
+        productViewModel.getItems().observe(getViewLifecycleOwner(), items -> {
 
-        value.requestFocus();
+            List<String> labels = items.stream().map(it -> it.label).collect(Collectors.toList());
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                    requireContext(),
+                    com.google.android.material.R.layout.support_simple_spinner_dropdown_item,
+                    labels
+            );
+
+            label.setAdapter(adapter);
+
+            label.setOnItemClickListener((parent, v, pos, id) -> {
+                System.out.println("SELECTION");
+                TextView text = v.findViewById(android.R.id.text1);
+                ProductEntity product = new ProductEntity();
+                for (ProductEntity p : items) if (p.label.equals(text.getText().toString())) product = p;
+                unit.setText(units.get(product.defaultUnit), false);
+            });
+
+        });
+
+        label.requestFocus();
 
         submit.setOnClickListener(v -> {
+            String productLabel = String.valueOf(label.getText());
+            if (productLabel.isEmpty()) return;
 
             float itemValue;
             try {
@@ -93,11 +104,11 @@ public class GrocerieEditFragment extends BottomSheetDialogFragment {
             }
 
             GroceryEntity item = new GroceryEntity();
-            item.ingredientId = product.id;
             item.value = itemValue;
             item.unit = units.indexOf(unit.getText().toString());
 
-            if (listener != null) listener.onGrocerieChoose(item);
+
+            if (listener != null) listener.onGrocerieChoose(productLabel, item);
 
             dismiss();
         });
@@ -111,6 +122,6 @@ public class GrocerieEditFragment extends BottomSheetDialogFragment {
     }
 
     public interface OnGrocerieChoose {
-        void onGrocerieChoose(GroceryEntity item);
+        void onGrocerieChoose(String productLabel, GroceryEntity item);
     }
 }

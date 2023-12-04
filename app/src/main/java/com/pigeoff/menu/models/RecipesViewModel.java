@@ -55,88 +55,67 @@ public class RecipesViewModel extends AndroidViewModel {
     }
 
     public void addItem(RecipeEntity item) {
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                recipeDAO.insert(item);
-            }
-        });
+        AsyncTask.execute(() -> recipeDAO.insert(item));
     }
 
     public void updateItem(RecipeEntity item) {
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                recipeDAO.update(item);
-            }
-        });
+        AsyncTask.execute(() -> recipeDAO.update(item));
     }
 
     public void deleteItem(RecipeEntity item) {
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                groceryDAO.deleteGroceriesForRecipe(item.id);
-                calendarDAO.deleteForRecipe(item.id);
-                recipeDAO.delete(item);
-            }
+        AsyncTask.execute(() -> {
+            groceryDAO.deleteGroceriesForRecipe(item.id);
+            calendarDAO.deleteForRecipe(item.id);
+            recipeDAO.delete(item);
         });
     }
 
     public void importRecipes(List<ProductEntity> products, List<RecipeEntity> recipes, OnAdd callback) {
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Gson gson = new Gson();
-                    HashMap<Long, Long> oldNewProductIds = new HashMap<>();
-                    for (ProductEntity p : products) {
+        AsyncTask.execute(() -> {
+            try {
+                Gson gson = new Gson();
+                HashMap<Long, Long> oldNewProductIds = new HashMap<>();
+                for (ProductEntity p : products) {
 
-                        ProductEntity existing = productDAO.selectByName(p.label);
+                    ProductEntity existing = productDAO.selectByName(p.label);
 
-                        if (existing != null) {
-                            oldNewProductIds.put(p.id, existing.id);
-                        } else {
-                            ProductEntity blank = new ProductEntity();
-                            blank.defaultUnit = p.defaultUnit;
-                            blank.label = p.label;
-                            blank.secion = p.secion;
+                    if (existing != null) {
+                        oldNewProductIds.put(p.id, existing.id);
+                    } else {
+                        ProductEntity blank = new ProductEntity();
+                        blank.defaultUnit = p.defaultUnit;
+                        blank.label = p.label;
+                        blank.section = p.section;
 
-                            oldNewProductIds.put(p.id, productDAO.insertProduct(blank));
-                        }
+                        oldNewProductIds.put(p.id, productDAO.insertProduct(blank));
                     }
-
-
-                    oldNewProductIds.forEach((key, val) -> {
-                        System.out.println(String.valueOf(key) + " -> " + String.valueOf(val));
-                    });
-
-                    for (RecipeEntity r : recipes) {
-                        List<Ingredient.Serialized> deserialized = gson.fromJson(
-                                r.ingredients,
-                                new TypeToken<List<Ingredient.Serialized>>(){}.getType()
-                        );
-                        for (Ingredient.Serialized s : deserialized)
-                            s.ingredientId = oldNewProductIds.get(s.ingredientId);
-
-                        r.ingredients = gson.toJson(deserialized);
-
-                        RecipeEntity blank = new RecipeEntity();
-                        blank.ingredients = r.ingredients;
-                        blank.portions = r.portions;
-                        blank.title = r.title;
-                        blank.cookbook = r.cookbook;
-                        blank.category = r.category;
-                        blank.note = r.note;
-                        blank.steps = r.steps;
-
-                        recipeDAO.insert(blank);
-
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    callback.onFailure();
                 }
+
+                for (RecipeEntity r : recipes) {
+                    List<Ingredient.Serialized> deserialized = gson.fromJson(
+                            r.ingredients,
+                            new TypeToken<List<Ingredient.Serialized>>(){}.getType()
+                    );
+                    for (Ingredient.Serialized s : deserialized)
+                        s.ingredientId = oldNewProductIds.get(s.ingredientId);
+
+                    r.ingredients = gson.toJson(deserialized);
+
+                    RecipeEntity blank = new RecipeEntity();
+                    blank.ingredients = r.ingredients;
+                    blank.portions = r.portions;
+                    blank.title = r.title;
+                    blank.cookbook = r.cookbook;
+                    blank.category = r.category;
+                    blank.note = r.note;
+                    blank.steps = r.steps;
+
+                    recipeDAO.insert(blank);
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.onFailure();
             }
         });
     }

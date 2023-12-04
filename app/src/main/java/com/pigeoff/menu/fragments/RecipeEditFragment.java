@@ -151,7 +151,7 @@ public class RecipeEditFragment extends DialogFragment {
         });
 
         editIngredientSubmit.setOnClickListener(v -> {
-            ProductFragment productFragment = ProductFragment.newInstance(false, true, Constants.NO_SECTION);
+            ProductFragment productFragment = ProductFragment.newInstance(false, true, Constants.SECTION_EMPTY);
             productFragment.addProductActionListener(item -> {
                 Ingredient ingredient = new Ingredient(
                         item,

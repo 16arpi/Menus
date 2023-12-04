@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical">
 
-            <TextView
+            <!--<TextView
                 style="@style/TextAppearance.Material3.TitleLarge"
                 android:id="@+id/edit_label"
                 android:layout_width="0dp"
@@ -26,7 +26,24 @@
                 android:layout_margin="8dp"
 
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1" />-->
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="?attr/textInputFilledStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/dialog_product"
+                android:layout_margin="8dp">
+
+                <AutoCompleteTextView
+                    style="@style/Widget.Material3.TextInputEditText.FilledBox"
+                    android:id="@+id/edit_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
                 style="@style/Widget.Material3.Button.TextButton"

@@ -16,7 +16,9 @@ public class ProductEntity extends Serializable {
     // Default unit of the ingredient
     public int defaultUnit = 0;
     // Which section of the supermarket
-    public int secion = 0; // TODO secion -> section
+    public int section = 0;
+    // Permanent or temporary product
+    public boolean permanent = true;
 
     @NonNull
     public String toString() {

@@ -23,6 +23,7 @@ public class GroceriesViewModel extends AndroidViewModel {
     private final LiveData<List<GroceryWithProduct>> eventsItems;
     private final LiveData<List<ProductEntity>> productsEntities;
     private final GroceryDAO groceryDAO;
+    private final ProductDAO productDAO;
 
     public GroceriesViewModel(@NonNull Application application) {
         super(application);
@@ -30,7 +31,7 @@ public class GroceriesViewModel extends AndroidViewModel {
         MenuApplication app = (MenuApplication) application;
         MenuDatabase database = app.database;
 
-        ProductDAO productDAO = database.productDAO();
+        this.productDAO = database.productDAO();
         this.groceryDAO = database.groceryDAO();
         this.items = groceryDAO.getGroceries();
         this.eventsItems = groceryDAO.getEventsGroceries();
@@ -49,59 +50,51 @@ public class GroceriesViewModel extends AndroidViewModel {
         return productsEntities;
     }
 
-    public void addItem(GroceryEntity item) {
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                groceryDAO.addGrocery(item);
+    public void addItemWithProduct(int section, String productLabel, GroceryEntity item) {
+        AsyncTask.execute(() -> {
+            ProductEntity product = productDAO.selectByName(productLabel);
+            long productId;
+            if (product == null) {
+                product = new ProductEntity();
+                product.label = productLabel;
+                product.section = section;
+                product.defaultUnit = item.unit;
+                product.permanent = false;
+                productId  = productDAO.insertProduct(product);
+            } else {
+                productId = product.id;
             }
+
+
+            item.ingredientId = productId;
+            groceryDAO.addGrocery(item);
         });
     }
 
     // TODO Swipe to delete
     public void deleteItem(GroceryEntity item) {
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                groceryDAO.deleteGrocery(item);
-            }
+        AsyncTask.execute(() -> {
+            groceryDAO.deleteGrocery(item);
+            productDAO.deleteTemporaryProduct(item.ingredientId);
         });
     }
 
     public void deleteAllChecked() {
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                groceryDAO.deleteAllChecked();
-            }
-        });
+        AsyncTask.execute(groceryDAO::deleteAllChecked);
     }
 
     public void checkGrocery(GrocerieGroup item, boolean checked) {
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                for (GroceryEntity g : item.groceries) groceryDAO.checkGrocery(g.id, checked);
-            }
+        AsyncTask.execute(() -> {
+            for (GroceryEntity g : item.groceries) groceryDAO.checkGrocery(g.id, checked);
         });
     }
 
     public void deleteAllItems() {
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                groceryDAO.deleteAllItems();
-            }
-        });
+        AsyncTask.execute(groceryDAO::deleteAllItems);
     }
 
     public void deleteGroceriesForCalendar(long eventId) {
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                groceryDAO.deleteGroceriesForCalendar(eventId);
-            }
-        });
+        AsyncTask.execute(() -> groceryDAO.deleteGroceriesForCalendar(eventId));
     }
 
 

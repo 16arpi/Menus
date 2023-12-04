@@ -52,7 +52,7 @@ public class ProductAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
 
         holder.itemTitle.setText(item.label);
-        holder.itemSubTitle.setText(sections[item.secion]);
+        holder.itemSubTitle.setText(sections[item.section]);
         holder.cardItem.setOnClickListener(view -> {
             if (listener != null) listener.onItemSelected(item);
         });

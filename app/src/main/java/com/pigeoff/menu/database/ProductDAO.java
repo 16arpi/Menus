@@ -12,7 +12,7 @@ import java.util.List;
 
 @Dao
 public interface ProductDAO {
-    @Query("SELECT * FROM ProductEntity ORDER BY LOWER(label)")
+    @Query("SELECT * FROM ProductEntity WHERE permanent = 1 ORDER BY LOWER(label)")
     LiveData<List<ProductEntity>> getAll();
 
     @Query("SELECT * FROM ProductEntity WHERE label = :name")
@@ -23,6 +23,9 @@ public interface ProductDAO {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     long insertProduct(ProductEntity product);
+
+    @Query("DELETE FROM ProductEntity WHERE id = :id AND permanent = 0")
+    void deleteTemporaryProduct(long id);
 
     @Delete
     void deleteProduct(ProductEntity product);

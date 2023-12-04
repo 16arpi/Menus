@@ -34,68 +34,46 @@ public class ProductViewModel extends AndroidViewModel {
         productDAO = database.productDAO();
         recipeDAO = database.recipeDAO();
         items = productDAO.getAll();
-
     }
 
     public LiveData<List<ProductEntity>> getItems() {
         return items;
     }
-
     public void addProduct(ProductEntity item, FragmentActivity activity, ProductAddCallBack callBack) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                long id = productDAO.insertProduct(item);
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        callBack.onAdd(id);
-                    }
-                });
-            }
+        new Thread(() -> {
+            long id = productDAO.insertProduct(item);
+            activity.runOnUiThread(() -> callBack.onAdd(id));
         }).start();
     }
 
     public void updateProduct(ProductEntity item) {
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                productDAO.updateProduct(item);
-            }
-        });
+        AsyncTask.execute(() -> productDAO.updateProduct(item));
     }
 
     public void deleteProduct(ProductEntity item, List<ProductEntity> products, FragmentActivity activity, ProductDeleteCallback callback) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
+        new Thread(() -> {
+            boolean success = true;
 
-                boolean success = true;
+            List<RecipeEntity> recipes = recipeDAO.selectStatic();
 
-                List<RecipeEntity> recipes = recipeDAO.selectStatic();
-
-                for (RecipeEntity r : recipes) {
-                    List<Ingredient> ingredients = Ingredient.fromJson(Util.productsToDict(products), r.ingredients);
-                    for (Ingredient i : ingredients) {
-                        if (i.product.id == item.id) {
-                            success = false;
-                            break;
-                        }
+            for (RecipeEntity r : recipes) {
+                List<Ingredient> ingredients = Ingredient.fromJson(Util.productsToDict(products), r.ingredients);
+                for (Ingredient i : ingredients) {
+                    if (i.product.id == item.id) {
+                        success = false;
+                        break;
                     }
-                    if (!success) break;
                 }
-
-                if (success) productDAO.deleteProduct(item);
-
-                boolean finalSuccess = success;
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (finalSuccess) callback.onSuccess();
-                        else callback.onFailure();
-                    }
-                });
+                if (!success) break;
             }
+
+            if (success) productDAO.deleteProduct(item);
+
+            boolean finalSuccess = success;
+            activity.runOnUiThread(() -> {
+                if (finalSuccess) callback.onSuccess();
+                else callback.onFailure();
+            });
         }).start();
     }
 

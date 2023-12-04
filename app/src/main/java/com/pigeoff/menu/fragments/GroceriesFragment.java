@@ -118,7 +118,7 @@ public class GroceriesFragment extends Fragment {
             }
         });
 
-        floatingActionButton.setOnClickListener(v -> addCustomGrocerie(Constants.NO_SECTION));
+        floatingActionButton.setOnClickListener(v -> addCustomGrocerie(Constants.SECTION_DIVERS));
 
         recyclerView.setOnScrollChangeListener((v, sx, sy, osx, osy) -> {
             if (sy > osy) floatingActionButton.hide();
@@ -142,16 +142,13 @@ public class GroceriesFragment extends Fragment {
 
     private void updateGroceries(List<GrocerieGroup> items) {
         items.sort(Comparator.comparing(t -> t.product.label));
-        items.sort(Comparator.comparingInt(t -> t.product.secion));
+        items.sort(Comparator.comparingInt(t -> t.product.section));
         adapter.updateGroceries(new ArrayList<>(items));
     }
 
     private void addCustomGrocerie(int section) {
-        ProductFragment productFragment = ProductFragment.newInstance(false, true, section);
-        productFragment.addProductActionListener(item -> {
-                GrocerieEditFragment fragment = GrocerieEditFragment.newInstance(item);
-                fragment.addOnCallback(it -> model.addItem(it));
-                fragment.show(getParentFragmentManager(), "edit_grocerie");
-        }).show(requireActivity().getSupportFragmentManager(), "edit_product");
+        GrocerieEditFragment fragment = GrocerieEditFragment.newInstance();
+        fragment.addOnCallback((label, it) -> model.addItemWithProduct(section, label, it));
+        fragment.show(getParentFragmentManager(), "edit_grocerie");
     }
 }

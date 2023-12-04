@@ -81,7 +81,7 @@ public class GrocerieGroup {
         }
 
         dict.forEach((key, val) -> {
-            group.add(new GrocerieGroup(key, val, key.secion));
+            group.add(new GrocerieGroup(key, val, key.section));
         });
 
         return group;

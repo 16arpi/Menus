@@ -77,7 +77,7 @@ public class ProductEditFragment extends BottomSheetDialogFragment {
         List<String> unitTypes = Arrays.asList(Util.getUnitsLabel(requireContext()));
 
         editLabel.setText(product.label);
-        editSection.setText(sectionsTypes.get(product.secion), false);
+        editSection.setText(sectionsTypes.get(product.section), false);
         editDefaultUnit.setText(unitTypes.get(product.defaultUnit), false);
 
         editLabel.requestFocus();
@@ -88,7 +88,7 @@ public class ProductEditFragment extends BottomSheetDialogFragment {
             if (String.valueOf(editLabel.getText()).isEmpty()) return;
 
             product.defaultUnit = unitTypes.indexOf(editDefaultUnit.getText().toString());
-            product.secion = sectionsTypes.indexOf(editSection.getText().toString());
+            product.section = sectionsTypes.indexOf(editSection.getText().toString());
             product.label = String.valueOf(editLabel.getText());
 
             if (listener != null) listener.onSubmit(product);

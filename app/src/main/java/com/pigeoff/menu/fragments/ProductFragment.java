@@ -77,7 +77,7 @@ public class ProductFragment extends BottomSheetDialogFragment {
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            this.section = bundle.getInt(Constants.BUNDLE_SECTION, Constants.NO_SECTION);
+            this.section = bundle.getInt(Constants.BUNDLE_SECTION, Constants.SECTION_EMPTY);
             this.picker = bundle.getBoolean(Constants.BUNDLE_PICKER, false);
             this.fullscreen = bundle.getBoolean(Constants.BUNDLE_FULLSCREEN, false);
             System.out.println("Setting bundle arguments");
@@ -268,17 +268,17 @@ public class ProductFragment extends BottomSheetDialogFragment {
             List<ProductEntity> items = new ArrayList<>();
             for (ProductEntity p : products) {
                 if (Util.stringMatchSearch(p.label, query)) {
-                    if (p.secion == 0 && checked.contains(R.id.chip_filter_groceries)) {
+                    if (p.section == 0 && checked.contains(R.id.chip_filter_groceries)) {
                         items.add(p);
-                    } else if (p.secion == 1 && checked.contains(R.id.chip_filter_fruits)) {
+                    } else if (p.section == 1 && checked.contains(R.id.chip_filter_fruits)) {
                         items.add(p);
-                    } else if (p.secion == 2 && checked.contains(R.id.chip_filter_meat)) {
+                    } else if (p.section == 2 && checked.contains(R.id.chip_filter_meat)) {
                         items.add(p);
-                    } else if (p.secion == 3 && checked.contains(R.id.chip_filter_fresh)) {
+                    } else if (p.section == 3 && checked.contains(R.id.chip_filter_fresh)) {
                         items.add(p);
-                    } else if (p.secion == 4 && checked.contains(R.id.chip_filter_drinks)) {
+                    } else if (p.section == 4 && checked.contains(R.id.chip_filter_drinks)) {
                         items.add(p);
-                    } else if (p.secion == 5 && checked.contains(R.id.chip_filter_divers)) {
+                    } else if (p.section == 5 && checked.contains(R.id.chip_filter_divers)) {
                         items.add(p);
                     } else if (checked.size() == 0) {
                         items.add(p);
@@ -295,7 +295,7 @@ public class ProductFragment extends BottomSheetDialogFragment {
             dismiss(getParentFragmentManager());
         }
         else {
-            ProductEditFragment editFragment = ProductEditFragment.newInstance(product, product.secion);
+            ProductEditFragment editFragment = ProductEditFragment.newInstance(product, product.section);
             editFragment.show(requireActivity().getSupportFragmentManager(), "edit");
             editFragment.setOnEditListener(p -> {
                 model.updateProduct(p);
