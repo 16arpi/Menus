@@ -117,6 +117,8 @@ public class RecipeActivity extends AppCompatActivity {
                     }
                     else if (menu.getItemId() == R.id.item_export) {
                         importExport.export(allProducts, Collections.singletonList(recipe));
+                    } else if (menu.getItemId() == R.id.item_share) {
+                        shareRecipe(products, recipe);
                     }
 
                     return true;
@@ -196,5 +198,36 @@ public class RecipeActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void shareRecipe(HashMap<Long, ProductEntity> products, RecipeEntity recipe) {
+        new Thread(() -> {
+            String text = "";
+
+            // Title
+            text += recipe.title;
+            text += "\n";
+
+            // Ingredients
+            text += String.format("\n%s\n", getString(R.string.label_ingredient));
+            List<Ingredient> ingredients = Ingredient.fromJson(products, recipe.ingredients);
+            for (Ingredient s : ingredients) text += String.format("· %s \n", Util.formatIngredient(s));
+
+            // Preparation
+            text += String.format("\n%s\n", getString(R.string.label_steps));
+            List<String> steps = Util.listFromJson(recipe.steps);
+            for (String s : steps) text += String.format("· %s \n", s);
+
+            String finalText = text;
+            runOnUiThread(() -> {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_TEXT, finalText);
+                intent.setType("text/plain");
+
+                Intent chooser = Intent.createChooser(intent, getString(R.string.label_share));
+                startActivity(chooser);
+            });
+        }).start();
+    }
+
 
 }

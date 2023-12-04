@@ -41,6 +41,8 @@
                     android:id="@+id/edit_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:maxLines="1"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -56,6 +58,7 @@
 
                 android:padding="0dp"/>
         </LinearLayout>
+
 
         <!--<com.google.android.material.textfield.TextInputLayout
             style="?attr/textInputFilledStyle"
@@ -114,7 +117,71 @@
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chip_group_filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:singleLine="true"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:scrollbars="none"
+                app:selectionRequired="true"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:id="@+id/chip_filter_groceries"
+                    android:text="@string/tab_ingredient_groceries"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:id="@+id/chip_filter_fruits"
+                    android:text="@string/tab_ingredient_fruits"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:id="@+id/chip_filter_meat"
+                    android:text="@string/tab_ingredient_meat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:id="@+id/chip_filter_fresh"
+                    android:text="@string/tab_ingredient_fresh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:id="@+id/chip_filter_drinks"
+                    android:text="@string/tab_ingredient_drinks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:id="@+id/chip_filter_divers"
+                    android:text="@string/tab_ingredient_divers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+            </com.google.android.material.chip.ChipGroup>
+        </HorizontalScrollView>
+
     </LinearLayout>
+
+
 
 
 

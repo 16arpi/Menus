@@ -209,7 +209,7 @@ public class GroceriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         DiffUtilCallback<GrocerieGroup> diffCallback = new DiffUtilCallback<>(items, prepareItems(newItems), new DiffUtilCallback.DifferenceCallback<GrocerieGroup>() {
             @Override
             public boolean sameItem(GrocerieGroup oldElement, GrocerieGroup newElement) {
-                return oldElement.product.id == oldElement.product.id;
+                return oldElement.product.id == newElement.product.id;
             }
 
             @Override

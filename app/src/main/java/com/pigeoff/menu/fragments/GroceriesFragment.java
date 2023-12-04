@@ -147,8 +147,8 @@ public class GroceriesFragment extends Fragment {
     }
 
     private void addCustomGrocerie(int section) {
-        GrocerieEditFragment fragment = GrocerieEditFragment.newInstance();
-        fragment.addOnCallback((label, it) -> model.addItemWithProduct(section, label, it));
+        GrocerieEditFragment fragment = GrocerieEditFragment.newInstance(section);
+        fragment.addOnCallback((sec, label, it) -> model.addItemWithProduct(sec, label, it));
         fragment.show(getParentFragmentManager(), "edit_grocerie");
     }
 }

@@ -27,6 +27,12 @@ public interface ProductDAO {
     @Query("DELETE FROM ProductEntity WHERE id = :id AND permanent = 0")
     void deleteTemporaryProduct(long id);
 
+    @Query("DELETE FROM ProductEntity WHERE permanent = 0 AND id IN (SELECT ingredientId FROM GroceryEntity WHERE checked = 1)")
+    void deleteTemporaryCheckedProducts();
+
+    @Query("DELETE FROM ProductEntity WHERE permanent = 0")
+    void deleteTemporaryProducts();
+
     @Delete
     void deleteProduct(ProductEntity product);
 }

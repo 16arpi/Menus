@@ -80,7 +80,10 @@ public class GroceriesViewModel extends AndroidViewModel {
     }
 
     public void deleteAllChecked() {
-        AsyncTask.execute(groceryDAO::deleteAllChecked);
+        AsyncTask.execute(() -> {
+            productDAO.deleteTemporaryCheckedProducts();
+            groceryDAO.deleteAllChecked();
+        });
     }
 
     public void checkGrocery(GrocerieGroup item, boolean checked) {
@@ -90,7 +93,10 @@ public class GroceriesViewModel extends AndroidViewModel {
     }
 
     public void deleteAllItems() {
-        AsyncTask.execute(groceryDAO::deleteAllItems);
+        AsyncTask.execute(() -> {
+            productDAO.deleteTemporaryProducts();
+            groceryDAO.deleteAllItems();
+        });
     }
 
     public void deleteGroceriesForCalendar(long eventId) {

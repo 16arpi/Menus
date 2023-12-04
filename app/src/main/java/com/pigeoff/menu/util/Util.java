@@ -76,7 +76,13 @@ public class Util {
                 String.format(Locale.getDefault(), "%.0f", ingredient.value);
 
         String unit = units[ingredient.unit].label;
-        String label = ingredient.product.label;
+
+        String label;
+        if (ingredient.product != null) {
+            label = ingredient.product.label;
+        } else {
+            label = "";
+        }
 
         return String.format(Locale.getDefault(), "%s %s %s", value, unit, label);
     }

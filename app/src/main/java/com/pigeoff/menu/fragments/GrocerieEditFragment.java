@@ -14,30 +14,40 @@ import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputEditText;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.database.GroceryEntity;
 import com.pigeoff.menu.database.ProductEntity;
 import com.pigeoff.menu.models.ProductViewModel;
+import com.pigeoff.menu.util.Constants;
 import com.pigeoff.menu.util.Util;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class GrocerieEditFragment extends BottomSheetDialogFragment {
+
+    private int section = Constants.SECTION_DIVERS;
     private AutoCompleteTextView label;
     private TextInputEditText value;
     private AutoCompleteTextView unit;
     private OnGrocerieChoose listener;
     private ProductViewModel productViewModel;
+    private ChipGroup chipGroup;
 
     public GrocerieEditFragment() {
 
     }
 
-    public static GrocerieEditFragment newInstance() {
-        return new GrocerieEditFragment();
+    public static GrocerieEditFragment newInstance(int section) {
+        GrocerieEditFragment fragment = new GrocerieEditFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(Constants.BUNDLE_SECTION, section);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     public void addOnCallback(OnGrocerieChoose listener) {
@@ -48,6 +58,8 @@ public class GrocerieEditFragment extends BottomSheetDialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Bundle bundle = getArguments();
+        if (bundle != null) section = bundle.getInt(Constants.BUNDLE_SECTION, Constants.SECTION_DIVERS);
         productViewModel = new ProductViewModel(requireActivity().getApplication());
     }
 
@@ -66,6 +78,7 @@ public class GrocerieEditFragment extends BottomSheetDialogFragment {
         value = view.findViewById(R.id.edit_value);
         unit = view.findViewById(R.id.edit_unit);
         MaterialButton submit = view.findViewById(R.id.button_submit);
+        chipGroup = view.findViewById(R.id.chip_group_filter);
 
         List<String> units = Arrays.asList(Util.getUnitsLabel(requireContext()));
 
@@ -92,6 +105,8 @@ public class GrocerieEditFragment extends BottomSheetDialogFragment {
 
         label.requestFocus();
 
+        selectChip(chipGroup, section);
+
         submit.setOnClickListener(v -> {
             String productLabel = String.valueOf(label.getText());
             if (productLabel.isEmpty()) return;
@@ -107,12 +122,41 @@ public class GrocerieEditFragment extends BottomSheetDialogFragment {
             item.value = itemValue;
             item.unit = units.indexOf(unit.getText().toString());
 
+            int finalSection = getSelection(chipGroup);
 
-            if (listener != null) listener.onGrocerieChoose(productLabel, item);
+            System.out.println("FINAL SELECTION" + String.valueOf(finalSection));
+            if (listener != null) listener.onGrocerieChoose(finalSection, productLabel, item);
 
             dismiss();
         });
 
+    }
+
+    private void selectChip(ChipGroup group, int position) {
+        int[] ids = {
+                R.id.chip_filter_groceries,
+                R.id.chip_filter_fruits,
+                R.id.chip_filter_meat,
+                R.id.chip_filter_fresh,
+                R.id.chip_filter_drinks,
+                R.id.chip_filter_divers
+        };
+        group.check(ids[position]);
+    }
+
+    private int getSelection(ChipGroup group) {
+        int[] ids = {
+                R.id.chip_filter_groceries,
+                R.id.chip_filter_fruits,
+                R.id.chip_filter_meat,
+                R.id.chip_filter_fresh,
+                R.id.chip_filter_drinks,
+                R.id.chip_filter_divers
+        };
+
+        int selection = group.getCheckedChipId();
+        for (int i = 0; i < ids.length; ++i) if (ids[i] == selection) return i;
+        return 0;
     }
 
     @Override
@@ -122,6 +166,6 @@ public class GrocerieEditFragment extends BottomSheetDialogFragment {
     }
 
     public interface OnGrocerieChoose {
-        void onGrocerieChoose(String productLabel, GroceryEntity item);
+        void onGrocerieChoose(int section, String productLabel, GroceryEntity item);
     }
 }

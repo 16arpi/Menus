@@ -56,6 +56,7 @@
     <string name="label_delete">Delete</string>
     <string name="label_edit">Edit</string>
     <string name="label_export">Export</string>
+    <string name="label_share">Share</string>
     <string name="recipe_delete_title">Delete the recipe</string>
     <string name="recipe_delete_message">Warning, all your menus and shopping items related to this recipe will be deleted as well.</string>
     <string name="recipe_delete_delete">Delete</string>
