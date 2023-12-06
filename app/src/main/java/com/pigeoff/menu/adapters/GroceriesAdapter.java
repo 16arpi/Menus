@@ -2,7 +2,6 @@ package com.pigeoff.menu.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +11,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.color.MaterialColors;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.data.GrocerieGroup;
+import com.pigeoff.menu.database.GroceryEntity;
 import com.pigeoff.menu.database.ProductEntity;
 import com.pigeoff.menu.util.DiffUtilCallback;
 import com.pigeoff.menu.util.Util;
@@ -27,12 +28,12 @@ import java.util.List;
 
 public class GroceriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    int expandedPosition = -1;
+
     Context context;
     ArrayList<GrocerieGroup> items;
     OnAdapterAction<GrocerieGroup> listener;
     int[] viewTypes;
-
-
 
     private static final int VIEW_GROCERY = 6;
 
@@ -110,73 +111,76 @@ public class GroceriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        GrocerieGroup gp = items.get(position);
         if (holder instanceof GroceriesViewHolder) {
-            ProductEntity product = gp.product;
-
-            GroceriesViewHolder groceriesHolder = (GroceriesViewHolder) holder;
-
-            groceriesHolder.label.setText(product.label);
-            groceriesHolder.labelValueUnit.setText(gp.quantity);
-
-            int colorAttr;
-            if (gp.checked) {
-                colorAttr = MaterialColors.getColor(context, com.google.android.material.R.attr.colorPrimary, Color.BLACK);
-                groceriesHolder.checkBox.setImageDrawable(
-                        AppCompatResources.getDrawable(context, R.drawable.ic_check)
-                );
-                groceriesHolder.checkBox.setColorFilter(colorAttr);
-            } else {
-                colorAttr = MaterialColors.getColor(context, com.google.android.material.R.attr.colorSurfaceInverse, Color.BLACK);
-                groceriesHolder.checkBox.setImageDrawable(
-                        AppCompatResources.getDrawable(context, R.drawable.ic_uncheck)
-                );
-                groceriesHolder.checkBox.setColorFilter(colorAttr);
-            }
-
-            paintCheckText(groceriesHolder.label, gp.checked);
-            paintCheckText(groceriesHolder.labelRecipe, gp.checked);
-
-            groceriesHolder.labelRecipe.setVisibility(View.GONE);
-
-            groceriesHolder.checkBox.setOnClickListener(view -> {
-                gp.setChecked(!gp.checked);
-                listener.onItemClick(gp, OnAdapterAction.ACTION_CHECK);
-            });
-
-            groceriesHolder.buttonAction.setVisibility(View.GONE);
-        } else {
-            SectionViewHolder sectionViewHolder = (SectionViewHolder) holder;
-            sectionViewHolder.section.setText(Util.getSectionsLabel(context)[sectionViewHolder.type]);
-            sectionViewHolder.add.setOnClickListener(view -> {
-                System.out.println("Add product section " + gp.section);
-                listener.onItemClick(gp, OnAdapterAction.ACTION_ADD);
-
-            });
+            onBindGroceriesViewHolder((GroceriesViewHolder) holder, position);
+        } else if (holder instanceof SectionViewHolder) {
+            onBindSectionViewHolder((SectionViewHolder) holder, position);
         }
+    }
+
+    private void onBindGroceriesViewHolder(GroceriesViewHolder holder, int position) {
+        GrocerieGroup gp = items.get(position);
+        ProductEntity product = gp.product;
+
+        holder.label.setText(product.label);
+        holder.labelValueUnit.setVisibility(View.GONE);
+
+        int colorAttr;
+        if (gp.checked) {
+            colorAttr = MaterialColors.getColor(context, com.google.android.material.R.attr.colorPrimary, Color.BLACK);
+            holder.checkBox.setImageDrawable(
+                    AppCompatResources.getDrawable(context, R.drawable.ic_check)
+            );
+            holder.checkBox.setColorFilter(colorAttr);
+        } else {
+            colorAttr = MaterialColors.getColor(context, com.google.android.material.R.attr.colorSurfaceInverse, Color.BLACK);
+            holder.checkBox.setImageDrawable(
+                    AppCompatResources.getDrawable(context, R.drawable.ic_uncheck)
+            );
+            holder.checkBox.setColorFilter(colorAttr);
+        }
+
+        Util.paintCheckText(holder.label, gp.checked);
+
+        holder.recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        holder.recyclerView.setAdapter(new RecipeDetailsAdapter(context, gp.groceries));
+
+        holder.checkBox.setOnClickListener(view -> {
+            gp.setChecked(!gp.checked);
+            listener.onItemClick(gp, OnAdapterAction.ACTION_CHECK);
+        });
+
+        holder.buttonAction.setOnClickListener(v -> expandAction(holder.getAdapterPosition()));
+        holder.label.setOnClickListener(v -> expandAction(holder.getAdapterPosition()));
+
+
+        if (expandedPosition == holder.getAdapterPosition()) {
+            holder.buttonAction.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_collapse));
+            holder.recyclerView.setVisibility(View.VISIBLE);
+        } else {
+            holder.buttonAction.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_expand));
+            holder.recyclerView.setVisibility(View.GONE);
+        }
+    }
+
+    private void expandAction(int position) {
+        int oldExpandedPosition = expandedPosition;
+        expandedPosition = expandedPosition == position ? -1 : position;
+        notifyItemChanged(position);
+        notifyItemChanged(oldExpandedPosition);
+    }
+
+    private void onBindSectionViewHolder(SectionViewHolder holder, int position) {
+        GrocerieGroup gp = items.get(position);
+        holder.section.setText(Util.getSectionsLabel(context)[holder.type]);
+        holder.add.setOnClickListener(view -> {
+            listener.onItemClick(gp, OnAdapterAction.ACTION_ADD);
+        });
     }
 
     @Override
     public int getItemCount() {
         return items.size();
-    }
-
-    private static class GroceriesViewHolder extends RecyclerView.ViewHolder {
-
-        ImageButton checkBox;
-        TextView label;
-        TextView labelValueUnit;
-        TextView labelRecipe;
-        ImageButton buttonAction;
-
-        public GroceriesViewHolder(@NonNull View itemView) {
-            super(itemView);
-            checkBox = itemView.findViewById(R.id.checkbox);
-            label = itemView.findViewById(R.id.text_label);
-            labelValueUnit = itemView.findViewById(R.id.text_label_value_unit);
-            labelRecipe = itemView.findViewById(R.id.text_sub_label);
-            buttonAction = itemView.findViewById(R.id.button_action);
-        }
     }
 
     private static class SectionViewHolder extends RecyclerView.ViewHolder {
@@ -193,11 +197,21 @@ public class GroceriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    private void paintCheckText(TextView view, boolean check) {
-        if (check) {
-            view.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
-        } else {
-            view.setPaintFlags(Paint.ANTI_ALIAS_FLAG);
+    private static class GroceriesViewHolder extends RecyclerView.ViewHolder {
+
+        ImageButton checkBox;
+        TextView label;
+        TextView labelValueUnit;
+        ImageButton buttonAction;
+        RecyclerView recyclerView;
+
+        public GroceriesViewHolder(@NonNull View itemView) {
+            super(itemView);
+            checkBox = itemView.findViewById(R.id.checkbox);
+            label = itemView.findViewById(R.id.text_label);
+            labelValueUnit = itemView.findViewById(R.id.text_label_value_unit);
+            buttonAction = itemView.findViewById(R.id.button_action);
+            recyclerView = itemView.findViewById(R.id.recycler_view);
         }
     }
 
@@ -229,6 +243,54 @@ public class GroceriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             return items.get(position);
         } else {
             return null;
+        }
+    }
+
+    private static class RecipeDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+        List<GroceryEntity> items;
+        Context context;
+
+        public RecipeDetailsAdapter(Context context, List<GroceryEntity> items) {
+            this.items = items;
+            this.context = context;
+        }
+
+        @NonNull
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new RecipeDetailsViewHolder(LayoutInflater.from(context).inflate(R.layout.adapter_recipe_quantity, parent, false));
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder h, int position) {
+            RecipeDetailsViewHolder holder = (RecipeDetailsViewHolder) h;
+            GroceryEntity item = items.get(position);
+
+            holder.textRecipe.setText(
+                    item.recipeId >= 0 ? item.recipeLabel : context.getString(R.string.label_empty_recipe)
+            );
+            holder.textQuantity.setText(Util.formatIngredient(item.value, item.unit));
+
+            Util.paintCheckText(holder.textRecipe, item.checked);
+            Util.paintCheckText(holder.textQuantity, item.checked);
+        }
+
+        @Override
+        public int getItemCount() {
+            return items.size();
+        }
+
+        private static class RecipeDetailsViewHolder extends RecyclerView.ViewHolder {
+
+            TextView textRecipe;
+            TextView textQuantity;
+
+            public RecipeDetailsViewHolder(@NonNull View view) {
+                super(view);
+                textRecipe = view.findViewById(R.id.text_label_left);
+                textQuantity = view.findViewById(R.id.text_label_right);
+            }
         }
     }
 

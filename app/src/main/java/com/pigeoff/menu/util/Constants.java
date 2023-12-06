@@ -8,7 +8,7 @@ public class Constants {
     public static String BUNDLE_PICKER = "bundle_picker";
     public static String BUNDLE_SECTION = "bundle_section";
 
-    public static int TAB_GROCERIES = 0;
+    public static int SECTION_GROCERIES = 0;
     public static int SECTION_EMPTY = -1;
     public static int SECTION_DIVERS = 5;
 }

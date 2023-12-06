@@ -17,41 +17,6 @@
         android:padding="0dp"/>
 
     <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/product_section"
-        android:layout_margin="8dp">
-
-        <AutoCompleteTextView
-            android:id="@+id/edit_section"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusable="false"
-            android:maxLines="1"
-            app:simpleItems="@array/section" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:hint="@string/product_unit">
-
-        <AutoCompleteTextView
-            android:id="@+id/edit_product_unit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusable="false"
-            android:maxLines="1"
-            android:text="@string/default_unit"
-            app:simpleItems="@array/units" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
         style="?attr/textInputFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -66,6 +31,68 @@
             />
 
     </com.google.android.material.textfield.TextInputLayout>
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <com.pigeoff.menu.views.ChipCategories
+            android:id="@+id/chip_group_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:singleLine="true"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:scrollbars="none"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.Material3.Chip.Filter"
+                android:id="@+id/chip_filter_groceries"
+                android:text="@string/tab_ingredient_groceries"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.Material3.Chip.Filter"
+                android:id="@+id/chip_filter_fruits"
+                android:text="@string/tab_ingredient_fruits"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.Material3.Chip.Filter"
+                android:id="@+id/chip_filter_meat"
+                android:text="@string/tab_ingredient_meat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.Material3.Chip.Filter"
+                android:id="@+id/chip_filter_fresh"
+                android:text="@string/tab_ingredient_fresh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.Material3.Chip.Filter"
+                android:id="@+id/chip_filter_drinks"
+                android:text="@string/tab_ingredient_drinks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.Material3.Chip.Filter"
+                android:id="@+id/chip_filter_divers"
+                android:text="@string/tab_ingredient_divers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </com.pigeoff.menu.views.ChipCategories>
+    </HorizontalScrollView>
 
 
 </LinearLayout>

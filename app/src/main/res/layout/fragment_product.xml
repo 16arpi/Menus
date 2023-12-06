@@ -60,7 +60,7 @@
                         android:layout_marginBottom="12dp"
                         android:src="@drawable/ic_sort" />
 
-                    <com.google.android.material.chip.ChipGroup
+                    <com.pigeoff.menu.views.ChipCategories
                         android:id="@+id/chip_group_filter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -112,7 +112,7 @@
                             android:layout_height="wrap_content" />
 
 
-                    </com.google.android.material.chip.ChipGroup>
+                    </com.pigeoff.menu.views.ChipCategories>
 
                 </LinearLayout>
 

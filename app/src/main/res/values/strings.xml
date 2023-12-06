@@ -75,6 +75,7 @@
     <string name="dialog_product">Product</string>
     <string name="dialog_unit">Unit</string>
     <string name="dialog_value">Value</string>
+    <string name="label_empty_recipe">Manual add</string>
 
     <!--- PRODUCT -->
     <string name="product">Products</string>

@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AutoCompleteTextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +15,7 @@ import com.pigeoff.menu.R;
 import com.pigeoff.menu.database.ProductEntity;
 import com.pigeoff.menu.util.Constants;
 import com.pigeoff.menu.util.Util;
+import com.pigeoff.menu.views.ChipCategories;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,8 +30,7 @@ public class ProductEditFragment extends BottomSheetDialogFragment {
     OnEditListener listener;
 
     TextInputEditText editLabel;
-    AutoCompleteTextView editSection;
-    AutoCompleteTextView editDefaultUnit;
+    ChipCategories editSection;
     MaterialButton buttonSubmit;
 
     public ProductEditFragment() {
@@ -54,7 +53,9 @@ public class ProductEditFragment extends BottomSheetDialogFragment {
         if (bundle != null) {
             String itemJson = bundle.getString(BUNDLE_ITEM, null);
             if (itemJson != null) this.product = ProductEntity.toObject(itemJson);
-            this.section = bundle.getInt(BUNDLE_SECTION, Constants.TAB_GROCERIES);
+            this.section = bundle.getInt(BUNDLE_SECTION, Constants.SECTION_GROCERIES);
+        } else {
+            this.section = Constants.SECTION_GROCERIES;
         }
     }
 
@@ -69,26 +70,18 @@ public class ProductEditFragment extends BottomSheetDialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         editLabel = view.findViewById(R.id.edit_label);
-        editSection = view.findViewById(R.id.edit_section);
-        editDefaultUnit = view.findViewById(R.id.edit_product_unit);
+        editSection = view.findViewById(R.id.chip_group_filter);
         buttonSubmit = view.findViewById(R.id.button_submit);
 
-        List<String> sectionsTypes = Arrays.asList(Util.getSectionsLabel(requireContext()));
-        List<String> unitTypes = Arrays.asList(Util.getUnitsLabel(requireContext()));
-
         editLabel.setText(product.label);
-        editSection.setText(sectionsTypes.get(product.section), false);
-        editDefaultUnit.setText(unitTypes.get(product.defaultUnit), false);
+        editSection.check(section);
 
         editLabel.requestFocus();
-
-        editSection.setText(sectionsTypes.get(section), false);
 
         buttonSubmit.setOnClickListener(v -> {
             if (String.valueOf(editLabel.getText()).isEmpty()) return;
 
-            product.defaultUnit = unitTypes.indexOf(editDefaultUnit.getText().toString());
-            product.section = sectionsTypes.indexOf(editSection.getText().toString());
+            product.section = editSection.getSelectedSection();
             product.label = String.valueOf(editLabel.getText());
 
             if (listener != null) listener.onSubmit(product);

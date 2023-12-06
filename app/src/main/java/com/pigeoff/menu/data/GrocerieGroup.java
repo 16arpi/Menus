@@ -16,6 +16,7 @@ public class GrocerieGroup {
     public String quantity;
     public int section;
     public boolean checked;
+    public boolean expanded = false;
 
     public ProductEntity product;
     public List<GroceryEntity> groceries;
@@ -87,7 +88,7 @@ public class GrocerieGroup {
         return group;
     }
 
-    private static class ValueUnit {
+    public static class ValueUnit {
         public float value;
         public int unit;
         public ValueUnit(float value, int unit) {

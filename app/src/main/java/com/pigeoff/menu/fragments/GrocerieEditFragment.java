@@ -22,6 +22,7 @@ import com.pigeoff.menu.database.ProductEntity;
 import com.pigeoff.menu.models.ProductViewModel;
 import com.pigeoff.menu.util.Constants;
 import com.pigeoff.menu.util.Util;
+import com.pigeoff.menu.views.ChipCategories;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,7 +37,7 @@ public class GrocerieEditFragment extends BottomSheetDialogFragment {
     private AutoCompleteTextView unit;
     private OnGrocerieChoose listener;
     private ProductViewModel productViewModel;
-    private ChipGroup chipGroup;
+    private ChipCategories chipGroup;
 
     public GrocerieEditFragment() {
 
@@ -105,7 +106,7 @@ public class GrocerieEditFragment extends BottomSheetDialogFragment {
 
         label.requestFocus();
 
-        selectChip(chipGroup, section);
+        chipGroup.check(section);
 
         submit.setOnClickListener(v -> {
             String productLabel = String.valueOf(label.getText());
@@ -122,7 +123,7 @@ public class GrocerieEditFragment extends BottomSheetDialogFragment {
             item.value = itemValue;
             item.unit = units.indexOf(unit.getText().toString());
 
-            int finalSection = getSelection(chipGroup);
+            int finalSection = chipGroup.getSelectedSection();
 
             System.out.println("FINAL SELECTION" + String.valueOf(finalSection));
             if (listener != null) listener.onGrocerieChoose(finalSection, productLabel, item);
@@ -132,32 +133,6 @@ public class GrocerieEditFragment extends BottomSheetDialogFragment {
 
     }
 
-    private void selectChip(ChipGroup group, int position) {
-        int[] ids = {
-                R.id.chip_filter_groceries,
-                R.id.chip_filter_fruits,
-                R.id.chip_filter_meat,
-                R.id.chip_filter_fresh,
-                R.id.chip_filter_drinks,
-                R.id.chip_filter_divers
-        };
-        group.check(ids[position]);
-    }
-
-    private int getSelection(ChipGroup group) {
-        int[] ids = {
-                R.id.chip_filter_groceries,
-                R.id.chip_filter_fruits,
-                R.id.chip_filter_meat,
-                R.id.chip_filter_fresh,
-                R.id.chip_filter_drinks,
-                R.id.chip_filter_divers
-        };
-
-        int selection = group.getCheckedChipId();
-        for (int i = 0; i < ids.length; ++i) if (ids[i] == selection) return i;
-        return 0;
-    }
 
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {

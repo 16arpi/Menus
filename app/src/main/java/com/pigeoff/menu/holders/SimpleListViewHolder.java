@@ -1,4 +1,4 @@
-package com.pigeoff.menu.adapters;
+package com.pigeoff.menu.holders;
 
 import android.view.View;
 import android.widget.CheckBox;
@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.pigeoff.menu.R;
 
 public class SimpleListViewHolder extends RecyclerView.ViewHolder {
-    TextView textItem;
-    CheckBox checkBox;
-    ImageButton buttonClose;
+    public TextView textItem;
+    public CheckBox checkBox;
+    public ImageButton buttonClose;
 
     public SimpleListViewHolder(@NonNull View itemView) {
         super(itemView);

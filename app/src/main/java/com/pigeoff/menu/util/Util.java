@@ -1,9 +1,11 @@
 package com.pigeoff.menu.util;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
+import android.widget.TextView;
 
 import androidx.fragment.app.FragmentActivity;
 
@@ -95,9 +97,10 @@ public class Util {
                 String.format(Locale.getDefault(), "%.2f", value) :
                 String.format(Locale.getDefault(), "%.0f", value);
 
+
         String u = units[unit].label;
 
-        return String.format(Locale.getDefault(), "%s %s", v, u);
+        return v.equals("0") ? "" : String.format(Locale.getDefault(), "%s %s", v, u);
     }
 
     public static String formatFloat(float value) {
@@ -141,5 +144,13 @@ public class Util {
         HashMap<Long, ProductEntity> dict = new HashMap<>();
         for (ProductEntity p : items) dict.put(p.id, p);
         return dict;
+    }
+
+    public static void paintCheckText(TextView view, boolean check) {
+        if (check) {
+            view.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
+        } else {
+            view.setPaintFlags(Paint.ANTI_ALIAS_FLAG);
+        }
     }
 }

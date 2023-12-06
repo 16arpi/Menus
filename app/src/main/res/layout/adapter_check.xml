@@ -21,49 +21,41 @@
         android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:padding="8dp">
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:animateLayoutChanges="true">
 
             <TextView
-                style="@style/TextAppearance.Material3.BodyLarge"
+                style="@style/TextAppearance.Material3.TitleMedium"
                 android:id="@+id/text_label"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:lineHeight="16dp"
-                android:text="Ingredient"
+                android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:gravity="start|top"
-                />
+                android:text="Ingrédient" />
 
             <TextView
                 style="@style/TextAppearance.Material3.BodyLarge"
                 android:id="@+id/text_label_value_unit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:lineHeight="16dp"
-                android:text="Ingredient"
+                android:text=""
                 android:background="@android:color/transparent"
                 android:gravity="end|top"
                 />
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/text_sub_label"
-            style="@style/TextAppearance.Material3.BodyMedium"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Recipe"
-            android:lines="1"
-            android:textColor="?colorOnSurfaceVariant"
-            android:background="@android:color/transparent"
-            android:gravity="start|top"
-            />
+            android:clipToPadding="true"/>
 
     </LinearLayout>
 
@@ -73,5 +65,5 @@
         android:layout_height="24dp"
         android:layout_margin="8dp"
         android:background="?android:selectableItemBackgroundBorderless"
-        app:srcCompat="@drawable/ic_close" />
+        app:srcCompat="@drawable/ic_expand" />
 </LinearLayout>

@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -27,6 +26,7 @@ import com.pigeoff.menu.database.ProductEntity;
 import com.pigeoff.menu.models.ProductViewModel;
 import com.pigeoff.menu.util.Constants;
 import com.pigeoff.menu.util.Util;
+import com.pigeoff.menu.views.ChipCategories;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +45,7 @@ public class ProductFragment extends BottomSheetDialogFragment {
     TextInputLayout editSearchLayout;
     TextInputEditText editSearch;
     RecyclerView recyclerView;
-    ChipGroup chips;
+    ChipCategories chips;
 
     public ProductFragment() {
 
@@ -80,7 +80,6 @@ public class ProductFragment extends BottomSheetDialogFragment {
             this.section = bundle.getInt(Constants.BUNDLE_SECTION, Constants.SECTION_EMPTY);
             this.picker = bundle.getBoolean(Constants.BUNDLE_PICKER, false);
             this.fullscreen = bundle.getBoolean(Constants.BUNDLE_FULLSCREEN, false);
-            System.out.println("Setting bundle arguments");
         }
     }
 
@@ -152,43 +151,25 @@ public class ProductFragment extends BottomSheetDialogFragment {
         }
     }
 
-    private int getSection() {
-        if (chips.getCheckedChipIds().size() == 1) {
-            int id = chips.getCheckedChipIds().get(0);
-            if (id == R.id.chip_filter_groceries) {
-                return 0;
-            } else if (id == R.id.chip_filter_fruits) {
-                return 1;
-            } else if (id == R.id.chip_filter_meat) {
-                return 2;
-            } else if (id == R.id.chip_filter_fresh) {
-                return 3;
-            } else if (id == R.id.chip_filter_drinks) {
-                return 4;
-            } else if (id == R.id.chip_filter_divers) {
-                return 5;
-            }
-        }
-
-        return Constants.TAB_GROCERIES;
-    }
 
     private void setupUI() {
 
         editSearchLayout.setEndIconOnClickListener(v -> {
             ProductEntity item = new ProductEntity();
             item.label = String.valueOf(editSearch.getText());
-            ProductEditFragment editFragment = ProductEditFragment.newInstance(item, getSection());
-            editFragment.setOnEditListener(product ->
-                    model.addProduct(item, requireActivity(), id -> {
+            ProductEditFragment editFragment = ProductEditFragment.newInstance(
+                    item, chips.getSelectedSection() < 0 ? Constants.SECTION_GROCERIES : chips.getSelectedSection());
+
+            editFragment.setOnEditListener(newItem ->
+                    model.addProduct(newItem, requireActivity(), id -> {
                         if (picker && listener != null) {
-                            product.id = id;
-                            listener.onItemSelected(product);
+                            newItem.id = id;
+                            listener.onItemSelected(newItem);
                             dismiss(getParentFragmentManager());
                         }
                     })
             );
-            editFragment.show(requireActivity().getSupportFragmentManager(), "edit");
+            editFragment.show(requireActivity().getSupportFragmentManager(), "edit_product");
         });
 
         adapter = new ProductAdapter(requireContext(), new ArrayList<>(), new ProductAdapter.OnItemAction() {
@@ -239,21 +220,7 @@ public class ProductFragment extends BottomSheetDialogFragment {
 
         chips.setOnCheckedStateChangeListener((group, ids) -> updateData());
 
-        if (section >= 0) {
-            if (section == 0) {
-                chips.check(R.id.chip_filter_groceries);
-            } else if (section == 1) {
-                chips.check(R.id.chip_filter_fruits);
-            } else if (section == 2) {
-                chips.check(R.id.chip_filter_meat);
-            } else if (section == 3) {
-                chips.check(R.id.chip_filter_fresh);
-            } else if (section == 4) {
-                chips.check(R.id.chip_filter_drinks);
-            } else if (section == 5) {
-                chips.check(R.id.chip_filter_divers);
-            }
-        }
+        if (section > 0) chips.check(section);
 
     }
 
@@ -264,21 +231,11 @@ public class ProductFragment extends BottomSheetDialogFragment {
 
     public void updateData() {
         new Thread(() -> {
-            List<Integer> checked = chips.getCheckedChipIds();
+            List<Integer> checked = chips.getSelectedSections();
             List<ProductEntity> items = new ArrayList<>();
             for (ProductEntity p : products) {
                 if (Util.stringMatchSearch(p.label, query)) {
-                    if (p.section == 0 && checked.contains(R.id.chip_filter_groceries)) {
-                        items.add(p);
-                    } else if (p.section == 1 && checked.contains(R.id.chip_filter_fruits)) {
-                        items.add(p);
-                    } else if (p.section == 2 && checked.contains(R.id.chip_filter_meat)) {
-                        items.add(p);
-                    } else if (p.section == 3 && checked.contains(R.id.chip_filter_fresh)) {
-                        items.add(p);
-                    } else if (p.section == 4 && checked.contains(R.id.chip_filter_drinks)) {
-                        items.add(p);
-                    } else if (p.section == 5 && checked.contains(R.id.chip_filter_divers)) {
+                    if (checked.contains(p.section)) {
                         items.add(p);
                     } else if (checked.size() == 0) {
                         items.add(p);

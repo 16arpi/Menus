@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.data.Ingredient;
+import com.pigeoff.menu.holders.SimpleListViewHolder;
 import com.pigeoff.menu.util.Util;
 
 import java.util.ArrayList;

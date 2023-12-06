@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.pigeoff.menu.R;
+import com.pigeoff.menu.holders.SimpleListViewHolder;
 
 import java.util.ArrayList;
 import java.util.Collections;
