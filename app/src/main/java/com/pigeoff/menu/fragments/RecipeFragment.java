@@ -125,7 +125,6 @@ public class RecipeFragment extends Fragment {
             chips.setOnCheckedStateChangeListener(((group, checkedIds) -> setupUI(checkedIds, items)));
             setupUI(chips.getCheckedChipIds(), items);
         });
-
     }
 
     private void setupUI(List<Integer> filters, List<RecipeEntity> items) {

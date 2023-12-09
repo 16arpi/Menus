@@ -97,6 +97,7 @@
     <string name="product_delete_dialog_message" >Impossible to delete the product because it is used in one of your recipes.</string>
     <string name="product_delete_dialog_ok" >Ok</string>
 
+    <string name="crash_messge">Sorry, the app crashed ! A report will be sent to the developer.</string>
 
 
     <string-array name="meals" >

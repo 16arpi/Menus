@@ -97,6 +97,7 @@
     <string name="product_delete_dialog_message" >Impossible de supprimer le produit car il est utilisé dans une de vos recettes.</string>
     <string name="product_delete_dialog_ok" >Ok</string>
 
+    <string name="crash_messge">Désolé, l\'app a planté ! Un rapport sera envoyé au développeur.</string>
 
 
     <string-array name="meals" >
