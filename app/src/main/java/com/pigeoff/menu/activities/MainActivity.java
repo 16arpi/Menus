@@ -19,11 +19,13 @@ public class MainActivity extends AppCompatActivity {
     private static final String FRAGMENT_RECIPES = "recipes";
     private static final String FRAGMENT_GROCERIES = "groceries";
 
-
-
     FrameLayout frameLayout;
     BottomNavigationView bottomNavigationView;
     Fragment activeFragment;
+
+    CalendarFragment calendarFragment;
+    RecipeFragment recipeFragment;
+    GroceriesFragment groceriesFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,13 +35,11 @@ public class MainActivity extends AppCompatActivity {
         frameLayout = findViewById(R.id.frame_layout);
         bottomNavigationView = findViewById(R.id.bottom_navigation_view);
 
-        CalendarFragment calendarFragment = new CalendarFragment();
-        RecipeFragment recipeFragment = new RecipeFragment();
-        GroceriesFragment groceriesFragment = new GroceriesFragment();
+        calendarFragment = new CalendarFragment();
+        recipeFragment = new RecipeFragment();
+        groceriesFragment = new GroceriesFragment();
 
-        recipeFragment.addCallback(open ->
-                bottomNavigationView.setVisibility(open ? View.GONE : View.VISIBLE)
-        );
+        recipeFragment.addCallback(open -> bottomNavigationView.setVisibility(open ? View.GONE : View.VISIBLE));
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -80,5 +80,4 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView.setSelectedItemId(R.id.item_calendar);
     }
-
 }

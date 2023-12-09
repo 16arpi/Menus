@@ -16,5 +16,5 @@ public class RecipeEntity {
     public int portions = 1;
     public String ingredients = "[]"; // JSON
     public String steps = "[]"; // JSON
-    public String note;
+    public String note; // Not used at this point
 }

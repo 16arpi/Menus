@@ -15,10 +15,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.activities.RecipeActivity;
 import com.pigeoff.menu.adapters.DayAdapter;
 import com.pigeoff.menu.database.CalendarWithRecipe;
+import com.pigeoff.menu.database.GroceryEntity;
 import com.pigeoff.menu.database.ProductEntity;
 import com.pigeoff.menu.models.WeekModel;
 import com.pigeoff.menu.util.Constants;
@@ -96,48 +98,40 @@ public class CalendarFragment extends Fragment {
         });
 
         adapter = new DayAdapter(requireContext(), items, calendar, new DayAdapter.Callback() {
-            @Override
-            public void onAddToGroceries(CalendarWithRecipe item) {
-                model.addEventToGroceries(products, item, requireActivity(), new WeekModel.EventToGroceriesCallback() {
-                    @Override
-                    public void onSuccess() {
-                        Toast.makeText(
-                                requireContext(),
-                                requireContext().getString(R.string.calendar_product_added),
-                                Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onFailure() {
-                        Toast.makeText(
-                                requireContext(),
-                                requireContext().getString(R.string.calendar_product_added_error),
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
 
             @Override
             public void onAddToGroceries(List<CalendarWithRecipe> items) {
-                model.addEventToGroceries(products, items, requireActivity(), new WeekModel.EventToGroceriesCallback() {
-                    @Override
-                    public void onSuccess() {
-                        Toast.makeText(
-                                requireContext(),
-                                requireContext().getString(R.string.calendar_product_added_plural),
-                                Toast.LENGTH_SHORT
-                        ).show();
-                    }
 
-                    @Override
-                    public void onFailure() {
-                        Toast.makeText(
-                                requireContext(),
-                                requireContext().getString(R.string.calendar_product_added_plural),
-                                Toast.LENGTH_SHORT
-                        ).show();
-                    }
-                });
+                List<GroceryEntity> blankEntities = model.prepareGroceries(products, items);
+                CharSequence[] labels = new CharSequence[blankEntities.size()];
+                boolean[] checked = new boolean[blankEntities.size()];
+                for (int i = 0; i < blankEntities.size(); ++i) {
+                    GroceryEntity g = blankEntities.get(i);
+                    String quantity = Util.formatIngredient(requireContext(), g.value, g.unit);
+                    String label = !products.containsKey(g.ingredientId) ? "???" : products.get(g.ingredientId).label;
+                    labels[i] = String.format("%s %s", quantity, label);
+                    checked[i] = true;
+                }
+
+                new MaterialAlertDialogBuilder(requireContext())
+                        .setTitle(R.string.dialog_add_title)
+                        .setMultiChoiceItems(labels, checked, (dialog, which, isChecked) -> checked[which] = isChecked)
+                        .setNegativeButton(R.string.dialog_add_cancel, (dialog, which) -> {
+
+                        })
+                        .setPositiveButton(R.string.dialog_add_submit, (dialog, which) -> {
+                            List<GroceryEntity> finalItems = new ArrayList<>();
+                            for (int i = 0; i < blankEntities.size(); ++i) {
+                                if (checked[i]) finalItems.add(blankEntities.get(i));
+                            }
+                            model.addToGrocerie(finalItems);
+                            Toast.makeText(
+                                    requireContext(),
+                                    requireContext().getString(R.string.calendar_product_added),
+                                    Toast.LENGTH_SHORT
+                            ).show();
+                        })
+                        .show();
             }
 
             @Override

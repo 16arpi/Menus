@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -34,6 +35,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeFragment extends Fragment {
+
+    boolean searchStateOpen = false;
+    OnBackPressedCallback backCallback;
+
     OnSearchCallback searchCallback;
     RecipesViewModel model;
     LiveData<List<RecipeEntity>> recipes;
@@ -65,6 +70,21 @@ public class RecipeFragment extends Fragment {
         model = new RecipesViewModel(requireActivity().getApplication());
         recipes = model.getRecipes();
         importExport = new ImportExport<>(this, model);
+
+        backCallback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (searchStateOpen) {
+                    if (searchView != null) searchView.hide();
+                }
+                else {
+                    setEnabled(false);
+                    requireActivity().onBackPressed();
+                }
+            }
+        };
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(backCallback);
     }
 
     @Override
@@ -200,9 +220,12 @@ public class RecipeFragment extends Fragment {
 
         searchView.addTransitionListener(((searchView1, previousState, newState) -> {
             if (newState == SearchView.TransitionState.HIDDEN) {
+                searchStateOpen = false;
                 recipeAdapterSearch.updateRecipes(new ArrayList<>());
                 if (searchCallback != null) searchCallback.onSearchOpen(false);
             } else if (newState == SearchView.TransitionState.SHOWING) {
+                searchStateOpen = true;
+                backCallback.setEnabled(true);
                 if (searchCallback != null) searchCallback.onSearchOpen(true);
             }
         }));

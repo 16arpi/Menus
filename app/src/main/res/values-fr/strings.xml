@@ -48,9 +48,8 @@
 
     <string name="calendar_add_groceries">Ajouter aux courses</string>
     <string name="calendar_delete_event">Supprimer</string>
-    <string name="calendar_product_added">Recette ajoutée aux courses</string>
+    <string name="calendar_product_added">Ingrédients ajoutés aux courses</string>
     <string name="calendar_product_added_error">Erreur, le plat a déjà été ajouté aux courses</string>
-    <string name="calendar_product_added_plural">Recettes ajoutées aux courses</string>
 
     <!-- RECIPE ACTIVITY -->
     <string name="label_delete">Supprimer</string>
@@ -69,6 +68,10 @@
     <string name="import_failed">L\'importation a échoué</string>
 
     <!-- GROCERIES -->
+    <string name="dialog_add_title">Ajouter aux courses</string>
+    <string name="dialog_add_cancel">Annuler</string>
+    <string name="dialog_add_submit">Ajouter</string>
+
     <string name="item_remove_check" >Nettoyer</string>
     <string name="item_events_manager" >Gérer les plats</string>
     <string name="item_remove_all" >Tout effacer</string>

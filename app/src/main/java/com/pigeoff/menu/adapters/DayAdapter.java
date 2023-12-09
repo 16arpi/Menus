@@ -17,6 +17,7 @@ import com.pigeoff.menu.database.CalendarWithRecipe;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -53,15 +54,9 @@ public class DayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         );
 
         long thisDay = cal.getTimeInMillis();
-        long nowDay = getTodayTimestamp();
 
-        if (thisDay <= nowDay) {
-            holder.buttonGroceries.setVisibility(View.GONE);
-            holder.buttonAdd.setVisibility(View.GONE);
-        } else {
-            holder.buttonGroceries.setVisibility(View.VISIBLE);
-            holder.buttonAdd.setVisibility(View.VISIBLE);
-        }
+        holder.buttonGroceries.setVisibility(View.VISIBLE);
+        holder.buttonAdd.setVisibility(View.VISIBLE);
 
         Calendar thisDayCalendar = Calendar.getInstance();
         thisDayCalendar.setTimeInMillis(thisDay);
@@ -92,7 +87,7 @@ public class DayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             @Override
             public void onItemClick(CalendarWithRecipe item, int action) {
                 if (action == OnAdapterAction.ACTION_GROCERY) {
-                    if (callback != null) callback.onAddToGroceries(item);
+                    if (callback != null) callback.onAddToGroceries(Collections.singletonList(item));
                 }
             }
 
@@ -144,18 +139,10 @@ public class DayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void updateItems(Calendar calendar, List<CalendarWithRecipe>[] items) {
         this.items = items;
         this.calendar = calendar;
-        notifyDataSetChanged();
-    }
-
-    private static long getTodayTimestamp() {
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.add(Calendar.DAY_OF_YEAR, -1);
-        return cal.getTimeInMillis();
+        notifyItemRangeChanged(0, 7);
     }
 
     public interface Callback {
-        void onAddToGroceries(CalendarWithRecipe item);
         void onAddToGroceries(List<CalendarWithRecipe> items);
         void deleteEvent(CalendarWithRecipe item);
         void onClick(CalendarWithRecipe item);

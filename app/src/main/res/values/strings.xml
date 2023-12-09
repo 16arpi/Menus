@@ -48,9 +48,8 @@
 
     <string name="calendar_add_groceries">Add to shopping list</string>
     <string name="calendar_delete_event">Delete</string>
-    <string name="calendar_product_added">Recipe added to the shopping list</string>
+    <string name="calendar_product_added">Ingredients added to the shopping list</string>
     <string name="calendar_product_added_error">Error, your meal is already in the shopping list</string>
-    <string name="calendar_product_added_plural">Recipes added to the shopping list</string>
 
     <!-- RECIPE ACTIVITY -->
     <string name="label_delete">Delete</string>
@@ -69,6 +68,10 @@
     <string name="import_failed">Importation failed :(</string>
 
     <!-- GROCERIES -->
+    <string name="dialog_add_title">Add to shopping list</string>
+    <string name="dialog_add_cancel">Cancel</string>
+    <string name="dialog_add_submit">Add</string>
+
     <string name="item_remove_check" >Clean</string>
     <string name="item_events_manager" >Manage meals</string>
     <string name="item_remove_all" >Delete all items</string>
@@ -112,9 +115,9 @@
         <item>L</item>
         <item>cl</item>
         <item>ml</item>
-        <item>c.s.</item>
-        <item>c.c.</item>
-        <item>pincée(s)</item>
+        <item>T</item>
+        <item>t</item>
+        <item>pinch(es)</item>
         <item>sachet(s)</item>
         <item>pot(s)</item>
     </string-array>

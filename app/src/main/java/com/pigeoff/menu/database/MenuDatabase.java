@@ -9,10 +9,7 @@ import androidx.room.RoomDatabase;
                 GroceryEntity.class,
                 ProductEntity.class
         },
-        version = 1,
-        autoMigrations = {
-
-        }
+        version = 1
 )
 public abstract class MenuDatabase extends RoomDatabase {
     public abstract RecipeDAO recipeDAO();

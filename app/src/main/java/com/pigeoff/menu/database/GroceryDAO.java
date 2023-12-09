@@ -6,7 +6,6 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Transaction;
-import androidx.room.Update;
 
 import java.util.List;
 
@@ -32,19 +31,16 @@ public interface GroceryDAO {
     @Query("DELETE FROM GroceryEntity WHERE eventId = :eventId")
     void deleteGroceriesForCalendar(long eventId);
 
+    @Query("DELETE FROM GroceryEntity WHERE eventId = :eventId AND ingredientId = :ingredienId")
+    void deleteGroceriesForCalendar(long ingredienId, long eventId);
+
     @Query("DELETE FROM GroceryEntity WHERE recipeId = :recipeId")
     void deleteGroceriesForRecipe(long recipeId);
 
     @Insert
     void addGrocery(GroceryEntity product);
 
-    @Update
-    void updateGrocery(GroceryEntity product);
-
     @Delete
     void deleteGrocery(GroceryEntity product);
-
-    @Query("SELECT COUNT(1) FROM GroceryEntity WHERE eventId = :eventId")
-    boolean eventAlreadyAdded(long eventId);
 
 }

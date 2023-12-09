@@ -61,12 +61,7 @@ public class EventViewModel extends AndroidViewModel {
     }
 
     public void update(CalendarEntity item) {
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                calendarDAO.update(item);
-            }
-        });
+        AsyncTask.execute(() -> calendarDAO.update(item));
     }
 
 }

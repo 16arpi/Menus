@@ -13,7 +13,7 @@ public class ProductEntity extends Serializable {
     public long id;
     // Ingredient label
     public String label = "";
-    // Default unit of the ingredient
+    // Default unit of the ingredient (not used at this point)
     public int defaultUnit = 0;
     // Which section of the supermarket
     public int section = 0;

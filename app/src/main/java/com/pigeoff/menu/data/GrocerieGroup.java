@@ -1,5 +1,7 @@
 package com.pigeoff.menu.data;
 
+import android.content.Context;
+
 import com.pigeoff.menu.database.GroceryEntity;
 import com.pigeoff.menu.database.GroceryWithProduct;
 import com.pigeoff.menu.database.ProductEntity;
@@ -16,12 +18,10 @@ public class GrocerieGroup {
     public String quantity;
     public int section;
     public boolean checked;
-    public boolean expanded = false;
-
     public ProductEntity product;
     public List<GroceryEntity> groceries;
 
-    public GrocerieGroup(ProductEntity product, List<GroceryEntity> groceries, int section) {
+    public GrocerieGroup(Context context, ProductEntity product, List<GroceryEntity> groceries, int section) {
         Unit[] units = Unit.getUnits();
 
         HashMap<Integer, Integer> counter = new HashMap<>();
@@ -53,7 +53,7 @@ public class GrocerieGroup {
                 break;
             }
 
-        this.quantity = ValueUnit.format(valueUnits);
+        this.quantity = ValueUnit.format(context, valueUnits);
         this.product = product;
         this.label = product.label;
         this.groceries = groceries;
@@ -69,7 +69,7 @@ public class GrocerieGroup {
         this.checked = checked;
     }
 
-    public static List<GrocerieGroup> fromList(List<GroceryWithProduct> items) {
+    public static List<GrocerieGroup> fromList(Context context, List<GroceryWithProduct> items) {
         HashMap<ProductEntity, List<GroceryEntity>> dict = new HashMap<>();
         ArrayList<GrocerieGroup> group = new ArrayList<>();
 
@@ -81,9 +81,7 @@ public class GrocerieGroup {
             dict.get(p).add(g);
         }
 
-        dict.forEach((key, val) -> {
-            group.add(new GrocerieGroup(key, val, key.section));
-        });
+        dict.forEach((key, val) -> group.add(new GrocerieGroup(context, key, val, key.section)));
 
         return group;
     }
@@ -129,12 +127,12 @@ public class GrocerieGroup {
             this.unit = finalUnit;
         }
 
-        public static String format(HashMap<Integer, ValueUnit> set) {
+        public static String format(Context context, HashMap<Integer, ValueUnit> set) {
             List<String> strings = new ArrayList<>();
 
             set.forEach((k, v) -> {
                 v.balance();
-                strings.add(Util.formatIngredient(v.value, v.unit));
+                strings.add(Util.formatIngredient(context, v.value, v.unit));
             });
 
             return String.join("\n", strings);

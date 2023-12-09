@@ -1,6 +1,5 @@
 package com.pigeoff.menu.activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -79,9 +78,7 @@ public class RecipeActivity extends AppCompatActivity {
 
         // Action bar
         toolbar.setTitle("");
-        toolbar.setNavigationOnClickListener(v -> {
-            finish();
-        });
+        toolbar.setNavigationOnClickListener(v -> finish());
 
         // Database
         if (recipeId > 0) {
@@ -104,12 +101,9 @@ public class RecipeActivity extends AppCompatActivity {
                                 .setTitle(R.string.recipe_delete_title)
                                 .setMessage(R.string.recipe_delete_message)
                                 .setNegativeButton(R.string.recipe_delete_cancel, null)
-                                .setPositiveButton(R.string.recipe_delete_delete, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        model.deleteItem(recipe);
-                                        finish();
-                                    }
+                                .setPositiveButton(R.string.recipe_delete_delete, (dialogInterface, i) -> {
+                                    model.deleteItem(recipe);
+                                    finish();
                                 })
                                 .show();
                     } else if (menu.getItemId() == R.id.item_edit) {
@@ -191,33 +185,28 @@ public class RecipeActivity extends AppCompatActivity {
     private void openEditDialog(RecipeViewModel model, long id) {
         RecipeEditFragment editFragment = RecipeEditFragment.newInstance(id);
         editFragment.showFullScreen(getSupportFragmentManager());
-        editFragment.setActionListener(new RecipeEditFragment.OnActionListener() {
-            @Override
-            public void onSubmit(RecipeEntity newRecipe) {
-                model.updateItem(newRecipe);
-            }
-        });
+        editFragment.setActionListener(model::updateItem);
     }
 
     private void shareRecipe(HashMap<Long, ProductEntity> products, RecipeEntity recipe) {
         new Thread(() -> {
-            String text = "";
+            StringBuilder text = new StringBuilder();
 
             // Title
-            text += recipe.title;
-            text += "\n";
+            text.append(recipe.title);
+            text.append("\n");
 
             // Ingredients
-            text += String.format("\n%s\n", getString(R.string.label_ingredient));
+            text.append(String.format("\n%s\n", getString(R.string.label_ingredient)));
             List<Ingredient> ingredients = Ingredient.fromJson(products, recipe.ingredients);
-            for (Ingredient s : ingredients) text += String.format("· %s \n", Util.formatIngredient(s));
+            for (Ingredient s : ingredients) text.append(String.format("· %s \n", Util.formatIngredient(this, s)));
 
             // Preparation
-            text += String.format("\n%s\n", getString(R.string.label_steps));
+            text.append(String.format("\n%s\n", getString(R.string.label_steps)));
             List<String> steps = Util.listFromJson(recipe.steps);
-            for (String s : steps) text += String.format("· %s \n", s);
+            for (String s : steps) text.append(String.format("· %s \n", s));
 
-            String finalText = text;
+            String finalText = text.toString();
             runOnUiThread(() -> {
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.putExtra(Intent.EXTRA_TEXT, finalText);

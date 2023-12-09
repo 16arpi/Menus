@@ -4,7 +4,6 @@ import android.app.Application;
 import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -88,8 +87,7 @@ public class WeekModel extends AndroidViewModel {
             event.label = recipe.title;
             event.portions = recipe.portions;
             event.recipe = recipe.id;
-            event.datetime = datetime; // getTimestampAtDay(Calendar, day)
-            event.groceriesState = 0;
+            event.datetime = datetime;
             calendarDAO.insert(event);
         });
     }
@@ -102,79 +100,35 @@ public class WeekModel extends AndroidViewModel {
             if (!item.recipe.cookbook) recipeDAO.delete(item.recipe);
         });
     }
-    public void addEventToGroceries(
-            HashMap<Long, ProductEntity> products,
-            List<CalendarWithRecipe> items,
-            FragmentActivity context,
-            EventToGroceriesCallback callback) {
-        new Thread(() -> {
-            boolean success = true;
 
-            for (CalendarWithRecipe i : items) {
-                if (!addToGrocerie(products, i)) {
-                    success = false;
-                }
+    public void addToGrocerie(List<GroceryEntity> items) {
+        AsyncTask.execute(() -> {
+            for (GroceryEntity item : items) {
+                groceryDAO.deleteGroceriesForCalendar(item.ingredientId, item.eventId);
+                groceryDAO.addGrocery(item);
             }
-
-            boolean finalSuccess = success;
-            context.runOnUiThread(() -> {
-                if (finalSuccess) callback.onSuccess();
-                else callback.onFailure();
-            });
-        }).start();
+        });
     }
 
-    public void addEventToGroceries(
-            HashMap<Long, ProductEntity> products,
-            CalendarWithRecipe item,
-            FragmentActivity context,
-            EventToGroceriesCallback callback) {
-        new Thread(() -> {
-            boolean success = addToGrocerie(products, item);
-            context.runOnUiThread(() -> {
-                if (success) callback.onSuccess();
-                else callback.onFailure();
-            });
-        }).start();
-    }
+    public List<GroceryEntity> prepareGroceries(HashMap<Long, ProductEntity> products, List<CalendarWithRecipe> items) {
+        List<GroceryEntity> finalItems = new ArrayList<>();
+        for (CalendarWithRecipe r : items) {
+            ArrayList<Ingredient> ingredients = Ingredient.fromJson(products, r.recipe.ingredients);
 
-    private boolean addToGrocerie(HashMap<Long, ProductEntity> products, CalendarWithRecipe item) {
-        /*
-            Deux modes possibles ici :
-            if (groceryDAO.eventAlreadyAdded(item.calendar.id)) return false;
-            => on empêche de remettre dans la liste des courses des produits déjà ajoutés
+            for (Ingredient i : ingredients) {
+                GroceryEntity shopping = new GroceryEntity();
+                shopping.checked = false;
+                shopping.ingredientId = i.product.id;
+                shopping.unit = i.unit;
+                shopping.value = i.value * ((float) r.calendar.portions / r.recipe.portions);
+                shopping.eventId = r.calendar.id;
+                shopping.recipeId = r.recipe.id;
+                shopping.datetime = r.calendar.datetime;
+                shopping.recipeLabel = r.recipe.title;
 
-            groceryDAO.deleteGroceriesForCalendar(item.calendar.id);
-            => on écrase les anciens produits liés à l'évènement, quitte à ajouter
-               ceux qui avaient été précédement supprimés par l'utilisateur
-
-            Idée pour l'avenir : créer un DIALOG qui permet :
-            - décocher les produits qu'on ne veut pas ajouter
-            - choisir d'écraser ou pas les anciens produits du même évènement
-         */
-        groceryDAO.deleteGroceriesForCalendar(item.calendar.id);
-
-        ArrayList<Ingredient> ingredients = Ingredient.fromJson(products, item.recipe.ingredients);
-
-        for (Ingredient i : ingredients) {
-            GroceryEntity product = new GroceryEntity();
-            product.checked = false;
-            product.ingredientId = i.product.id;
-            product.unit = i.unit;
-            product.value = i.value * ((float) item.calendar.portions / item.recipe.portions);
-            product.eventId = item.calendar.id;
-            product.recipeId = item.recipe.id;
-            product.datetime = item.calendar.datetime;
-            product.recipeLabel = item.recipe.title;
-
-            groceryDAO.addGrocery(product);
+                finalItems.add(shopping);
+            }
         }
-
-        return true;
-    }
-
-    public interface EventToGroceriesCallback {
-        void onSuccess();
-        void onFailure();
+        return finalItems;
     }
 }

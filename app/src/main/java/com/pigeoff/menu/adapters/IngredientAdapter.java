@@ -37,7 +37,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         SimpleListViewHolder itemHolder = (SimpleListViewHolder) holder;
         Ingredient ingredient = ingredients.get(position);
-        itemHolder.textItem.setText(Util.formatIngredient(ingredient));
+        itemHolder.textItem.setText(Util.formatIngredient(context, ingredient));
 
         if (editable) {
             itemHolder.buttonClose.setVisibility(View.VISIBLE);

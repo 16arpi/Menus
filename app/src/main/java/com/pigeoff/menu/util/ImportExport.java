@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +12,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
+import com.pigeoff.menu.BuildConfig;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.database.ProductEntity;
 import com.pigeoff.menu.database.RecipeEntity;
@@ -39,35 +39,29 @@ public class ImportExport<T> {
 
         if (context instanceof AppCompatActivity) {
             AppCompatActivity activity = (AppCompatActivity) context;
-            this.launcherCallback = activity.registerForActivityResult(new ActivityResultContracts.OpenDocument(), new ActivityResultCallback<Uri>() {
-                @Override
-                public void onActivityResult(Uri result) {
-                    if (result != null) {
-                        try {
-                            String doc = readTextFromUri(activity, result);
-                            Export object = deserialize(doc);
-                            addProductsAndRecipes(object);
+            this.launcherCallback = activity.registerForActivityResult(new ActivityResultContracts.OpenDocument(), result -> {
+                if (result != null) {
+                    try {
+                        String doc = readTextFromUri(activity, result);
+                        Export object = deserialize(doc);
+                        addProductsAndRecipes(object);
 
-                        } catch (IOException e) {
-                            riseError(activity);
-                        }
+                    } catch (IOException e) {
+                        riseError(activity);
                     }
                 }
             });
         } else if (context instanceof Fragment) {
             Fragment fragment = (Fragment) context;
-            this.launcherCallback = fragment.registerForActivityResult(new ActivityResultContracts.OpenDocument(), new ActivityResultCallback<Uri>() {
-                @Override
-                public void onActivityResult(Uri result) {
-                    if (result != null) {
-                        try {
-                            String doc = readTextFromUri(fragment.requireContext(), result);
-                            Export object = deserialize(doc);
-                            addProductsAndRecipes(object);
+            this.launcherCallback = fragment.registerForActivityResult(new ActivityResultContracts.OpenDocument(), result -> {
+                if (result != null) {
+                    try {
+                        String doc = readTextFromUri(fragment.requireContext(), result);
+                        Export object = deserialize(doc);
+                        addProductsAndRecipes(object);
 
-                        } catch (IOException e) {
-                            riseError(fragment.requireContext());
-                        }
+                    } catch (IOException e) {
+                        riseError(fragment.requireContext());
                     }
                 }
             });
@@ -75,7 +69,7 @@ public class ImportExport<T> {
     }
 
     public void export(List<ProductEntity> products, List<RecipeEntity> recipes) {
-        Export export = new Export(products, recipes);
+        Export export = new Export(BuildConfig.VERSION_CODE, products, recipes);
         Gson gson = new Gson();
         String string = gson.toJson(export);
 

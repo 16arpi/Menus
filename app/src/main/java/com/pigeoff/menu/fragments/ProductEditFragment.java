@@ -14,11 +14,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.database.ProductEntity;
 import com.pigeoff.menu.util.Constants;
-import com.pigeoff.menu.util.Util;
 import com.pigeoff.menu.views.ChipCategories;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class ProductEditFragment extends BottomSheetDialogFragment {
 

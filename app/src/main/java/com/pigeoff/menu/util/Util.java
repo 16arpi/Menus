@@ -70,14 +70,14 @@ public class Util {
         view.setText(types[position], false);
     }
 
-    public static String formatIngredient(Ingredient ingredient) {
-        Unit[] units = Unit.getUnits();
+    public static String formatIngredient(Context context, Ingredient ingredient) {
+        String[] labels = Util.getUnitsLabel(context);
 
         String value = (ingredient.value % 1.0 != 0) ?
                 String.format(Locale.getDefault(), "%.2f", ingredient.value) :
                 String.format(Locale.getDefault(), "%.0f", ingredient.value);
 
-        String unit = units[ingredient.unit].label;
+        String unit = labels[ingredient.unit];
 
         String label;
         if (ingredient.product != null) {
@@ -90,15 +90,15 @@ public class Util {
     }
 
 
-    public static String formatIngredient(float value, int unit) {
-        Unit[] units = Unit.getUnits();
+    public static String formatIngredient(Context context, float value, int unit) {
+        String[] labels = Util.getUnitsLabel(context);
 
         String v = (value % 1.0 != 0) ?
                 String.format(Locale.getDefault(), "%.2f", value) :
                 String.format(Locale.getDefault(), "%.0f", value);
 
 
-        String u = units[unit].label;
+        String u = labels[unit];
 
         return v.equals("0") ? "" : String.format(Locale.getDefault(), "%s %s", v, u);
     }

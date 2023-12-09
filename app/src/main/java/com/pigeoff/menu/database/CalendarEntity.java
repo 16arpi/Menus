@@ -11,5 +11,4 @@ public class CalendarEntity {
     public long datetime;
     public String label;
     public int portions;
-    public int groceriesState = 0;
 }
