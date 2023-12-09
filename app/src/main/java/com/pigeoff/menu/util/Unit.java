@@ -17,11 +17,12 @@ public class Unit {
                 new Unit(1.0f, 3), // L
                 new Unit(0.01f, 3), // cl
                 new Unit(0.001f, 3), // ml
-                new Unit(1.0f, 6), // c.s.
-                new Unit(1.0f, 7), // c.c.
-                new Unit(1.0f, 8), // pincée(s)
-                new Unit(1.0f, 9), // sachet(s)
-                new Unit(1.0f, 10) // pot(s)
+                new Unit(1.0f, 6), // cup
+                new Unit(1.0f, 7), // c.s.
+                new Unit(1.0f, 8), // c.c.
+                new Unit(1.0f, 9), // pincée(s)
+                new Unit(1.0f, 10), // sachet(s)
+                new Unit(1.0f, 11) // pot(s)
         };
     }
 }
