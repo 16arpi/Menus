@@ -49,7 +49,7 @@ Users can add their menus to the shopping list. Similar products are gathered to
 
 ### Products
 
-To add ingredients in a recipe, user needs to choose or create the related product using the ad hoc interface. This feeds a product batabase shared among all the recipes. The advantage of this system is to merge similar products and units (i.g. 100g of flour in recipe A and 1kg of flour in recipe B become 1.1kg of flour in the shopping list)
+To add ingredients in a recipe, user needs to choose or create the related product using the ad hoc interface. This feeds a product batabase shared among all the recipes. The advantage of this system is to merge similar products and thus, them to group themselves in the shopping list.
 
 ### Inventaire (en projet)
 
