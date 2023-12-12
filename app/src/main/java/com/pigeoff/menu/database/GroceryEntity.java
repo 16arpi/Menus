@@ -11,8 +11,9 @@ public class GroceryEntity {
 
     // Ingredient
     public long ingredientId = 0;
-    public float value = 0.0f;
-    public int unit = 0;
+    public String quantity = "";
+    //public int unit = 0; DEPRECATED
+    //public float value = 0.0f; DEPRECATED
 
     // Bounds
     public long eventId = -1;

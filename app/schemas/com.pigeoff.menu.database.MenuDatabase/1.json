@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "2149bdc95c8f8d3fc27d6e9e1681fab7",
+    "identityHash": "3506d39c0b541fb6b26a5eba12aa4486",
     "entities": [
       {
         "tableName": "RecipeEntity",
@@ -113,7 +113,7 @@
       },
       {
         "tableName": "GroceryEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `checked` INTEGER NOT NULL, `ingredientId` INTEGER NOT NULL, `value` REAL NOT NULL, `unit` INTEGER NOT NULL, `eventId` INTEGER NOT NULL, `recipeId` INTEGER NOT NULL, `recipeLabel` TEXT, `datetime` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `checked` INTEGER NOT NULL, `ingredientId` INTEGER NOT NULL, `quantity` TEXT, `eventId` INTEGER NOT NULL, `recipeId` INTEGER NOT NULL, `recipeLabel` TEXT, `datetime` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -134,16 +134,10 @@
             "notNull": true
           },
           {
-            "fieldPath": "value",
-            "columnName": "value",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "unit",
-            "columnName": "unit",
-            "affinity": "INTEGER",
-            "notNull": true
+            "fieldPath": "quantity",
+            "columnName": "quantity",
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "eventId",
@@ -181,7 +175,7 @@
       },
       {
         "tableName": "ProductEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `label` TEXT, `defaultUnit` INTEGER NOT NULL, `section` INTEGER NOT NULL, `permanent` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `label` TEXT, `section` INTEGER NOT NULL, `permanent` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -194,12 +188,6 @@
             "columnName": "label",
             "affinity": "TEXT",
             "notNull": false
-          },
-          {
-            "fieldPath": "defaultUnit",
-            "columnName": "defaultUnit",
-            "affinity": "INTEGER",
-            "notNull": true
           },
           {
             "fieldPath": "section",
@@ -227,7 +215,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2149bdc95c8f8d3fc27d6e9e1681fab7')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3506d39c0b541fb6b26a5eba12aa4486')"
     ]
   }
 }

@@ -83,7 +83,6 @@ public class RecipesViewModel extends AndroidViewModel {
                         oldNewProductIds.put(p.id, existing.id);
                     } else {
                         ProductEntity blank = new ProductEntity();
-                        blank.defaultUnit = p.defaultUnit;
                         blank.label = p.label;
                         blank.section = p.section;
 

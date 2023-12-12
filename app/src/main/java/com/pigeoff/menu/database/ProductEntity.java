@@ -14,7 +14,7 @@ public class ProductEntity extends Serializable {
     // Ingredient label
     public String label = "";
     // Default unit of the ingredient (not used at this point)
-    public int defaultUnit = 0;
+    //public int defaultUnit = 0; DEPRECATED
     // Which section of the supermarket
     public int section = 0;
     // Permanent or temporary product

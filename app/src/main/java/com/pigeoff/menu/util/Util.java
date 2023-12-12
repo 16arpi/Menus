@@ -12,7 +12,6 @@ import androidx.fragment.app.FragmentActivity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pigeoff.menu.R;
-import com.pigeoff.menu.data.Ingredient;
 import com.pigeoff.menu.database.ProductEntity;
 
 import org.apache.commons.lang3.StringUtils;
@@ -62,53 +61,6 @@ public class Util {
         String[] types = getRecipesTypes(view.getContext());
 
         view.setText(types[position], false);
-    }
-
-    public static void selectUnitAutoCompleteItem(AutoCompleteTextView view, int position) {
-        String[] types = getUnitsLabel(view.getContext());
-
-        view.setText(types[position], false);
-    }
-
-    public static String formatIngredient(Context context, Ingredient ingredient) {
-        String[] labels = Util.getUnitsLabel(context);
-
-        String value = (ingredient.value % 1.0 != 0) ?
-                String.format(Locale.getDefault(), "%.2f", ingredient.value) :
-                String.format(Locale.getDefault(), "%.0f", ingredient.value);
-
-        String unit = labels[ingredient.unit];
-
-        String label;
-        if (ingredient.product != null) {
-            label = ingredient.product.label;
-        } else {
-            label = "";
-        }
-
-        return String.format(Locale.getDefault(), "%s %s %s", value, unit, label);
-    }
-
-
-    public static String formatIngredient(Context context, float value, int unit) {
-        String[] labels = Util.getUnitsLabel(context);
-
-        String v = (value % 1.0 != 0) ?
-                String.format(Locale.getDefault(), "%.2f", value) :
-                String.format(Locale.getDefault(), "%.0f", value);
-
-
-        String u = labels[unit];
-
-        return v.equals("0") ? "" : String.format(Locale.getDefault(), "%s %s", v, u);
-    }
-
-    public static String formatFloat(float value) {
-        if (value % 1 == 0) {
-            return String.valueOf((int) value);
-        } else {
-            return String.valueOf(value);
-        }
     }
 
     public static void showKeyboard(View focusedView, Context context) {

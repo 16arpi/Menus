@@ -113,14 +113,18 @@ public class WeekModel extends AndroidViewModel {
     public List<GroceryEntity> prepareGroceries(HashMap<Long, ProductEntity> products, List<CalendarWithRecipe> items) {
         List<GroceryEntity> finalItems = new ArrayList<>();
         for (CalendarWithRecipe r : items) {
-            ArrayList<Ingredient> ingredients = Ingredient.fromJson(products, r.recipe.ingredients);
+            ArrayList<Ingredient> ingredients = Ingredient.fromJson(
+                    products,
+                    r.recipe.ingredients,
+                    r.recipe.portions,
+                    r.calendar.portions);
 
             for (Ingredient i : ingredients) {
+
                 GroceryEntity shopping = new GroceryEntity();
                 shopping.checked = false;
                 shopping.ingredientId = i.product.id;
-                shopping.unit = i.unit;
-                shopping.value = i.value * ((float) r.calendar.portions / r.recipe.portions);
+                shopping.quantity = i.quantity;
                 shopping.eventId = r.calendar.id;
                 shopping.recipeId = r.recipe.id;
                 shopping.datetime = r.calendar.datetime;

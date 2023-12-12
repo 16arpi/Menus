@@ -58,7 +58,6 @@ public class GroceriesViewModel extends AndroidViewModel {
                 product = new ProductEntity();
                 product.label = productLabel;
                 product.section = section;
-                product.defaultUnit = item.unit;
                 product.permanent = false;
                 productId  = productDAO.insertProduct(product);
             } else {

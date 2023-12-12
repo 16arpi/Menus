@@ -170,6 +170,7 @@ public class RecipeActivity extends AppCompatActivity {
 
         cardPortions.setVisibility(View.VISIBLE);
         textPortions.setText(String.valueOf(item.calendar.portions));
+
         buttonPortionsMore.setOnClickListener(v -> {
             item.calendar.portions += 1;
             model.update(item.calendar);
@@ -199,7 +200,7 @@ public class RecipeActivity extends AppCompatActivity {
             // Ingredients
             text.append(String.format("\n%s\n", getString(R.string.label_ingredient)));
             List<Ingredient> ingredients = Ingredient.fromJson(products, recipe.ingredients);
-            for (Ingredient s : ingredients) text.append(String.format("· %s \n", Util.formatIngredient(this, s)));
+            for (Ingredient s : ingredients) text.append(String.format("· %s \n", s.format()));
 
             // Preparation
             text.append(String.format("\n%s\n", getString(R.string.label_steps)));

@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.data.Ingredient;
 import com.pigeoff.menu.holders.SimpleListViewHolder;
-import com.pigeoff.menu.util.Util;
 
 import java.util.ArrayList;
 
@@ -37,7 +36,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         SimpleListViewHolder itemHolder = (SimpleListViewHolder) holder;
         Ingredient ingredient = ingredients.get(position);
-        itemHolder.textItem.setText(Util.formatIngredient(context, ingredient));
+        itemHolder.textItem.setText(ingredient.format());
 
         if (editable) {
             itemHolder.buttonClose.setVisibility(View.VISIBLE);

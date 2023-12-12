@@ -24,6 +24,7 @@
     <string name="label_ingredient">Ingrédients</string>
     <string name="label_ingredient_value">Valeur</string>
     <string name="label_ingredient_unit">Unité</string>
+    <string name="label_ingredient_quantity">Quantité</string>
     <string name="label_ingredient_label">Ingrédient</string>
     <string name="label_steps">Préparation</string>
     <string name="label_step_label">Etape</string>
@@ -76,6 +77,7 @@
     <string name="item_events_manager" >Gérer les plats</string>
     <string name="item_remove_all" >Tout effacer</string>
     <string name="dialog_product">Produit</string>
+    <string name="dialog_quantity">Quantité</string>
     <string name="dialog_unit">Unité</string>
     <string name="dialog_value">Valeur</string>
     <string name="label_empty_recipe">Ajout manuel</string>

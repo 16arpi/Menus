@@ -77,7 +77,7 @@ public class GroceriesFragment extends Fragment {
 
 
         model.getItems().observe(getViewLifecycleOwner(), groceryWithProducts -> {
-            List<GrocerieGroup> group = GrocerieGroup.fromList(requireContext(), groceryWithProducts);
+            List<GrocerieGroup> group = GrocerieGroup.fromList(groceryWithProducts);
             updateGroceries(group);
         });
 

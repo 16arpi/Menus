@@ -155,8 +155,7 @@ public class RecipeEditFragment extends DialogFragment {
             productFragment.addProductActionListener(item -> {
                 Ingredient ingredient = new Ingredient(
                         item,
-                        0.0f,
-                        item.defaultUnit
+                        ""
                 );
                 ingredientAdapter.addItem(ingredient);
             });

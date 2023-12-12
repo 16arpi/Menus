@@ -106,8 +106,9 @@ public class CalendarFragment extends Fragment {
                 CharSequence[] labels = new CharSequence[blankEntities.size()];
                 boolean[] checked = new boolean[blankEntities.size()];
                 for (int i = 0; i < blankEntities.size(); ++i) {
+
                     GroceryEntity g = blankEntities.get(i);
-                    String quantity = Util.formatIngredient(requireContext(), g.value, g.unit);
+                    String quantity = g.quantity;
                     String label = !products.containsKey(g.ingredientId) ? "???" : products.get(g.ingredientId).label;
                     labels[i] = String.format("%s %s", quantity, label);
                     checked[i] = true;

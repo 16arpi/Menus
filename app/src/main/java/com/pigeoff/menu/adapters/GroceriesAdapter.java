@@ -54,7 +54,7 @@ public class GroceriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             ProductEntity p = gp.product;
 
             if (p.section != lastHeader) {
-                result.add(i, new GrocerieGroup(context, new ProductEntity(), new ArrayList<>(), gp.section));
+                result.add(i, new GrocerieGroup(new ProductEntity(), new ArrayList<>(), gp.section));
                 result.add(i + 1, gp);
                 lastHeader = p.section;
                 i += 2;
@@ -268,7 +268,7 @@ public class GroceriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             holder.textRecipe.setText(
                     item.recipeId >= 0 ? item.recipeLabel : context.getString(R.string.label_empty_recipe)
             );
-            holder.textQuantity.setText(Util.formatIngredient(context, item.value, item.unit));
+            holder.textQuantity.setText(item.quantity);
 
             Util.paintCheckText(holder.textRecipe, item.checked);
             Util.paintCheckText(holder.textQuantity, item.checked);

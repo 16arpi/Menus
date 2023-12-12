@@ -6,8 +6,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AutoCompleteTextView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,13 +43,10 @@ public class IngredientsEditAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         Ingredient ingredient = ingredients.get(position);
 
 
-        if (ingredient.product != null) itemHolder.label.setText(ingredient.product.label);
-        itemHolder.editValue.setText(ingredient.value > 0.0f ? Util.formatFloat(ingredient.value) : "");
+        if (ingredient.product != null) itemHolder.editLabel.setText(ingredient.product.label);
+        itemHolder.editQuantity.setText(ingredient.quantity);
 
-        Util.selectUnitAutoCompleteItem(itemHolder.editUnit, ingredient.unit);
-
-
-        itemHolder.editUnit.addTextChangedListener(new TextWatcher() {
+        itemHolder.editQuantity.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -59,32 +54,11 @@ public class IngredientsEditAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                ingredient.unit = unitTypes.indexOf(charSequence.toString());
+                ingredient.quantity = charSequence.toString();
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-            }
-        });
-
-        itemHolder.editValue.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                try {
-                    ingredient.value = Float.parseFloat(charSequence.toString());
-                } catch (Exception e) {
-                    ingredient.value = 0.0f;
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
             }
         });
     }
@@ -96,15 +70,13 @@ public class IngredientsEditAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     public static class IngredientEditViewHolder extends RecyclerView.ViewHolder {
 
-        TextView label;
-        TextInputEditText editValue;
-        AutoCompleteTextView editUnit;
+        TextInputEditText editLabel;
+        TextInputEditText editQuantity;
 
         public IngredientEditViewHolder(@NonNull View itemView) {
             super(itemView);
-            label = itemView.findViewById(R.id.edit_ingredient_label);
-            editValue = itemView.findViewById(R.id.edit_ingredient_value);
-            editUnit = itemView.findViewById(R.id.edit_ingredient_unit);
+            editLabel = itemView.findViewById(R.id.edit_ingredient_label);
+            editQuantity = itemView.findViewById(R.id.edit_ingredient_quantity);
         }
     }
 

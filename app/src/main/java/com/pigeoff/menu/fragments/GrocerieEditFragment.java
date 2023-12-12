@@ -23,7 +23,6 @@ import com.pigeoff.menu.util.Constants;
 import com.pigeoff.menu.util.Util;
 import com.pigeoff.menu.views.ChipCategories;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,8 +30,7 @@ public class GrocerieEditFragment extends BottomSheetDialogFragment {
 
     private int section = Constants.SECTION_DIVERS;
     private AutoCompleteTextView label;
-    private TextInputEditText value;
-    private AutoCompleteTextView unit;
+    private TextInputEditText quantity;
     private OnGrocerieChoose listener;
     private ProductViewModel productViewModel;
     private ChipCategories chipGroup;
@@ -74,12 +72,10 @@ public class GrocerieEditFragment extends BottomSheetDialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         label = view.findViewById(R.id.edit_label);
-        value = view.findViewById(R.id.edit_value);
-        unit = view.findViewById(R.id.edit_unit);
+        quantity = view.findViewById(R.id.edit_quantity);
         MaterialButton submit = view.findViewById(R.id.button_submit);
         chipGroup = view.findViewById(R.id.chip_group_filter);
 
-        List<String> units = Arrays.asList(Util.getUnitsLabel(requireContext()));
 
         productViewModel.getItems().observe(getViewLifecycleOwner(), items -> {
 
@@ -92,12 +88,13 @@ public class GrocerieEditFragment extends BottomSheetDialogFragment {
 
             label.setAdapter(adapter);
 
-            label.setOnItemClickListener((parent, v, pos, id) -> {
-                System.out.println("SELECTION");
-                TextView text = v.findViewById(android.R.id.text1);
-                ProductEntity product = new ProductEntity();
-                for (ProductEntity p : items) if (p.label.equals(text.getText().toString())) product = p;
-                unit.setText(units.get(product.defaultUnit), false);
+            label.setOnItemClickListener((parent, v, position, id) -> {
+                TextView t = v.findViewById(android.R.id.text1);
+                String ts = String.valueOf(t.getText());
+
+                for (ProductEntity p : items) if (p.label.equals(ts)) {
+                    chipGroup.check(p.section);
+                }
             });
 
         });
@@ -108,18 +105,9 @@ public class GrocerieEditFragment extends BottomSheetDialogFragment {
 
         submit.setOnClickListener(v -> {
             String productLabel = String.valueOf(label.getText());
-            if (productLabel.isEmpty()) return;
-
-            float itemValue;
-            try {
-                itemValue = Float.parseFloat(String.valueOf(value.getText()));
-            } catch (Exception e) {
-                itemValue = 0.0f;
-            }
 
             GroceryEntity item = new GroceryEntity();
-            item.value = itemValue;
-            item.unit = units.indexOf(unit.getText().toString());
+            item.quantity = String.valueOf(quantity.getText());
 
             int finalSection = chipGroup.getSelectedSection();
 
