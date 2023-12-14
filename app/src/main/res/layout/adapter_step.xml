@@ -18,37 +18,16 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="?attr/textInputFilledStyle"
                 android:layout_width="0dp"
-                android:layout_weight="7"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:hint="@string/label_ingredient_label"
+                android:hint="@string/label_step_label"
                 android:layout_margin="8dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_ingredient_label"
+                    android:id="@+id/edit_step"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:clickable="false"
-                    android:enabled="false"
-                    android:inputType="text"
-                    />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="?attr/textInputFilledStyle"
-                android:layout_width="0dp"
-                android:layout_weight="5"
-                android:layout_height="wrap_content"
-                android:hint="@string/label_ingredient_quantity"
-                android:layout_margin="8dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_ingredient_quantity"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:inputType="text"
+                    android:inputType="text|textCapSentences|textMultiLine"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>

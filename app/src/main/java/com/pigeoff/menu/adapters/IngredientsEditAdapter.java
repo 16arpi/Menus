@@ -6,6 +6,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,11 +38,11 @@ public class IngredientsEditAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         return new IngredientEditViewHolder(LayoutInflater.from(context).inflate(R.layout.adapter_ingredient, parent, false));
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         IngredientEditViewHolder itemHolder = (IngredientEditViewHolder) holder;
         Ingredient ingredient = ingredients.get(position);
-
 
         if (ingredient.product != null) itemHolder.editLabel.setText(ingredient.product.label);
         itemHolder.editQuantity.setText(ingredient.quantity);
@@ -61,6 +62,20 @@ public class IngredientsEditAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             public void afterTextChanged(Editable editable) {
             }
         });
+
+        itemHolder.buttonClose.setOnClickListener(v -> {
+            itemHolder.editQuantity.clearFocus();
+            itemHolder.editLabel.clearFocus();
+            deleteItem(itemHolder.getAdapterPosition());
+        });
+
+
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(@NonNull RecyclerView.ViewHolder holder) {
+        System.out.println("HELLO WORLD");
+        super.onViewDetachedFromWindow(holder);
     }
 
     @Override
@@ -70,13 +85,15 @@ public class IngredientsEditAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     public static class IngredientEditViewHolder extends RecyclerView.ViewHolder {
 
-        TextInputEditText editLabel;
-        TextInputEditText editQuantity;
+        public TextInputEditText editLabel;
+        public TextInputEditText editQuantity;
+        public ImageButton buttonClose;
 
         public IngredientEditViewHolder(@NonNull View itemView) {
             super(itemView);
             editLabel = itemView.findViewById(R.id.edit_ingredient_label);
             editQuantity = itemView.findViewById(R.id.edit_ingredient_quantity);
+            buttonClose = itemView.findViewById(R.id.button_close);
         }
     }
 

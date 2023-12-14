@@ -128,7 +128,6 @@
         android:layout_height="wrap_content" >
 
         <LinearLayout
-
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
@@ -152,7 +151,7 @@
                     android:gravity="center_vertical|end">
 
                     <com.google.android.material.button.MaterialButton
-                        style="?attr/materialIconButtonFilledStyle"
+                        style="?attr/materialIconButtonOutlinedStyle"
                         android:enabled="false"
                         android:id="@+id/button_ingredient_submit"
                         android:layout_width="wrap_content"
@@ -192,29 +191,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:padding="8dp">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="?attr/textInputFilledStyle"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/label_ingredient_label"
-                    android:layout_margin="8dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edit_step"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textMultiLine|textCapSentences"
-                        />
-
-                </com.google.android.material.textfield.TextInputLayout>
+                android:gravity="center_vertical|end">
 
 
                 <com.google.android.material.button.MaterialButton
-                    style="?attr/materialIconButtonFilledStyle"
+                    style="?attr/materialIconButtonOutlinedStyle"
                     android:enabled="true"
                     android:id="@+id/button_step_submit"
                     android:layout_width="wrap_content"
@@ -222,6 +203,7 @@
                     app:icon="@drawable/ic_add"
                     android:layout_marginTop="4dp"
                     android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
                     />
             </LinearLayout>
 

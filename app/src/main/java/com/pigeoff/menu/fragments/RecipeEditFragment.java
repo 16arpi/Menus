@@ -24,7 +24,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.adapters.IngredientsEditAdapter;
-import com.pigeoff.menu.adapters.StepAdapter;
+import com.pigeoff.menu.adapters.StepEditAdapter;
 import com.pigeoff.menu.data.Ingredient;
 import com.pigeoff.menu.database.ProductEntity;
 import com.pigeoff.menu.database.RecipeEntity;
@@ -62,7 +62,7 @@ public class RecipeEditFragment extends DialogFragment {
 
     // ADAPTERS
     private IngredientsEditAdapter ingredientAdapter;
-    private StepAdapter stepAdapter;
+    private StepEditAdapter stepAdapter;
 
     public interface OnActionListener {
         void onSubmit(RecipeEntity recipe);
@@ -94,6 +94,11 @@ public class RecipeEditFragment extends DialogFragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -108,6 +113,7 @@ public class RecipeEditFragment extends DialogFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         return inflater.inflate(R.layout.fragment_edit_recipe, container, false);
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -158,6 +164,7 @@ public class RecipeEditFragment extends DialogFragment {
                         ""
                 );
                 ingredientAdapter.addItem(ingredient);
+                Util.clearFocus(requireActivity());
             });
             productFragment.show(getParentFragmentManager(), "edit_product");
         });
@@ -176,12 +183,10 @@ public class RecipeEditFragment extends DialogFragment {
 
 
         recyclerViewSteps.setLayoutManager(new LinearLayoutManager(requireContext()));
+        recyclerViewIngredients.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         editStepSubmit.setOnClickListener(v -> {
-            if (String.valueOf(editStep.getText()).equals("")) return;
-
-            String step = String.valueOf(editStep.getText());
-            stepAdapter.addItem(step);
+            stepAdapter.addItem("");
 
             editStep.setText("");
         });
@@ -226,12 +231,11 @@ public class RecipeEditFragment extends DialogFragment {
             // Ingredients
             ArrayList<Ingredient> ingredients = Ingredient.fromJson(products, recipe.ingredients);
             ingredientAdapter = new IngredientsEditAdapter(requireContext(), ingredients);
-            recyclerViewIngredients.setLayoutManager(new LinearLayoutManager(requireContext()));
             recyclerViewIngredients.setAdapter(ingredientAdapter);
 
             // Preparation
             ArrayList<String> steps = Util.listFromJson(recipe.steps);
-            stepAdapter = new StepAdapter(requireContext(), steps, true);
+            stepAdapter = new StepEditAdapter(requireContext(), steps, true);
             recyclerViewSteps.setAdapter(stepAdapter);
 
             new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {

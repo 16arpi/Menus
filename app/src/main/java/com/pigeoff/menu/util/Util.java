@@ -76,6 +76,10 @@ public class Util {
 
     }
 
+    public static void clearFocus(FragmentActivity activity) {
+        if (activity.getCurrentFocus() != null) activity.getCurrentFocus().clearFocus();
+    }
+
     public static ArrayList<String> listFromJson(String json) {
         return new Gson().fromJson(json, new TypeToken<ArrayList<String>>(){}.getType());
     }
