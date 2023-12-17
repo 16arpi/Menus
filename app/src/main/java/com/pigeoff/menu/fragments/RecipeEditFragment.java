@@ -57,7 +57,6 @@ public class RecipeEditFragment extends DialogFragment {
     private MaterialButton editIngredientSubmit;
 
     private RecyclerView recyclerViewSteps;
-    private TextInputEditText editStep;
     private MaterialButton editStepSubmit;
 
     // ADAPTERS
@@ -130,7 +129,6 @@ public class RecipeEditFragment extends DialogFragment {
         recyclerViewIngredients = view.findViewById(R.id.recycler_view_ingredients);
         editIngredientSubmit = view.findViewById(R.id.button_ingredient_submit);
         recyclerViewSteps = view.findViewById(R.id.recycler_view_steps);
-        editStep = view.findViewById(R.id.edit_step);
         editStepSubmit = view.findViewById(R.id.button_step_submit);
 
         tabLayoutPanels.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -187,8 +185,6 @@ public class RecipeEditFragment extends DialogFragment {
 
         editStepSubmit.setOnClickListener(v -> {
             stepAdapter.addItem("");
-
-            editStep.setText("");
         });
 
         editSubmit.setOnClickListener(v -> {

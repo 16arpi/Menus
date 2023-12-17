@@ -53,31 +53,30 @@ public class MainActivity extends AppCompatActivity {
         activeFragment = calendarFragment;
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.item_calendar) {
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .hide(activeFragment)
-                        .show(calendarFragment)
-                        .commit();
-                activeFragment = calendarFragment;
-            } else if (item.getItemId() == R.id.item_recipes) {
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .hide(activeFragment)
-                        .show(recipeFragment)
-                        .commit();
-                activeFragment = recipeFragment;
-            } else if (item.getItemId() == R.id.item_groceries) {
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .hide(activeFragment)
-                        .show(groceriesFragment)
-                        .commit();
-                activeFragment = groceriesFragment;
-            }
+            switchTab(item.getItemId());
             return true;
         });
 
         bottomNavigationView.setSelectedItemId(R.id.item_calendar);
+    }
+
+    private void switchTab(int id) {
+        Fragment newFragment;
+
+        if (id == R.id.item_calendar) {
+            newFragment = calendarFragment;
+        } else if (id == R.id.item_recipes) {
+            newFragment = recipeFragment;
+        } else {
+            newFragment = groceriesFragment;
+        }
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .hide(activeFragment)
+                .show(newFragment)
+                .commit();
+
+        activeFragment = newFragment;
     }
 }
