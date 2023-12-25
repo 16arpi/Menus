@@ -12,21 +12,22 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.data.Ingredient;
 import com.pigeoff.menu.util.Util;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class IngredientsEditAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     Context context;
-    ArrayList<Ingredient> ingredients;
+    List<Ingredient> ingredients;
     List<String> unitTypes;
+    OnLabelClick listener;
 
-    public IngredientsEditAdapter(Context context, ArrayList<Ingredient> ingredients) {
+    public IngredientsEditAdapter(Context context, List<Ingredient> ingredients) {
         this.context = context;
         this.ingredients = ingredients;
         this.unitTypes = Arrays.asList(Util.getUnitsLabel(context));
@@ -44,8 +45,22 @@ public class IngredientsEditAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         IngredientEditViewHolder itemHolder = (IngredientEditViewHolder) holder;
         Ingredient ingredient = ingredients.get(position);
 
-        if (ingredient.product != null) itemHolder.editLabel.setText(ingredient.product.label);
+        if (ingredient.product != null) {
+            itemHolder.editLabel.setText(ingredient.product.label);
+            if (ingredient.product.id < 0) {
+                itemHolder.editLabelLayout.setErrorEnabled(true);
+                itemHolder.editLabelLayout.setError(context.getString(R.string.wizard_warning_label));
+            } else {
+                itemHolder.editLabelLayout.setErrorEnabled(false);
+                itemHolder.editLabelLayout.setError("");
+            }
+        }
         itemHolder.editQuantity.setText(ingredient.quantity);
+
+        itemHolder.editLabel.setOnClickListener(v -> {
+            if (this.listener != null)
+                this.listener.onLabelClick(ingredient, itemHolder.getAdapterPosition());
+        });
 
         itemHolder.editQuantity.addTextChangedListener(new TextWatcher() {
             @Override
@@ -70,12 +85,7 @@ public class IngredientsEditAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         });
 
 
-    }
 
-    @Override
-    public void onViewDetachedFromWindow(@NonNull RecyclerView.ViewHolder holder) {
-        System.out.println("HELLO WORLD");
-        super.onViewDetachedFromWindow(holder);
     }
 
     @Override
@@ -86,18 +96,19 @@ public class IngredientsEditAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public static class IngredientEditViewHolder extends RecyclerView.ViewHolder {
 
         public TextInputEditText editLabel;
+        public TextInputLayout editLabelLayout;
         public TextInputEditText editQuantity;
         public ImageButton buttonClose;
 
         public IngredientEditViewHolder(@NonNull View itemView) {
             super(itemView);
+            editLabelLayout = itemView.findViewById(R.id.edit_ingredient_label_layout);
             editLabel = itemView.findViewById(R.id.edit_ingredient_label);
             editQuantity = itemView.findViewById(R.id.edit_ingredient_quantity);
             buttonClose = itemView.findViewById(R.id.button_close);
         }
     }
 
-    // TODO Switch items
     public void switchItems(int start, int end) {
         Collections.swap(ingredients, start, end);
         notifyItemMoved(start, end);
@@ -108,12 +119,25 @@ public class IngredientsEditAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         notifyItemInserted(ingredients.size());
     }
 
+    public void updateItem(Ingredient ingredient, int position) {
+        ingredients.set(position, ingredient);
+        notifyItemChanged(position);
+    }
+
     public void deleteItem(int position) {
         ingredients.remove(position);
         notifyItemRemoved(position);
     }
 
-    public ArrayList<Ingredient> getIngredients() {
+    public List<Ingredient> getIngredients() {
         return ingredients;
+    }
+
+    public void addLabelClickListener(OnLabelClick listener) {
+        this.listener = listener;
+    }
+
+    public interface OnLabelClick {
+        void onLabelClick(Ingredient ingredient, int position);
     }
 }

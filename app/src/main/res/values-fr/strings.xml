@@ -82,6 +82,10 @@
     <string name="dialog_value">Valeur</string>
     <string name="label_empty_recipe">Ajout manuel</string>
 
+    <string name="groceries_empty_title">ʕ •ᴥ•ʔ</string>
+    <string name="groceries_empty_message">Liste des courses vide. Planifier des menus pour obtenir votre liste des courses.</string>
+
+
     <!--- PRODUCT -->
     <string name="product">Produits</string>
     <string name="product_singular">Produit</string>
@@ -101,6 +105,27 @@
 
     <string name="crash_messge">Désolé, l\'app a planté ! Un rapport sera envoyé au développeur.</string>
 
+    <!-- WIZARD ACTIVITY -->
+
+    <string name="wizard_loading_label">Chargement de la recette</string>
+    <string name="wizard_error_url">Cet URL ne fonctionne pas</string>
+    <string name="wizard_title_start">Ajouter une nouvelle recette</string>
+    <string name="wizard_title_info">Nouvelle recette</string>
+    <string name="wizard_title_ingredients">Ingrédients</string>
+    <string name="wizard_title_steps">Préparation</string>
+
+    <string name="wizard_url_hint">URL</string>
+    <string name="wizard_url_submit">Ajouter</string>
+
+    <string name="wizard_warning_label">Aucun produit associé</string>
+    <string name="wizard_error_ingredients">Il y a quelques erreurs avec les ingrédients</string>
+
+    <string name="wizard_navigation_cancel">Annuler</string>
+    <string name="wizard_navigation_next">Suivant</string>
+    <string name="wizard_navigation_back">Retour</string>
+    <string name="wizard_navigation_submit">Enregistrer</string>
+
+    <string name="wizard_submit_message" >Recette bien engistrée !</string>
 
     <string-array name="meals" >
         <item>Plat</item>

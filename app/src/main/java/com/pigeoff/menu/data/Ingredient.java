@@ -6,6 +6,7 @@ import com.pigeoff.menu.database.ProductEntity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -55,7 +56,7 @@ public class Ingredient {
         return result;
     }
 
-    public static String toJson(ArrayList<Ingredient> ingredients) {
+    public static String toJson(List<Ingredient> ingredients) {
         ArrayList<Ingredient.Serialized> serialized = new ArrayList<>();
         for (Ingredient s : ingredients) serialized.add(new Serialized(s.product.id, s.quantity));
         return new Gson().toJson(serialized);

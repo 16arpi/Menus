@@ -18,7 +18,9 @@ import com.pigeoff.menu.database.ProductDAO;
 import com.pigeoff.menu.database.ProductEntity;
 import com.pigeoff.menu.database.RecipeDAO;
 import com.pigeoff.menu.database.RecipeEntity;
+import com.pigeoff.menu.util.IngredientParser;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -68,6 +70,21 @@ public class RecipesViewModel extends AndroidViewModel {
             calendarDAO.deleteForRecipe(item.id);
             recipeDAO.delete(item);
         });
+    }
+
+    public List<Ingredient> ingredientParserToEntities(List<IngredientParser> source) {
+        List<Ingredient> result = new ArrayList<>();
+        for (IngredientParser i : source) {
+            ProductEntity product = productDAO.selectByName(i.label);
+            if (product == null) {
+                product = new ProductEntity();
+                product.id = -1;
+                product.label = i.label;
+            }
+            Ingredient ingredient = new Ingredient(product, i.quantity);
+            result.add(ingredient);
+        }
+        return result;
     }
 
     public void importRecipes(List<ProductEntity> products, List<RecipeEntity> recipes, OnAdd callback) {

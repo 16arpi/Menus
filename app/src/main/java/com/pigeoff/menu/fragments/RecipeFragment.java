@@ -10,17 +10,20 @@ import android.widget.LinearLayout;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.search.SearchBar;
 import com.google.android.material.search.SearchView;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.activities.RecipeActivity;
+import com.pigeoff.menu.activities.WizardActivity;
 import com.pigeoff.menu.adapters.OnAdapterAction;
 import com.pigeoff.menu.adapters.RecipeAdapter;
 import com.pigeoff.menu.database.ProductEntity;
@@ -45,10 +48,12 @@ public class RecipeFragment extends Fragment {
     List<ProductEntity> products;
     ImportExport<Fragment> importExport;
 
+    CoordinatorLayout rootLayout;
     SearchView searchView;
     SearchBar searchBar;
     ChipGroup chips;
-    FloatingActionButton addButton;
+    FloatingActionButton addButtonUrl;
+    ExtendedFloatingActionButton addButton;
     RecyclerView recyclerView;
     RecyclerView recyclerViewSearch;
     LinearLayout layoutEmpty;
@@ -104,9 +109,11 @@ public class RecipeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        rootLayout = view.findViewById(R.id.root_layout);
         recyclerView = view.findViewById(R.id.recycler_view_recipe);
         recyclerViewSearch = view.findViewById(R.id.recycler_view_recipe_search);
         layoutEmpty = view.findViewById(R.id.layout_empty);
+        addButtonUrl = view.findViewById(R.id.add_button_url);
         addButton = view.findViewById(R.id.add_button);
         searchView = view.findViewById(R.id.search_view);
         searchBar = view.findViewById(R.id.search_bar);
@@ -119,6 +126,9 @@ public class RecipeFragment extends Fragment {
 
         recyclerViewSearch.setAdapter(recipeAdapterSearch);
         recyclerView.setAdapter(recipeAdapter);
+
+        addButtonUrl.hide();
+        addButton.shrink();
 
         model.getProducts().observe(getViewLifecycleOwner(), productEntities -> products = productEntities);
         recipes.observe(getViewLifecycleOwner(), items -> {
@@ -152,12 +162,33 @@ public class RecipeFragment extends Fragment {
         });
 
         addButton.setOnClickListener(v -> {
-            RecipeEditFragment editFragment = RecipeEditFragment.newInstance();
-            editFragment.showFullScreen(requireActivity().getSupportFragmentManager());
-            editFragment.setActionListener(recipe -> {
-                model.addItem(recipe);
-                Util.hideKeyboard(requireActivity());
-            });
+            if (addButton.isExtended()) {
+                RecipeEditFragment editFragment = RecipeEditFragment.newInstance();
+                editFragment.showFullScreen(requireActivity().getSupportFragmentManager());
+                editFragment.setActionListener(recipe -> {
+                    model.addItem(recipe);
+                    Util.hideKeyboard(requireActivity());
+                });
+
+                addButton.shrink();
+                addButtonUrl.hide();
+            } else {
+                addButton.extend();
+                addButtonUrl.show();
+            }
+        });
+
+        addButtonUrl.setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), WizardActivity.class);
+            startActivity(intent);
+
+            addButtonUrl.hide();
+            addButton.shrink();
+        });
+
+        rootLayout.setOnClickListener(v -> {
+            addButtonUrl.hide();
+            addButton.shrink();
         });
 
         recipeAdapter.setOnAdapterAction(new OnAdapterAction<RecipeEntity>() {

@@ -7,6 +7,7 @@ public class Constants {
     public static String BUNDLE_FULLSCREEN = "bundle_fullscreen";
     public static String BUNDLE_PICKER = "bundle_picker";
     public static String BUNDLE_SECTION = "bundle_section";
+    public static String BUNDLE_QUERY = "bundle_query";
 
     public static int SECTION_GROCERIES = 0;
     public static int SECTION_EMPTY = -1;

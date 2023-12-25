@@ -62,9 +62,17 @@ public class ProductFragment extends BottomSheetDialogFragment {
         return fragment;
     }
 
-    public ProductFragment addProductActionListener(OnProductAction listener) {
+    public static ProductFragment newInstance(boolean fullscreen, boolean picker, int section, String query) {
+        ProductFragment fragment = newInstance(fullscreen, picker, section);
+        if (fragment.getArguments() != null)
+            fragment.getArguments().putString(Constants.BUNDLE_QUERY, query);
+        return fragment;
+    }
+
+
+
+    public void addProductActionListener(OnProductAction listener) {
         this.listener = listener;
-        return this;
     }
 
 
@@ -80,6 +88,7 @@ public class ProductFragment extends BottomSheetDialogFragment {
             this.section = bundle.getInt(Constants.BUNDLE_SECTION, Constants.SECTION_EMPTY);
             this.picker = bundle.getBoolean(Constants.BUNDLE_PICKER, false);
             this.fullscreen = bundle.getBoolean(Constants.BUNDLE_FULLSCREEN, false);
+            this.query = bundle.getString(Constants.BUNDLE_QUERY, "");
         }
     }
 
@@ -107,6 +116,8 @@ public class ProductFragment extends BottomSheetDialogFragment {
         if (picker) {
             Util.showKeyboard(editSearch, requireContext());
         }
+
+        editSearch.setText(this.query);
 
         model.getItems().observe(getViewLifecycleOwner(), productEntities -> {
             products = productEntities;

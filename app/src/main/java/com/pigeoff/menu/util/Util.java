@@ -2,6 +2,7 @@ package com.pigeoff.menu.util;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.util.Patterns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
@@ -22,6 +23,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Util {
 
@@ -38,6 +41,27 @@ public class Util {
         search = search.replaceAll("\\W", "");
 
         return origin.contains(search);
+    }
+
+    public static int findNumberInString(String str, int defaultValue) {
+        Pattern p = Pattern.compile("(\\d+)");
+        Matcher m = p.matcher(str);
+        while (m.find()) {
+            try {
+                return Integer.parseInt(m.group());
+            } catch (Exception ignored) {
+
+            }
+        }
+        return defaultValue;
+    }
+
+    public static String findURLinString(String str) {
+        Matcher matcher = Patterns.WEB_URL.matcher(str);
+        while (matcher.find()) {
+            return matcher.group();
+        }
+        return "";
     }
 
     public static String[] getRecipesTypes(Context context) {
@@ -84,7 +108,7 @@ public class Util {
         return new Gson().fromJson(json, new TypeToken<ArrayList<String>>(){}.getType());
     }
 
-    public static String listToJson(ArrayList<String> list) {
+    public static String listToJson(List<String> list) {
         return new Gson().toJson(list);
     }
 

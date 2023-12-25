@@ -183,9 +183,7 @@ public class RecipeEditFragment extends DialogFragment {
         recyclerViewSteps.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerViewIngredients.setLayoutManager(new LinearLayoutManager(requireContext()));
 
-        editStepSubmit.setOnClickListener(v -> {
-            stepAdapter.addItem("");
-        });
+        editStepSubmit.setOnClickListener(v -> stepAdapter.addItem(""));
 
         editSubmit.setOnClickListener(v -> {
             RecipeEntity returnRecipe = updateRecipe(recipe);
@@ -297,10 +295,10 @@ public class RecipeEditFragment extends DialogFragment {
         }
         // Ingredients
 
-        ArrayList<Ingredient> newIngredients = ingredientAdapter.getIngredients();
+        List<Ingredient> newIngredients = ingredientAdapter.getIngredients();
         source.ingredients = Ingredient.toJson(newIngredients);
 
-        ArrayList<String> newSteps = stepAdapter.getSteps();
+        List<String> newSteps = stepAdapter.getSteps();
         source.steps = Util.listToJson(newSteps);
 
         return source;

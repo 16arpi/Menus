@@ -53,11 +53,12 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     // Custom
-    implementation "androidx.room:room-runtime:2.5.2"
-    annotationProcessor "androidx.room:room-compiler:2.5.2"
+    implementation 'androidx.room:room-runtime:2.5.2'
+    annotationProcessor 'androidx.room:room-compiler:2.5.2'
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'org.apache.commons:commons-text:1.10.0'
     implementation 'ch.acra:acra-http:5.11.3'
     implementation 'ch.acra:acra-toast:5.11.3'
-
+    implementation 'org.jsoup:jsoup:1.17.1'
+    implementation 'org.json:json:20231013'
 }

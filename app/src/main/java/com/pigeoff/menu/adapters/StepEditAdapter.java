@@ -14,16 +14,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.pigeoff.menu.R;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class StepEditAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     Context context;
-    ArrayList<String> steps;
+    List<String> steps;
     boolean editable;
 
-    public StepEditAdapter(Context context, ArrayList<String> steps, boolean editable) {
+    public StepEditAdapter(Context context, List<String> steps, boolean editable) {
         this.context = context;
         this.steps = steps;
         this.editable = editable;
@@ -85,7 +85,7 @@ public class StepEditAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         notifyItemRemoved(position);
     }
 
-    public ArrayList<String> getSteps() {
+    public List<String> getSteps() {
         return steps;
     }
 

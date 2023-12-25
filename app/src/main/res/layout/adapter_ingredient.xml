@@ -17,6 +17,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 style="?attr/textInputFilledStyle"
+                android:id="@+id/edit_ingredient_label_layout"
                 android:layout_width="0dp"
                 android:layout_weight="7"
                 android:layout_height="wrap_content"
@@ -28,8 +29,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:clickable="false"
-                    android:enabled="false"
+                    android:focusable="false"
                     android:inputType="text"
                     />
 

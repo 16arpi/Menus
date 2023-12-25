@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.RecipeFragment"
-    android:background="?colorSurface">
+    android:background="?colorSurface"
+    android:id="@+id/root_layout">
 
     <!-- NestedScrollingChild goes here (NestedScrollView, RecyclerView, etc.). -->
 
@@ -144,14 +145,31 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <LinearLayout
         app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
-        android:id="@+id/add_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        app:srcCompat="@drawable/ic_add" />
+        android:layout_margin="8dp"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_button_url"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_gravity="end"
+            app:srcCompat="@drawable/ic_link" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:text="@string/dialog_add_submit"
+            android:id="@+id/add_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:icon="@drawable/ic_add" />
+
+    </LinearLayout>
 
     <com.google.android.material.search.SearchView
         android:id="@+id/search_view"

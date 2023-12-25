@@ -30,12 +30,12 @@
     <string name="label_step_label">Step</string>
 
     <!--- TAB LABELS -->
-    <string name="tab_ingredient_groceries" >Groceries</string>
-    <string name="tab_ingredient_fruits" >Fruits vegetables</string>
-    <string name="tab_ingredient_meat" >Meat fish</string>
-    <string name="tab_ingredient_fresh" >Fresh products</string>
-    <string name="tab_ingredient_drinks" >Drinks</string>
-    <string name="tab_ingredient_divers" >Other</string>
+    <string name="tab_ingredient_groceries">Groceries</string>
+    <string name="tab_ingredient_fruits">Fruits vegetables</string>
+    <string name="tab_ingredient_meat">Meat fish</string>
+    <string name="tab_ingredient_fresh">Fresh products</string>
+    <string name="tab_ingredient_drinks">Drinks</string>
+    <string name="tab_ingredient_divers">Other</string>
 
 
     <!-- CALENDAR FRAGMENT -->
@@ -73,14 +73,17 @@
     <string name="dialog_add_cancel">Cancel</string>
     <string name="dialog_add_submit">Add</string>
 
-    <string name="item_remove_check" >Clean</string>
-    <string name="item_events_manager" >Manage meals</string>
-    <string name="item_remove_all" >Delete all items</string>
+    <string name="item_remove_check">Clean</string>
+    <string name="item_events_manager">Manage meals</string>
+    <string name="item_remove_all">Delete all items</string>
     <string name="dialog_product">Product</string>
     <string name="dialog_quantity">Quantity</string>
     <string name="dialog_unit">Unit</string>
     <string name="dialog_value">Value</string>
     <string name="label_empty_recipe">Manual add</string>
+
+    <string name="groceries_empty_title">ʕ •ᴥ•ʔ</string>
+    <string name="groceries_empty_message">Nothing left in the shopping list. Plan some menus to get your shopping list.</string>
 
     <!--- PRODUCT -->
     <string name="product">Products</string>
@@ -96,13 +99,34 @@
     <string name="category_other">Other</string>
 
 
-    <string name="product_delete_dialog_message" >Impossible to delete the product because it is used in one of your recipes.</string>
-    <string name="product_delete_dialog_ok" >Ok</string>
+    <string name="product_delete_dialog_message">Impossible to delete the product because it is used in one of your recipes.</string>
+    <string name="product_delete_dialog_ok">Ok</string>
 
     <string name="crash_messge">Sorry, the app crashed ! A report will be sent to the developer.</string>
 
+    <!-- WIZARD ACTIVITY -->
 
-    <string-array name="meals" >
+    <string name="wizard_loading_label">Fetching recipe</string>
+    <string name="wizard_error_url">Error encountered with this URL</string>
+    <string name="wizard_title_start">Add a new recipe</string>
+    <string name="wizard_title_info">New recipe</string>
+    <string name="wizard_title_ingredients">Ingredients</string>
+    <string name="wizard_title_steps">Directions</string>
+    <string name="wizard_submit_message" >Recipe succefully saved !</string>
+
+    <string name="wizard_warning_label">No bounded product</string>
+    <string name="wizard_error_ingredients">There are some errors with the ingredients</string>
+
+    <string name="wizard_url_hint">URL</string>
+    <string name="wizard_url_submit">Add</string>
+
+    <string name="wizard_navigation_cancel">Cancel</string>
+    <string name="wizard_navigation_next">Next</string>
+    <string name="wizard_navigation_back">Back</string>
+    <string name="wizard_navigation_submit">Save</string>
+
+
+    <string-array name="meals">
         <item>Meal</item>
         <item>Starter</item>
         <item>Dessert</item>
@@ -126,16 +150,16 @@
         <item>pot(s)</item>
     </string-array>
 
-    <string-array name="section" >
-        <item >Groceries</item>
-        <item >Fruits vegetables</item>
-        <item >Meat fish</item>
-        <item >Fresh products</item>
-        <item >Drinks</item>
-        <item >Other</item>
+    <string-array name="section">
+        <item>Groceries</item>
+        <item>Fruits vegetables</item>
+        <item>Meat fish</item>
+        <item>Fresh products</item>
+        <item>Drinks</item>
+        <item>Other</item>
     </string-array>
 
-    <string-array name="days" >
+    <string-array name="days">
         <item>Sunday</item>
         <item>Monday</item>
         <item>Tuesday</item>

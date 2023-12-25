@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,6 +36,7 @@ public class GroceriesFragment extends Fragment {
     TextView textTitle;
     RecyclerView recyclerView;
     FloatingActionButton floatingActionButton;
+    LinearLayout layoutEmpty;
     GroceriesAdapter adapter;
 
     public GroceriesFragment() {
@@ -70,6 +72,7 @@ public class GroceriesFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_view_groceries);
         textTitle = view.findViewById(R.id.text_title);
         floatingActionButton = view.findViewById(R.id.add_button);
+        layoutEmpty = view.findViewById(R.id.layout_empty);
 
         adapter = new GroceriesAdapter(requireContext(), new ArrayList<>());
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -78,6 +81,7 @@ public class GroceriesFragment extends Fragment {
 
         model.getItems().observe(getViewLifecycleOwner(), groceryWithProducts -> {
             List<GrocerieGroup> group = GrocerieGroup.fromList(groceryWithProducts);
+            layoutEmpty.setVisibility(group.size() > 0 ? View.GONE : View.VISIBLE);
             updateGroceries(group);
         });
 

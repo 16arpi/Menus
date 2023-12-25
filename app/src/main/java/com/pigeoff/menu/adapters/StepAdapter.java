@@ -11,16 +11,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.holders.SimpleListViewHolder;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
 
 public class StepAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     Context context;
-    ArrayList<String> steps;
+    List<String> steps;
     boolean editable;
 
-    public StepAdapter(Context context, ArrayList<String> steps, boolean editable) {
+    public StepAdapter(Context context, List<String> steps, boolean editable) {
         this.context = context;
         this.steps = steps;
         this.editable = editable;
@@ -46,12 +45,6 @@ public class StepAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             itemHolder.buttonClose.setVisibility(View.GONE);
             itemHolder.checkBox.setVisibility(View.VISIBLE);
         }
-
-
-        itemHolder.buttonClose.setOnClickListener(view -> {
-            int pos = itemHolder.getAdapterPosition();
-            deleteItem(pos);
-        });
     }
 
     @Override
@@ -59,23 +52,7 @@ public class StepAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return steps.size();
     }
 
-    // TODO switch items
-    public void switchItems(int start, int end) {
-        Collections.swap(steps, start, end);
-        notifyItemMoved(start, end);
-    }
-
-    public void addItem(String item) {
-        steps.add(item);
-        notifyItemInserted(steps.size());
-    }
-
-    public void deleteItem(int position) {
-        steps.remove(position);
-        notifyItemRemoved(position);
-    }
-
-    public ArrayList<String> getSteps() {
+    public List<String> getSteps() {
         return steps;
     }
 }
