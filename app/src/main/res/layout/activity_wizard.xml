@@ -28,7 +28,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
-                    android:text="Add a new recipe" />
+                    android:text="@string/wizard_title_start" />
 
             </LinearLayout>
 
@@ -44,7 +44,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:hint="URL">
+                    android:hint="@string/wizard_url_hint">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
@@ -59,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_margin="8dp"
-                    android:text="Add" />
+                    android:text="@string/wizard_url_submit" />
 
             </LinearLayout>
 
