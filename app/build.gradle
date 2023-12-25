@@ -11,8 +11,8 @@ android {
         applicationId "com.pigeoff.menu"
         minSdk 24
         targetSdk 34
-        versionCode 3
-        versionName "1.2"
+        versionCode 4
+        versionName "1.3"
 
         // ACRA Configuration
         buildConfigField("String", "ACRA_ENDPOINT", "\"https://acra.pigeoff.pw/report\"")
