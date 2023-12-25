@@ -100,12 +100,12 @@ public class WizardActivity extends AppCompatActivity {
                     // Handling products
                     new BackgroundTask<>(activity, () -> model.ingredientParserToEntities(object.recipe.ingredients))
                             .addSuccessListener(ingrs -> {
-                        progressDialog.hide();
+                        progressDialog.dismiss();
                         updateFields(object.recipe, ingrs);
                         flipper.showNext();
                     }).start();
                 }).addFailureListener(exception -> {
-                    progressDialog.hide();
+                    progressDialog.dismiss();
                     editUrl.setError(getString(R.string.wizard_error_url));
                 });
 

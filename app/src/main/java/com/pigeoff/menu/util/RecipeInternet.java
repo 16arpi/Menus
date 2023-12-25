@@ -3,12 +3,14 @@ package com.pigeoff.menu.util;
 
 import com.google.gson.Gson;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
@@ -51,7 +53,8 @@ public class RecipeInternet {
             Elements scripts = doc.select(CSS_JSON_LD);
             Model model = null;
             for (Element s : scripts) {
-                String content = s.html();
+                String content = Parser.unescapeEntities(s.html(), false);
+
                 if (content.trim().indexOf("[") == 0) model = treatJSONList(new JSONArray(content));
                 if (content.trim().indexOf("{") == 0) model = treatJSONSingleton(new JSONObject(content));
                 if (model != null) {
@@ -67,7 +70,7 @@ public class RecipeInternet {
 
     private RecipeInternet.Model treatJSONList(JSONArray array) throws JSONException {
         for (int i = 0; i < array.length(); ++i) {
-            Model m = treatJSONSingleton(array.getJSONObject(i));
+            Model m = treatJSONSingleton(array.optJSONObject(i));
             if (m != null) return m;
         }
         return null;
@@ -76,13 +79,26 @@ public class RecipeInternet {
     private RecipeInternet.Model treatJSONSingleton(JSONObject object) throws JSONException {
         if (object.has(GRAPH)) {
             JSONArray array = object.optJSONArray(GRAPH);
-            if (array == null) return null;
+            if (array == null) {
+                return null;
+            }
             return treatJSONList(array);
         }
 
-        if (!object.optString(TYPE).equals(RECIPE_TYPE)) {
-            return null;
-        }
+        if (object.has(TYPE)) {
+            JSONArray array = object.optJSONArray(TYPE);
+            if (array != null) {
+                boolean shouldReturn = true;
+
+                for (int i = 0; i < array.length(); ++i)
+                    if (array.optString(i).equals(RECIPE_TYPE))
+                        shouldReturn = false;
+
+                if (shouldReturn) return null;
+            } else if (!object.optString(TYPE).equals(RECIPE_TYPE)) {
+                return null;
+            }
+        } else return null;
 
         Model model = new Model();
 
@@ -103,17 +119,17 @@ public class RecipeInternet {
         model.steps = new ArrayList<>();
         JSONArray arraySteps = object.optJSONArray(RECIPE_INSTRUCTIONS);
         if (arraySteps == null) {
-            model.steps.add(object.optString(RECIPE_INSTRUCTIONS));
+            model.steps.add(StringEscapeUtils.unescapeHtml4(object.optString(RECIPE_INSTRUCTIONS)));
         } else {
             for (int i = 0; i < arraySteps.length(); ++i) {
                 JSONObject howToObject = arraySteps.optJSONObject(i);
                 if (howToObject == null) {
                     String step = arraySteps.optString(i);
-                    if (!step.trim().isEmpty()) model.steps.add(step);
+                    if (!step.trim().isEmpty()) model.steps.add(StringEscapeUtils.unescapeHtml4(step));
                 } else {
                     if (howToObject.optString(TYPE).equals(HOW_TO_STEP)) {
                         String step = howToObject.optString(TEXT);
-                        if (!step.trim().isEmpty()) model.steps.add(step);
+                        if (!step.trim().isEmpty()) model.steps.add(StringEscapeUtils.unescapeHtml4(step));
                     }
                 }
             }
