@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +27,7 @@ import com.pigeoff.menu.activities.RecipeActivity;
 import com.pigeoff.menu.activities.WizardActivity;
 import com.pigeoff.menu.adapters.OnAdapterAction;
 import com.pigeoff.menu.adapters.RecipeAdapter;
+import com.pigeoff.menu.adapters.RecipeCardAdapter;
 import com.pigeoff.menu.database.ProductEntity;
 import com.pigeoff.menu.database.RecipeEntity;
 import com.pigeoff.menu.models.RecipesViewModel;
@@ -58,7 +60,7 @@ public class RecipeFragment extends Fragment {
     RecyclerView recyclerViewSearch;
     LinearLayout layoutEmpty;
 
-    RecipeAdapter recipeAdapter;
+    RecipeCardAdapter recipeAdapter;
     RecipeAdapter recipeAdapterSearch;
 
     public RecipeFragment() {
@@ -119,9 +121,9 @@ public class RecipeFragment extends Fragment {
         searchBar = view.findViewById(R.id.search_bar);
         chips = view.findViewById(R.id.chip_group_filter);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
         recyclerViewSearch.setLayoutManager(new LinearLayoutManager(requireContext()));
-        recipeAdapter = new RecipeAdapter(requireContext(), new ArrayList<>());
+        recipeAdapter = new RecipeCardAdapter(requireContext(), new ArrayList<>());
         recipeAdapterSearch = new RecipeAdapter(requireContext(), new ArrayList<>());
 
         recyclerViewSearch.setAdapter(recipeAdapterSearch);

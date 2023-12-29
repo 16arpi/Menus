@@ -16,13 +16,13 @@ import com.pigeoff.menu.util.Util;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class RecipeCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final ArrayList<RecipeEntity> recipes;
     private final Context context;
     private OnAdapterAction<RecipeEntity> listener;
 
-    public RecipeAdapter(Context context, ArrayList<RecipeEntity> recipes) {
+    public RecipeCardAdapter(Context context, ArrayList<RecipeEntity> recipes) {
         this.recipes = recipes;
         this.context = context;
     }
@@ -30,12 +30,12 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ObjectListViewHolder(LayoutInflater.from(context).inflate(R.layout.adapter_recipe_inline, parent, false));
+        return new CardListViewHolder(LayoutInflater.from(context).inflate(R.layout.adapter_recipe, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ObjectListViewHolder recipeViewHolder = (ObjectListViewHolder) holder;
+        CardListViewHolder recipeViewHolder = (CardListViewHolder) holder;
         RecipeEntity entity = recipes.get(position);
 
         if (entity.title.length() > 1) {
