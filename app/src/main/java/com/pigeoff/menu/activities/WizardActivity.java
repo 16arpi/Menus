@@ -1,18 +1,21 @@
 package com.pigeoff.menu.activities;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
+import android.widget.Toast;
+import android.widget.ViewFlipper;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.AutoCompleteTextView;
-import android.widget.Toast;
-import android.widget.ViewFlipper;
-
+import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -25,6 +28,7 @@ import com.pigeoff.menu.fragments.ProductFragment;
 import com.pigeoff.menu.models.RecipesViewModel;
 import com.pigeoff.menu.util.BackgroundTask;
 import com.pigeoff.menu.util.Constants;
+import com.pigeoff.menu.util.MediaChooser;
 import com.pigeoff.menu.util.RecipeInternet;
 import com.pigeoff.menu.util.Util;
 
@@ -35,6 +39,7 @@ public class WizardActivity extends AppCompatActivity {
     ViewFlipper flipper;
     TextInputLayout editUrl;
     MaterialButton buttonUrl;
+    ImageView editPreview;
     TextInputEditText editTitle;
     AutoCompleteTextView editType;
     TextInputEditText editPortions;
@@ -56,6 +61,7 @@ public class WizardActivity extends AppCompatActivity {
     // private objects
 
     private RecipeEntity recipe;
+    private Bitmap bitmap;
     private RecipesViewModel model;
 
     @Override
@@ -71,6 +77,7 @@ public class WizardActivity extends AppCompatActivity {
         flipper = findViewById(R.id.view_flipper);
         editUrl = findViewById(R.id.edit_url);
         buttonUrl = findViewById(R.id.button_url);
+        editPreview = findViewById(R.id.image_preview);
         editTitle = findViewById(R.id.edit_title);
         editType = findViewById(R.id.edit_type);
         editPortions = findViewById(R.id.edit_portions);
@@ -151,6 +158,14 @@ public class WizardActivity extends AppCompatActivity {
         editTitle.setText(model.title);
         editPortions.setText(String.valueOf(model.portions));
         Util.selectRecipeTypeAutoCompleteItem(editType, recipe.category);
+
+        // Handling image
+        bitmap = model.photo;
+        Glide.with(this)
+                .load(model.photo)
+                .placeholder(R.drawable.recipe_preview)
+                .error(R.drawable.recipe_preview)
+                .into(editPreview);
 
         // Handling recycler view and adapters
         ingredientsAdapter = new IngredientsEditAdapter(this, ingrs);
@@ -252,6 +267,7 @@ public class WizardActivity extends AppCompatActivity {
         }
 
         // Update ingredients and steps
+        recipe.picturePath = MediaChooser.addBitmapToFiles(this, bitmap);
         recipe.title = String.valueOf(editTitle.getText());
         recipe.category = recipesTypes.indexOf(editType.getText().toString());
         try {

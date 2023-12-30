@@ -3,6 +3,7 @@ package com.pigeoff.menu.util;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Base64;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -17,6 +18,8 @@ import com.pigeoff.menu.R;
 import com.pigeoff.menu.database.ProductEntity;
 import com.pigeoff.menu.database.RecipeEntity;
 import com.pigeoff.menu.models.RecipesViewModel;
+
+import org.apache.commons.io.FileUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -69,7 +72,8 @@ public class ImportExport<T> {
     }
 
     public void export(List<ProductEntity> products, List<RecipeEntity> recipes) {
-        Export export = new Export(BuildConfig.VERSION_CODE, products, recipes);
+        List<RecipeEntity> absolutePictureRecipes = turnImagePathToDataURI(recipes);
+        Export export = new Export(BuildConfig.VERSION_CODE, products, absolutePictureRecipes);
         Gson gson = new Gson();
         String string = gson.toJson(export);
 
@@ -99,6 +103,20 @@ public class ImportExport<T> {
 
     public void open() {
         launcherCallback.launch(new String[]{"application/json"});
+    }
+
+    private List<RecipeEntity> turnImagePathToDataURI(List<RecipeEntity> source) {
+        for (RecipeEntity r : source) {
+            if (r.picturePath == null || r.picturePath.isEmpty()) continue;
+            try {
+                byte[] content = FileUtils.readFileToByteArray(new File(r.picturePath));
+                r.picturePath = Base64.encodeToString(content, Base64.DEFAULT);
+
+            } catch (Exception e) {
+
+            }
+        }
+        return source;
     }
 
     private Context getContext(T parent) {

@@ -28,6 +28,9 @@
     <string name="label_ingredient_label">Ingrédient</string>
     <string name="label_steps">Préparation</string>
     <string name="label_step_label">Etape</string>
+    <string name="label_picture">Photo</string>
+    <string name="label_picture_add">Changer</string>
+    <string name="label_picture_delete">Supprimer</string>
 
     <!--- TAB LABELS -->
     <string name="tab_ingredient_groceries" >Epicerie</string>

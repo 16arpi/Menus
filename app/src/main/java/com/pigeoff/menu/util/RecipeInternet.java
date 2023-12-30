@@ -1,6 +1,9 @@
 package com.pigeoff.menu.util;
 
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import com.google.gson.Gson;
 
 import org.apache.commons.text.StringEscapeUtils;
@@ -14,6 +17,8 @@ import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +31,8 @@ public class RecipeInternet {
     private static final String NAME = "name";
     private static final String HOW_TO_STEP = "HowToStep";
     private static final String RECIPE_YIELD = "recipeYield";
+    private static final String IMAGE = "image";
+    private static final String IMAGE_URL = "url";
     private static final String RECIPE_INGREDIENT = "recipeIngredient";
     private static final String RECIPE_INSTRUCTIONS = "recipeInstructions";
     private static final String TEXT = "text";
@@ -43,6 +50,7 @@ public class RecipeInternet {
     public static class Model {
         public String title = "";
         public int portions = 1;
+        public Bitmap photo;
         public List<IngredientParser> ingredients = new ArrayList<>();
         public List<String> steps = new ArrayList<>();
     }
@@ -104,6 +112,32 @@ public class RecipeInternet {
 
         model.title = object.optString(NAME);
 
+        // Photo
+        JSONArray arrayImages = object.optJSONArray(IMAGE);
+        String url = "";
+        if (arrayImages != null) {
+            if (arrayImages.length() > 0) {
+                JSONObject objectImage = arrayImages.getJSONObject(0);
+                if (objectImage != null) {
+                    url = objectImage.optString(IMAGE_URL);
+                } else {
+                    url = arrayImages.optString(0);
+                }
+            }
+        } else {
+            JSONObject objectImage = object.optJSONObject(IMAGE);
+            if (objectImage != null) {
+                url = objectImage.optString(IMAGE_URL);
+            } else {
+                url = object.optString(IMAGE);
+            }
+        }
+        try {
+            model.photo = getDistantBitmap(url);
+        } catch (Exception e) {
+            model.photo = null;
+        }
+
         // Ingredients
         model.ingredients = new ArrayList<>();
         JSONArray arrayIngredients = object.optJSONArray(RECIPE_INGREDIENT);
@@ -140,6 +174,12 @@ public class RecipeInternet {
         return model;
 
     }
+
+    private static Bitmap getDistantBitmap(String url) throws Exception{
+        InputStream stream = new URL(url).openStream();
+        return BitmapFactory.decodeStream(stream);
+    }
+
     public static RecipeInternet.Model from(String json) {
         return new Gson().fromJson(json, RecipeInternet.Model.class);
     }

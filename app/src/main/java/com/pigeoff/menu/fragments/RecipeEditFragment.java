@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,6 +31,7 @@ import com.pigeoff.menu.database.ProductEntity;
 import com.pigeoff.menu.database.RecipeEntity;
 import com.pigeoff.menu.models.RecipeViewModel;
 import com.pigeoff.menu.util.Constants;
+import com.pigeoff.menu.util.MediaChooser;
 import com.pigeoff.menu.util.Util;
 
 import java.util.ArrayList;
@@ -40,6 +42,7 @@ import java.util.List;
 public class RecipeEditFragment extends DialogFragment {
 
     public static String RECIPE_ID = "recipeid";
+    private MediaChooser mediaChooser;
     private RecipeViewModel model;
     private RecipeEntity recipe;
     private HashMap<Long, ProductEntity> products;
@@ -52,12 +55,17 @@ public class RecipeEditFragment extends DialogFragment {
     private TextInputEditText editPortions;
     private NestedScrollView layoutIngredients;
     private NestedScrollView layoutSteps;
+    private NestedScrollView layoutPicture;
 
     private RecyclerView recyclerViewIngredients;
     private MaterialButton editIngredientSubmit;
 
     private RecyclerView recyclerViewSteps;
     private MaterialButton editStepSubmit;
+
+    private ImageView imagePreview;
+    private MaterialButton buttonPreviewChange;
+    private MaterialButton buttonPreviewDelete;
 
     // ADAPTERS
     private IngredientsEditAdapter ingredientAdapter;
@@ -85,6 +93,8 @@ public class RecipeEditFragment extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mediaChooser = new MediaChooser(this);
 
         if (getArguments() != null) {
             long id = getArguments().getLong(RECIPE_ID, -1);
@@ -130,6 +140,10 @@ public class RecipeEditFragment extends DialogFragment {
         editIngredientSubmit = view.findViewById(R.id.button_ingredient_submit);
         recyclerViewSteps = view.findViewById(R.id.recycler_view_steps);
         editStepSubmit = view.findViewById(R.id.button_step_submit);
+        layoutPicture = view.findViewById(R.id.layout_picture);
+        imagePreview = view.findViewById(R.id.image_preview);
+        buttonPreviewChange = view.findViewById(R.id.button_picture_change);
+        buttonPreviewDelete = view.findViewById(R.id.button_picture_delete);
 
         tabLayoutPanels.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -137,9 +151,15 @@ public class RecipeEditFragment extends DialogFragment {
                 if (tab.getPosition() == 0) {
                     layoutIngredients.setVisibility(View.VISIBLE);
                     layoutSteps.setVisibility(View.GONE);
-                } else {
+                    layoutPicture.setVisibility(View.GONE);
+                } else if (tab.getPosition() == 1) {
                     layoutIngredients.setVisibility(View.GONE);
                     layoutSteps.setVisibility(View.VISIBLE);
+                    layoutPicture.setVisibility(View.GONE);
+                } else {
+                    layoutIngredients.setVisibility(View.GONE);
+                    layoutSteps.setVisibility(View.GONE);
+                    layoutPicture.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -179,6 +199,9 @@ public class RecipeEditFragment extends DialogFragment {
             }
         }).attachToRecyclerView(recyclerViewIngredients);
 
+        // Setting up preview picture action
+
+        buttonPreviewChange.setOnClickListener(v -> mediaChooser.pick());
 
         recyclerViewSteps.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerViewIngredients.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -232,6 +255,20 @@ public class RecipeEditFragment extends DialogFragment {
             stepAdapter = new StepEditAdapter(requireContext(), steps, true);
             recyclerViewSteps.setAdapter(stepAdapter);
 
+            // Picture
+
+            Util.injectImage(requireContext(), recipe.picturePath, imagePreview);
+
+            mediaChooser.addOnMediaChooseListener(path -> {
+                recipe.picturePath = path;
+                Util.injectImage(requireContext(), path, imagePreview);
+            });
+
+            buttonPreviewDelete.setOnClickListener(v -> {
+                recipe.picturePath = "";
+                Util.injectImage(requireContext(), "", imagePreview);
+            });
+
             new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
                 @Override
                 public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -262,6 +299,7 @@ public class RecipeEditFragment extends DialogFragment {
                 }
             }).attachToRecyclerView(recyclerViewIngredients);
         });
+
 
     }
 

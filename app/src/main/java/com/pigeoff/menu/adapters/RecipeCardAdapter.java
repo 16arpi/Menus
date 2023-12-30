@@ -45,6 +45,7 @@ public class RecipeCardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             recipeViewHolder.itemLetter.setText("R");
         }
 
+        Util.injectImage(context, entity.picturePath, recipeViewHolder.imageView);
         recipeViewHolder.itemTitle.setText(entity.title);
         recipeViewHolder.itemSubTitle.setText(Util.getRecipesTypes(context, entity.category));
         recipeViewHolder.cardItem.setOnClickListener(view -> listener.onItemClick(entity));

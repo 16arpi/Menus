@@ -1,5 +1,6 @@
 package com.pigeoff.menu.database;
 
+import androidx.room.AutoMigration;
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
 
@@ -9,7 +10,10 @@ import androidx.room.RoomDatabase;
                 GroceryEntity.class,
                 ProductEntity.class
         },
-        version = 1
+        version = 2,
+        autoMigrations = {
+            @AutoMigration(from = 1, to = 2)
+        }
 )
 public abstract class MenuDatabase extends RoomDatabase {
     public abstract RecipeDAO recipeDAO();

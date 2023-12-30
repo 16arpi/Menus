@@ -132,7 +132,8 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_view_ingredients"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:clipToPadding="false"/>
 
                 </LinearLayout>
 
@@ -154,7 +155,8 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_view_steps"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:clipToPadding="false"/>
 
                 </LinearLayout>
 

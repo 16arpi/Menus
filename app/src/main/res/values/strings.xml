@@ -28,6 +28,9 @@
     <string name="label_ingredient_label">Ingredient</string>
     <string name="label_steps">Preparation</string>
     <string name="label_step_label">Step</string>
+    <string name="label_picture">Picture</string>
+    <string name="label_picture_add">Change</string>
+    <string name="label_picture_delete">Delete</string>
 
     <!--- TAB LABELS -->
     <string name="tab_ingredient_groceries">Groceries</string>

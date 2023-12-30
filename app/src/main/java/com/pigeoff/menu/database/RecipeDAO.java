@@ -18,6 +18,8 @@ public interface RecipeDAO {
     @Query("SELECT * FROM RecipeEntity WHERE cookbook != 0 ORDER BY LOWER(title)")
     List<RecipeEntity> selectStatic();
 
+    @Query("SELECT * FROM RecipeEntity WHERE id = :id")
+    RecipeEntity selectStatic(long id);
 
     @Query("SELECT * FROM RecipeEntity WHERE id = :id")
     LiveData<RecipeEntity> select(long id);

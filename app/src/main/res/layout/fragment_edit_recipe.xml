@@ -119,6 +119,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tab_picture"
+            android:text="@string/label_picture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -213,6 +219,53 @@
     </androidx.core.widget.NestedScrollView>
 
 
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/layout_picture"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/image_preview"
+                android:layout_margin="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="184dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/recipe_preview"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_margin="8dp"
+                    android:id="@+id/button_picture_change"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/label_picture_add"/>
+
+                <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_margin="8dp"
+                    android:id="@+id/button_picture_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/label_picture_delete"/>
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
 
 
 </LinearLayout>

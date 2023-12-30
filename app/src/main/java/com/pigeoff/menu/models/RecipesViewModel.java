@@ -19,6 +19,7 @@ import com.pigeoff.menu.database.ProductEntity;
 import com.pigeoff.menu.database.RecipeDAO;
 import com.pigeoff.menu.database.RecipeEntity;
 import com.pigeoff.menu.util.IngredientParser;
+import com.pigeoff.menu.util.MediaChooser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,11 +62,19 @@ public class RecipesViewModel extends AndroidViewModel {
     }
 
     public void updateItem(RecipeEntity item) {
-        AsyncTask.execute(() -> recipeDAO.update(item));
+        AsyncTask.execute(() -> {
+            // We delete the old recipe photo if it changes
+            RecipeEntity old = recipeDAO.selectStatic(item.id);
+            if (!String.valueOf(old.picturePath).equals(item.picturePath))
+                MediaChooser.deleteOldFile(old.picturePath);
+            // We update the entity
+            recipeDAO.update(item);
+        });
     }
 
     public void deleteItem(RecipeEntity item) {
         AsyncTask.execute(() -> {
+            MediaChooser.deleteOldFile(item.picturePath);
             groceryDAO.deleteGroceriesForRecipe(item.id);
             calendarDAO.deleteForRecipe(item.id);
             recipeDAO.delete(item);
@@ -125,6 +134,7 @@ public class RecipesViewModel extends AndroidViewModel {
                     blank.category = r.category;
                     blank.note = r.note;
                     blank.steps = r.steps;
+                    blank.picturePath = MediaChooser.base64ToNewFilePath(getApplication(), r.picturePath);
 
                     recipeDAO.insert(blank);
 

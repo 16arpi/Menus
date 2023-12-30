@@ -6,10 +6,12 @@ import android.util.Patterns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.FragmentActivity;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pigeoff.menu.R;
@@ -132,5 +134,14 @@ public class Util {
         } else {
             view.setPaintFlags(Paint.ANTI_ALIAS_FLAG);
         }
+    }
+
+    public static void injectImage(Context context, String path, ImageView imageView) {
+        Glide.with(context)
+                .load(path)
+                .placeholder(R.drawable.recipe_preview)
+                .error(R.drawable.recipe_preview)
+                .centerCrop()
+                .into(imageView);
     }
 }

@@ -1,15 +1,15 @@
 package com.pigeoff.menu.util;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.app.Activity;
 
 public class BackgroundTask<T> {
-    AppCompatActivity activity;
+    Activity activity;
     OnPreProcess preProcessListener;
     OnProcess<T> processListener;
     OnSuccess<T> successListener;
     OnFailure failureListener;
 
-    public BackgroundTask(AppCompatActivity activity, OnProcess<T> listener) {
+    public BackgroundTask(Activity activity, OnProcess<T> listener) {
         this.activity = activity;
         this.processListener = listener;
     }

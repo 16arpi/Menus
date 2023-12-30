@@ -2,6 +2,7 @@ package com.pigeoff.menu.adapters;
 
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import com.pigeoff.menu.R;
 public class CardListViewHolder extends RecyclerView.ViewHolder {
 
     public MaterialCardView cardItem;
+    public ImageView imageView;
     public TextView itemLetter;
     public TextView itemTitle;
     public TextView itemSubTitle;
@@ -20,6 +22,7 @@ public class CardListViewHolder extends RecyclerView.ViewHolder {
 
     public CardListViewHolder(@NonNull View itemView) {
         super(itemView);
+        imageView = itemView.findViewById(R.id.image_view);
         cardItem = itemView.findViewById(R.id.card_item);
         itemLetter = itemView.findViewById(R.id.text_letter);
         itemTitle = itemView.findViewById(R.id.text_recipe);

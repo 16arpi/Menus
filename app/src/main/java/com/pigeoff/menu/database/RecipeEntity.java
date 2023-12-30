@@ -1,6 +1,5 @@
 package com.pigeoff.menu.database;
 
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -12,9 +11,9 @@ public class RecipeEntity {
     public int category = 0;
     public String title;
 
-    @ColumnInfo(defaultValue = "1") // Need to be deleted when and replace with public int portions = 1;
     public int portions = 1;
     public String ingredients = "[]"; // JSON
     public String steps = "[]"; // JSON
     public String note; // Not used at this point
+    public String picturePath = "";
 }

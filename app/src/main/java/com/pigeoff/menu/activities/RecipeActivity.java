@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -39,6 +40,7 @@ public class RecipeActivity extends AppCompatActivity {
     ImportExport<FragmentActivity> importExport;
     MaterialToolbar toolbar;
     MaterialCardView cardPortions;
+    ImageView imagePreview;
     Button buttonPortionsMore;
     Button buttonPortionsLess;
     TextView textPortions;
@@ -65,6 +67,7 @@ public class RecipeActivity extends AppCompatActivity {
         cardPortions = findViewById(R.id.card_portions);
         buttonPortionsMore = findViewById(R.id.button_more);
         buttonPortionsLess = findViewById(R.id.button_less);
+        imagePreview = findViewById(R.id.image_view);
         textPortions = findViewById(R.id.text_portions);
         cardIngredients = findViewById(R.id.card_ingredients);
         cardSteps = findViewById(R.id.card_steps);
@@ -145,6 +148,9 @@ public class RecipeActivity extends AppCompatActivity {
         String[] recipesTypes = Util.getRecipesTypes(this);
         textTitle.setText(item.title);
         textType.setText(recipesTypes[item.category]);
+
+        // Preview
+        Util.injectImage(this, item.picturePath, imagePreview);
 
         ArrayList<Ingredient> ingredients = Ingredient.fromJson(products, item.ingredients, item.portions, customPortions);
         recyclerViewIngredients.setAdapter(new IngredientAdapter(this, ingredients, false));
