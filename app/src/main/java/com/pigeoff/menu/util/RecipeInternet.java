@@ -3,6 +3,7 @@ package com.pigeoff.menu.util;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -72,6 +73,7 @@ public class RecipeInternet {
             }
             throw new RecipeInternetException("Unable to find recipe");
         } catch (IOException | JSONException e) {
+            e.printStackTrace();
             throw new RecipeInternetException(e.getMessage());
         }
     }
@@ -88,6 +90,7 @@ public class RecipeInternet {
         if (object.has(GRAPH)) {
             JSONArray array = object.optJSONArray(GRAPH);
             if (array == null) {
+                Log.e("JSON RECIPE", "Empty graph");
                 return null;
             }
             return treatJSONList(array);
@@ -117,7 +120,7 @@ public class RecipeInternet {
         String url = "";
         if (arrayImages != null) {
             if (arrayImages.length() > 0) {
-                JSONObject objectImage = arrayImages.getJSONObject(0);
+                JSONObject objectImage = arrayImages.optJSONObject(0);
                 if (objectImage != null) {
                     url = objectImage.optString(IMAGE_URL);
                 } else {
@@ -175,7 +178,7 @@ public class RecipeInternet {
 
     }
 
-    private static Bitmap getDistantBitmap(String url) throws Exception{
+    private static Bitmap getDistantBitmap(String url) throws Exception {
         InputStream stream = new URL(url).openStream();
         return BitmapFactory.decodeStream(stream);
     }
