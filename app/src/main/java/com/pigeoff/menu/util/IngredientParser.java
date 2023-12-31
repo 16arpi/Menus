@@ -274,7 +274,7 @@ public class IngredientParser {
 
     public static IngredientParser from(String ingr) {
         // Nettoyage
-        String cleaned = StringUtils.trim(ingr);
+        String cleaned = StringUtils.trim(ingr).replaceAll("\\(.*\\)", "");
 
         // Division récursive
         Gap gap = new Gap(0, 0, false);
