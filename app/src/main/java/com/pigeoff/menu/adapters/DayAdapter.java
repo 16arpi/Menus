@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.card.MaterialCardView;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.database.CalendarWithRecipe;
 
@@ -63,8 +64,15 @@ public class DayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         Calendar nowDayCalendar = Calendar.getInstance();
 
+        if (thisDayCalendar.getTimeInMillis() < nowDayCalendar.getTimeInMillis()) {
+            holder.card.setAlpha(0.5f);
+        } else {
+            holder.card.setAlpha(1.0f);
+        }
+
         if (thisDayCalendar.get(Calendar.DAY_OF_YEAR) == nowDayCalendar.get(Calendar.DAY_OF_YEAR)
-                && thisDayCalendar.get(Calendar.YEAR) == nowDayCalendar.get(Calendar.YEAR)) {
+                && thisDayCalendar.get(Calendar.YEAR) == nowDayCalendar.get(Calendar.YEAR)){
+            holder.card.setAlpha(1.0f);
             holder.iconToday.setVisibility(View.VISIBLE);
         } else {
             holder.iconToday.setVisibility(View.GONE);
@@ -120,6 +128,7 @@ public class DayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     private static class DayViewHolder extends RecyclerView.ViewHolder {
+        MaterialCardView card;
         TextView textDay;
         ImageView iconToday;
         RecyclerView recyclerView;
@@ -128,6 +137,7 @@ public class DayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         public DayViewHolder(@NonNull View view) {
             super(view);
+            card = view.findViewById(R.id.card);
             textDay = view.findViewById(R.id.text_day);
             iconToday = view.findViewById(R.id.icon_today);
             recyclerView = view.findViewById(R.id.recycler_view);

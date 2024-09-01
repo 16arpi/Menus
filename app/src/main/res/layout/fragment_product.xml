@@ -25,9 +25,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/item_search"
                 app:startIconDrawable="@drawable/ic_search"
-                android:layout_margin="8dp"
-                app:endIconMode="custom"
-                app:endIconDrawable="@drawable/ic_add_full">
+                android:layout_margin="8dp" >
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/search_bar"
@@ -122,6 +120,20 @@
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:id="@+id/linear_layout_new_product"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <include
+                    layout="@layout/adapter_recipe_inline"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
         </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

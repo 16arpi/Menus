@@ -45,6 +45,20 @@ public class Util {
         return origin.contains(search);
     }
 
+    public static boolean stringEqualsSearch(String origin, String search) {
+        if (origin == null || search == null) return false;
+        origin = origin.toLowerCase(Locale.ROOT);
+        search = search.toLowerCase(Locale.ROOT);
+
+        origin = StringUtils.stripAccents(origin);
+        search = StringUtils.stripAccents(search);
+
+        origin = origin.replaceAll("\\W", "");
+        search = search.replaceAll("\\W", "");
+
+        return origin.equals(search);
+    }
+
     public static int findNumberInString(String str, int defaultValue) {
         Pattern p = Pattern.compile("(\\d+)");
         Matcher m = p.matcher(str);

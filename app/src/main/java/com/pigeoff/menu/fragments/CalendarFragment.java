@@ -114,6 +114,11 @@ public class CalendarFragment extends Fragment {
                     checked[i] = true;
                 }
 
+                if (labels.length == 0) {
+                    Toast.makeText(requireContext(), R.string.calendar_product_no_more_groceries, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 new MaterialAlertDialogBuilder(requireContext())
                         .setTitle(R.string.dialog_add_title)
                         .setMultiChoiceItems(labels, checked, (dialog, which, isChecked) -> checked[which] = isChecked)

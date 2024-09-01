@@ -54,6 +54,7 @@
     <string name="calendar_delete_event">Supprimer</string>
     <string name="calendar_product_added">Ingrédients ajoutés aux courses</string>
     <string name="calendar_product_added_error">Erreur, le plat a déjà été ajouté aux courses</string>
+    <string name="calendar_product_no_more_groceries">Rien de plus à ajouter à la liste des courses</string>
 
     <!-- RECIPE ACTIVITY -->
     <string name="label_delete">Supprimer</string>
@@ -95,6 +96,8 @@
     <string name="product_name">Nom</string>
     <string name="product_unit">Unité par défaut</string>
     <string name="product_section">Catégorie</string>
+
+    <string name="product_choose_category">Choisir une catégorie</string>
 
     <!-- CATEGORIES -->
     <string name="category_meal">Plat</string>

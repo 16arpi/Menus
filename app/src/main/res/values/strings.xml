@@ -54,6 +54,7 @@
     <string name="calendar_delete_event">Delete</string>
     <string name="calendar_product_added">Ingredients added to the shopping list</string>
     <string name="calendar_product_added_error">Error, your meal is already in the shopping list</string>
+    <string name="calendar_product_no_more_groceries">Nothing more to put in the shopping list</string>
 
     <!-- RECIPE ACTIVITY -->
     <string name="label_delete">Delete</string>
@@ -94,6 +95,9 @@
     <string name="product_name">Name</string>
     <string name="product_unit">Default unit</string>
     <string name="product_section">Category</string>
+
+    <string name="product_choose_category">Choose a category</string>
+
 
     <!-- CATEGORIES -->
     <string name="category_meal">Meal</string>

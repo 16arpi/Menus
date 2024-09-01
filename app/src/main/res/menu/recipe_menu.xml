@@ -5,7 +5,7 @@
         android:id="@+id/item_products"
         android:title="@string/product"
         android:icon="@drawable/ic_products"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
     <item
         android:id="@+id/item_export_recipes"
         android:title="@string/recipe_export"

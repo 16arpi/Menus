@@ -1,12 +1,15 @@
 package com.pigeoff.menu.fragments;
 
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -45,6 +48,11 @@ public class ProductFragment extends BottomSheetDialogFragment {
     TextInputLayout editSearchLayout;
     TextInputEditText editSearch;
     RecyclerView recyclerView;
+    LinearLayout linearLayoutNewProduct;
+    LinearLayout textProductCard;
+    TextView textProductLetter;
+    TextView textProductTitle;
+    TextView textProductCategory;
     ChipCategories chips;
 
     public ProductFragment() {
@@ -108,12 +116,22 @@ public class ProductFragment extends BottomSheetDialogFragment {
         chips = view.findViewById(R.id.chip_group_filter);
         recyclerView = view.findViewById(R.id.recycler_view);
 
+        linearLayoutNewProduct = view.findViewById(R.id.linear_layout_new_product);
+        textProductCard = view.findViewById(R.id.card_item);
+        textProductLetter = view.findViewById(R.id.text_letter);
+        textProductTitle = view.findViewById(R.id.text_recipe);
+        textProductCategory = view.findViewById(R.id.text_recipe_sub);
+
+        textProductTitle.setTypeface(null, Typeface.ITALIC);
+        textProductCategory.setTypeface(null, Typeface.ITALIC);
+
         if (!fullscreen) {
             nestedScrollView.setBackgroundColor(0);
             System.out.println("Fond transparent");
         }
 
         if (picker) {
+
             Util.showKeyboard(editSearch, requireContext());
         }
 
@@ -165,7 +183,7 @@ public class ProductFragment extends BottomSheetDialogFragment {
 
     private void setupUI() {
 
-        editSearchLayout.setEndIconOnClickListener(v -> {
+        /*editSearchLayout.setEndIconOnClickListener(v -> {
             ProductEntity item = new ProductEntity();
             item.label = String.valueOf(editSearch.getText());
             ProductEditFragment editFragment = ProductEditFragment.newInstance(
@@ -181,7 +199,7 @@ public class ProductFragment extends BottomSheetDialogFragment {
                     })
             );
             editFragment.show(requireActivity().getSupportFragmentManager(), "edit_product");
-        });
+        });*/
 
         adapter = new ProductAdapter(requireContext(), new ArrayList<>(), new ProductAdapter.OnItemAction() {
             @Override
@@ -244,6 +262,7 @@ public class ProductFragment extends BottomSheetDialogFragment {
         new Thread(() -> {
             List<Integer> checked = chips.getSelectedSections();
             List<ProductEntity> items = new ArrayList<>();
+            boolean showNewProduct = !query.isEmpty();
             for (ProductEntity p : products) {
                 if (Util.stringMatchSearch(p.label, query)) {
                     if (checked.contains(p.section)) {
@@ -252,8 +271,24 @@ public class ProductFragment extends BottomSheetDialogFragment {
                         items.add(p);
                     }
                 }
+                if (Util.stringEqualsSearch(p.label, query)) showNewProduct = false;
             }
-            requireActivity().runOnUiThread(() -> adapter.updateItems(items));
+
+            boolean finalShowNewProduct = showNewProduct;
+            requireActivity().runOnUiThread(() -> {
+                adapter.updateItems(items);
+                if (picker && finalShowNewProduct) {
+                    linearLayoutNewProduct.setVisibility(View.VISIBLE);
+
+                    String letter = query.substring(0, 1).toUpperCase();
+                    textProductTitle.setText(query);
+                    textProductLetter.setText(letter);
+                    textProductCategory.setText(getString(R.string.product_choose_category));
+                    textProductCard.setOnClickListener(v -> newProduct(query));
+                } else {
+                    linearLayoutNewProduct.setVisibility(View.GONE);
+                }
+            });
         }).start();
     }
 
@@ -270,6 +305,22 @@ public class ProductFragment extends BottomSheetDialogFragment {
                 editFragment.dismiss();
             });
         }
+    }
+
+    private void newProduct(String label) {
+        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.product_choose_category)
+                .setItems(R.array.section, (d, w) -> {
+                    ProductEntity product = new ProductEntity();
+                    product.label = label;
+                    product.section = w;
+                    product.permanent = true;
+                    model.addProduct(product, requireActivity(), id -> {
+                        product.id = id;
+                        chooseProduct(product);
+                    });
+                });
+        dialogBuilder.show();
     }
 
     public interface OnProductAction {
