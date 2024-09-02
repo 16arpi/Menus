@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.textfield.TextInputEditText;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.database.GroceryEntity;
@@ -34,6 +36,7 @@ public class GrocerieEditFragment extends BottomSheetDialogFragment {
     private OnGrocerieChoose listener;
     private ProductViewModel productViewModel;
     private ChipCategories chipGroup;
+    private HorizontalScrollView chipScroll;
 
     public GrocerieEditFragment() {
 
@@ -75,6 +78,7 @@ public class GrocerieEditFragment extends BottomSheetDialogFragment {
         quantity = view.findViewById(R.id.edit_quantity);
         MaterialButton submit = view.findViewById(R.id.button_submit);
         chipGroup = view.findViewById(R.id.chip_group_filter);
+        chipScroll = view.findViewById(R.id.chip_scroll);
 
 
         productViewModel.getItems().observe(getViewLifecycleOwner(), items -> {
@@ -102,6 +106,11 @@ public class GrocerieEditFragment extends BottomSheetDialogFragment {
         label.requestFocus();
 
         chipGroup.check(section);
+        chipGroup.post(() -> {
+            int chipId = chipGroup.getCheckedChipId();
+            Chip chip = chipGroup.findViewById(chipId);
+            chipScroll.scrollTo(chip.getLeft() - chip.getPaddingLeft(), chip.getTop());
+        });
 
         submit.setOnClickListener(v -> {
             String productLabel = String.valueOf(label.getText());

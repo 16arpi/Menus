@@ -23,7 +23,7 @@
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/item_search"
+                android:hint="@string/product_singular"
                 app:startIconDrawable="@drawable/ic_search"
                 android:layout_margin="8dp" >
 

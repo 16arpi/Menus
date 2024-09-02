@@ -1,6 +1,7 @@
 package com.pigeoff.menu.fragments;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.activities.RecipeActivity;
@@ -37,6 +39,9 @@ public class CalendarFragment extends Fragment {
 
     private WeekModel model;
     private TextView textTitle;
+    private MaterialCardView cardPrev;
+    private MaterialCardView cardNext;
+    private MaterialCardView cardToday;
     private List<CalendarWithRecipe>[] items;
     private DayAdapter adapter;
     private Calendar calendar;
@@ -78,21 +83,21 @@ public class CalendarFragment extends Fragment {
 
         MaterialToolbar toolbar = view.findViewById(R.id.top_app_bar);
         textTitle = view.findViewById(R.id.text_title);
+        cardPrev = view.findViewById(R.id.card_prev);
+        cardNext = view.findViewById(R.id.card_next);
+        cardToday = view.findViewById(R.id.card_today);
 
-        toolbar.setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()) {
-                case (R.id.item_back):{
-                    setLastWeek();
-                    break;
-                }
-                case (R.id.item_forward):{
-                    setNextWeek();
-                    break;
-                }
-                case (R.id.item_today):{
-                    setThisWeek();
-                    break;
-                }
+        cardPrev.setOnClickListener(v -> setLastWeek());
+        cardNext.setOnClickListener(v -> setNextWeek());
+        cardToday.setOnClickListener(v -> setThisWeek());
+
+        toolbar.setOnMenuItemClickListener(m -> {
+            if (m.getItemId() == R.id.item_help) {
+                Intent intent = new Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://pigeoff.pw/atable/help.html")
+                );
+                startActivity(intent);
             }
             return true;
         });

@@ -11,6 +11,7 @@
     <string name="item_last_week">Last week</string>
     <string name="item_next_week">Next week</string>
     <string name="item_today">Today</string>
+    <string name="item_help">Help</string>
 
     <!-- RECIPE FRAGMENT -->
     <string name="empty_title">¯\\_(ツ)_/¯</string>

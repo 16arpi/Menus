@@ -11,6 +11,7 @@
     <string name="item_last_week">Semaine dernière</string>
     <string name="item_next_week">Prochaine semaine</string>
     <string name="item_today">Aujourd\'hui</string>
+    <string name="item_help">Aide</string>
 
     <!-- RECIPE FRAGMENT -->
     <string name="empty_title">¯\\_(ツ)_/¯</string>

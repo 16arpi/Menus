@@ -34,15 +34,136 @@
 
             <TextView
                 style="@style/TextAppearance.Material3.DisplaySmall"
-                android:id="@+id/text_title"
-                android:text=""
+                android:text="@string/item_calendar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+
+                >
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_prev"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:focusable="true"
+                    android:clickable="true"
+
+                    android:layout_margin="8dp"
+
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="4dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_back"
+                            android:background="@android:color/transparent"
+                            android:layout_margin="4dp"/>
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_today"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:focusable="true"
+                    android:clickable="true"
+
+                    android:layout_margin="8dp"
+
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="4dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_today"
+                            android:background="@android:color/transparent"
+                            android:layout_margin="4dp"/>
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_date"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:layout_margin="8dp"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="4dp">
+
+                        <TextView
+                            style="@style/TextAppearance.Material3.TitleMedium"
+                            android:id="@+id/text_title"
+                            android:text="lun. 02 - dim. 08"
+                            android:textAlignment="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp" />
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:layout_margin="8dp"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="4dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_forward"
+                            android:background="@android:color/transparent"
+                            android:layout_margin="4dp"/>
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
-                android:padding="8dp"
+
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+
                 android:clipToPadding="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
