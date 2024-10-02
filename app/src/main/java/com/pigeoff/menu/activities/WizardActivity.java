@@ -184,8 +184,8 @@ public class WizardActivity extends AppCompatActivity {
                     query);
 
             productFragment.addProductActionListener(it -> {
-                item.product = it;
-                ingredientsAdapter.updateItem(item, pos);
+                ingr.product = it;
+                ingredientsAdapter.updateItem(ingr, pos);
                 Util.clearFocus(this);
             });
 
@@ -193,6 +193,7 @@ public class WizardActivity extends AppCompatActivity {
         });
 
         buttonAddIngredient.setOnClickListener(v -> {
+
             ProductFragment productFragment = ProductFragment.newInstance(false, true, Constants.SECTION_EMPTY);
             productFragment.addProductActionListener(item -> {
                 Ingredient ingredient = new Ingredient(

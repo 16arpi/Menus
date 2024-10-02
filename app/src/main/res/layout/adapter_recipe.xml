@@ -2,6 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     android:orientation="vertical">
 
     <com.google.android.material.card.MaterialCardView
@@ -17,13 +19,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
 
-            <ImageView
-                android:id="@+id/image_view"
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                android:scaleType="centerCrop"
-                android:src="@drawable/recipe_preview"/>
+                app:strokeWidth="0dp"
+                android:layout_weight="1">
+                <ImageView
+                    android:id="@+id/image_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/recipe_preview"/>
+            </com.google.android.material.card.MaterialCardView>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -49,21 +57,20 @@
                     android:padding="16dp">
 
                     <TextView
-                        style="@style/TextAppearance.Material3.BodySmall"
-                        android:id="@+id/text_recipe_sub"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Dessert"
-                        android:layout_marginBottom="4dp"
-                        />
-
-                    <TextView
                         style="@style/TextAppearance.Material3.TitleMedium"
                         android:id="@+id/text_recipe"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Tarte tatin"
                         />
+
+                    <TextView
+                        android:id="@+id/text_recipe_sub"
+                        style="@style/TextAppearance.Material3.BodySmall"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Dessert" />
                 </LinearLayout>
 
                 <ImageButton

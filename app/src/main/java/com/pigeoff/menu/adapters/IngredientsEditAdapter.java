@@ -59,7 +59,7 @@ public class IngredientsEditAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         itemHolder.editLabel.setOnClickListener(v -> {
             if (this.listener != null)
-                this.listener.onLabelClick(ingredient, itemHolder.getAdapterPosition());
+                this.listener.onLabelClick(ingredients.get(itemHolder.getAdapterPosition()), itemHolder.getAdapterPosition());
         });
 
         itemHolder.editQuantity.addTextChangedListener(new TextWatcher() {
@@ -70,7 +70,8 @@ public class IngredientsEditAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                ingredient.quantity = charSequence.toString();
+                System.out.println(ingredient.quantity + " | " + charSequence.toString());
+                ingredients.get(itemHolder.getAdapterPosition()).quantity = charSequence.toString();
             }
 
             @Override

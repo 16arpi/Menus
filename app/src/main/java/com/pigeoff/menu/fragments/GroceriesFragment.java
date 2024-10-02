@@ -1,5 +1,6 @@
 package com.pigeoff.menu.fragments;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pigeoff.menu.R;
 import com.pigeoff.menu.adapters.GroceriesAdapter;
@@ -27,7 +29,9 @@ import com.pigeoff.menu.util.Util;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public class GroceriesFragment extends Fragment {
 
@@ -118,7 +122,11 @@ public class GroceriesFragment extends Fragment {
 
             @Override
             public void onItemLongClick(GrocerieGroup item, int position) {
+                // Commented for now because it conflicts with
+                // the dragging feature...
+                // => TODO necessity to find a workaround!
 
+                // changeGrocerieCategory(item);
             }
         });
 
@@ -129,10 +137,84 @@ public class GroceriesFragment extends Fragment {
             else floatingActionButton.show();
         });
 
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT) {
+
+            HashMap<GrocerieGroup, Integer> commits = new HashMap<>();
+
             @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder current, @NonNull RecyclerView.ViewHolder target) {
+                List<GrocerieGroup> items = adapter.getItems();
+                int currentPos = current.getAdapterPosition();
+                int targetPos = target.getAdapterPosition();
+
+                GrocerieGroup objCurrent = items.get(currentPos);
+                GrocerieGroup objTarget = items.get(targetPos);
+
+                int viewTypeTarget = adapter.getItemViewType(targetPos);
+
+                String labelCurrent = objCurrent.label;
+                String labelTarget = objTarget.label;
+
+                // Checking if moving element can come here
+                boolean goesDown = currentPos < targetPos;
+
+                // If element going down
+                if (goesDown) {
+                    if (targetPos == items.size() - 1) { // if last element of the list
+                        if (labelCurrent.compareTo(labelTarget) > 0) {
+                            for (int i = currentPos; i < targetPos; ++i) {
+                                adapter.switchItems(i, i + 1);
+                            }
+                        }
+                    } else {
+                        int viewTypeTargetNext = adapter.getItemViewType(targetPos + 1);
+                        String labelTargetNext = items.get(targetPos + 1).label;
+                        if (viewTypeTarget != GroceriesAdapter.VIEW_GROCERY) { // If after header
+                            if (labelCurrent.compareTo(labelTargetNext) < 0) {
+                                for (int i = currentPos; i < targetPos; ++i) {
+                                    adapter.switchItems(i, i + 1);
+                                }
+                            }
+                        } else {
+                            if (labelCurrent.compareTo(labelTarget) > 0) {
+                                if (viewTypeTargetNext != GroceriesAdapter.VIEW_GROCERY || labelCurrent.compareTo(labelTargetNext) < 0) {
+                                    for (int i = currentPos; i < targetPos; ++i) {
+                                        adapter.switchItems(i, i + 1);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else { // if going up
+                    int viewTypeTargetNext = adapter.getItemViewType(targetPos - 1);
+                    String labelTargetNext = items.get(targetPos - 1).label;
+
+                    if (viewTypeTarget != GroceriesAdapter.VIEW_GROCERY) { // If after header
+                        if (labelCurrent.compareTo(labelTargetNext) > 0) {
+                            for (int i = currentPos; i > targetPos; --i) {
+                                adapter.switchItems(i, i - 1);
+                            }
+                        }
+                    } else {
+                        if (labelCurrent.compareTo(labelTarget) < 0) {
+                            if (viewTypeTargetNext != GroceriesAdapter.VIEW_GROCERY || labelCurrent.compareTo(labelTargetNext) > 0) {
+                                for (int i = currentPos; i > targetPos; --i) {
+                                    adapter.switchItems(i, i - 1);
+                                }
+                            }
+                        }
+                    }
+                }
+
                 return false;
+            }
+
+            @Override
+            public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+                return makeMovementFlags(
+                        adapter.getItemViewType(viewHolder.getAdapterPosition()) == GroceriesAdapter.VIEW_GROCERY ?
+                        ItemTouchHelper.UP | ItemTouchHelper.DOWN : 0,
+                        ItemTouchHelper.RIGHT);
             }
 
             @Override
@@ -141,6 +223,23 @@ public class GroceriesFragment extends Fragment {
                 if (group != null) for (GroceryEntity g : group.groceries) model.deleteItem(g);
                 else adapter.notifyItemChanged(viewHolder.getAdapterPosition());
             }
+
+            @Override
+            public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+                super.clearView(recyclerView, viewHolder);
+
+                int actualSection = 0;
+                List<GrocerieGroup> items = adapter.getItems();
+                for (int i = 0; i < items.size(); ++i) {
+                    GrocerieGroup g = items.get(i);
+                    if (adapter.getItemViewType(i) != GroceriesAdapter.VIEW_GROCERY)
+                        actualSection =  g.section;
+                    else {
+                        g.section = actualSection;
+                        model.changeGrocerieSection(g, g.section);
+                    }
+                }
+            }
         }).attachToRecyclerView(recyclerView);
     }
 
@@ -148,6 +247,15 @@ public class GroceriesFragment extends Fragment {
         items.sort(Comparator.comparing(t -> t.product.label));
         items.sort(Comparator.comparingInt(t -> t.product.section));
         adapter.updateGroceries(new ArrayList<>(items));
+    }
+
+    private void changeGrocerieCategory(GrocerieGroup group) {
+        new MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.groceries_change_category)
+                .setItems(R.array.section, (dialog, which) -> {
+                    model.changeGrocerieSection(group, which);
+                })
+                .show();
     }
 
     private void addCustomGrocerie(int section) {

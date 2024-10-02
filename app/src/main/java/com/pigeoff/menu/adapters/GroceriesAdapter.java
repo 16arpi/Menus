@@ -29,19 +29,19 @@ import java.util.List;
 public class GroceriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     int expandedPosition = -1;
-
     Context context;
     ArrayList<GrocerieGroup> items;
     OnAdapterAction<GrocerieGroup> listener;
     int[] viewTypes;
 
-    private static final int VIEW_GROCERY = 6;
+    public static final int VIEW_GROCERY = 6;
 
     public GroceriesAdapter(Context context, ArrayList<GrocerieGroup> items) {
         this.context = context;
         this.items = prepareItems(items);
         this.viewTypes = prepareViewTypes(items);
     }
+
 
     private ArrayList<GrocerieGroup> prepareItems(List<GrocerieGroup> all) {
         ArrayList<GrocerieGroup> result = new ArrayList<>();
@@ -95,9 +95,21 @@ public class GroceriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return viewTypes;
     }
 
+    public ArrayList<GrocerieGroup> getItems() {
+        return items;
+    }
+
+    public int[] getViewTypes() {
+        return viewTypes;
+    }
+
     @Override
     public int getItemViewType(int position) {
         return viewTypes[position];
+    }
+
+    public void setItemViewType(int position, int viewType) {
+        viewTypes[position] = viewType;
     }
     @NonNull
     @Override
@@ -152,6 +164,10 @@ public class GroceriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         holder.buttonAction.setOnClickListener(v -> expandAction(holder.getAdapterPosition()));
         holder.label.setOnClickListener(v -> expandAction(holder.getAdapterPosition()));
+        holder.label.setOnLongClickListener((v) -> {
+            if (listener != null) listener.onItemLongClick(getGroupAt(holder), holder.getAdapterPosition());
+            return true;
+        });
 
 
         if (expandedPosition == holder.getAdapterPosition()) {
@@ -176,9 +192,34 @@ public class GroceriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         holder.add.setOnClickListener(view -> listener.onItemClick(gp, OnAdapterAction.ACTION_ADD));
     }
 
+    private GrocerieGroup getGroupAt(RecyclerView.ViewHolder viewHolder) {
+        List<GrocerieGroup> items = getItems();
+        int position = viewHolder.getAdapterPosition();
+        return items.get(position);
+    }
+
     @Override
     public int getItemCount() {
         return items.size();
+    }
+
+    public void switchItems(int fromPos, int toPos) {
+        GrocerieGroup iN = items.get(fromPos);
+        GrocerieGroup iNx = items.get(toPos);
+        int iNvt = viewTypes[fromPos];
+        int iNxvt = viewTypes[toPos];
+
+        //int sectionTemp = iN.section;
+        //iN.section = iNx.section;
+        //iNx.section = sectionTemp;
+
+        items.set(fromPos, iNx);
+        items.set(toPos, iN);
+
+        viewTypes[fromPos] = iNxvt;
+        viewTypes[toPos] = iNvt;
+
+        notifyItemMoved(fromPos, toPos);
     }
 
     private static class SectionViewHolder extends RecyclerView.ViewHolder {

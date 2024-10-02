@@ -90,6 +90,8 @@
     <string name="groceries_empty_title">ʕ •ᴥ•ʔ</string>
     <string name="groceries_empty_message">Nothing left in the shopping list. Plan some menus to get your shopping list.</string>
 
+    <string name="groceries_change_category" >Change product category</string>
+
     <!--- PRODUCT -->
     <string name="product">Products</string>
     <string name="product_singular">Product</string>

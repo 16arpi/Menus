@@ -102,5 +102,11 @@ public class GroceriesViewModel extends AndroidViewModel {
         AsyncTask.execute(() -> groceryDAO.deleteGroceriesForCalendar(eventId));
     }
 
+    public void changeGrocerieSection(GrocerieGroup group, int newSection) {
+        if (group.product.section == newSection) return;
+        group.product.section = newSection;
+        AsyncTask.execute(() -> productDAO.updateProduct(group.product));
+    }
+
 
 }

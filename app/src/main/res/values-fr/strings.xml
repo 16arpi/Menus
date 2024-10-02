@@ -90,6 +90,7 @@
     <string name="groceries_empty_title">ʕ •ᴥ•ʔ</string>
     <string name="groceries_empty_message">Liste des courses vide. Planifier des menus pour obtenir votre liste des courses.</string>
 
+    <string name="groceries_change_category" >Changer la catégorie du produit</string>
 
     <!--- PRODUCT -->
     <string name="product">Produits</string>
